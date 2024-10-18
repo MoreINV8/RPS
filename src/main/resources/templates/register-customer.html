@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RPS</title>
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link th:rel="stylesheet" th:href="@{/css/custom-style.css}">
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div th:insert="fragments/nav-bar::nav-bar"></div>
+<div class="container">
+    <div class="center-box text-center">
+        <h4 class="mb-3">กรอกข้อมูลลูกค้า</h4>
+        <form>
+            <div class="mb-3">
+                <input type="text" class="form-control" placeholder="ชื่อ" required>
+            </div>
+            <div class="mb-3">
+                <input type="text" class="form-control" placeholder="นามสกุลลูกค้า" required>
+            </div>
+            <div class="mb-3">
+                <input type="text" class="form-control" placeholder="เบอร์โทรติดต่อลูกค้า" required>
+            </div>
+            <div class="mb-3">
+                <input type="text" class="form-control" placeholder="ที่อยู่ลูกค้า" required>
+            </div>
+            <div class="mb-3">
+                <input type="text" class="form-control" placeholder="อีเมลลูกค้า" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Submit</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
