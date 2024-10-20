@@ -1,4 +1,4 @@
-package ku.cs.RPS.validation;
+package ku.cs.RPS.validations;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

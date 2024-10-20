@@ -1,4 +1,4 @@
-package ku.cs.RPS.validation;
+package ku.cs.RPS.validations;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -11,12 +11,12 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Documented
-@Constraint(validatedBy = PhoneNumberConstraintValidator.class)
+@Constraint(validatedBy = EmailConstraintValidator.class)
 @Target({TYPE, FIELD, ANNOTATION_TYPE})
 @Retention(RUNTIME)
-public @interface ValidPhoneNumber {
+public @interface ValidEmail {
 
-    String message() default "Invalid Password";
+    String message() default "Invalid Email";
 
     Class<?>[] groups() default {};
 

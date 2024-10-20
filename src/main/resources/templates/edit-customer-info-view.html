@@ -16,7 +16,7 @@
     <form action="#" th:action="@{/edit-customer-info/{id}(id=${customer.getId()})}" method="POST">
 
         <div class="mb-3">
-            <label for="inputId" class="form-label">รหัสลูกค้า</label>
+            <label for="inputId" class="form-label text-start">รหัสลูกค้า</label>
             <input id="inputId" type="text" class="form-control" th:value="${customer.getId()}"
                    th:field="*{id}"
                    placeholder="ชื่อ" disabled>
@@ -27,7 +27,7 @@
             <input id="inputFirstName" type="text" class="form-control" th:value="${customer.getFirstName()}"
                    th:field="*{firstName}"
                    placeholder="ชื่อ">
-            <div class="alert alert-warning mt-1" th:if="*{getFirstName()}"
+            <div class="alert alert-warning mt-1" th:if="${#fields.hasErrors('firstName')}"
                  th:errors="*{firstName}"></div>
         </div>
 

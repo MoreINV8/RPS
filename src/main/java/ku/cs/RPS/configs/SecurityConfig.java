@@ -1,8 +1,7 @@
-package ku.cs.RPS.config;
+package ku.cs.RPS.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
@@ -10,7 +9,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 public class SecurityConfig {
-
 
 
     @Bean
@@ -21,7 +19,7 @@ public class SecurityConfig {
 //                        .requestMatchers(new AntPathRequestMatcher("/css/**")).permitAll()
 //                        .requestMatchers(new AntPathRequestMatcher("/js/**")).permitAll()
 //                        .anyRequest().authenticated()
-                        .anyRequest().permitAll()
+                                .anyRequest().permitAll()
                 );
 
 
