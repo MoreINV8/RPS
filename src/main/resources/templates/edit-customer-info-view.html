@@ -10,66 +10,70 @@
 <body>
 <div th:insert="~{fragments/nav-bar::nav-bar}"></div>
 
-<div class="container mt-5" th:object="${customer}">
-    <h2 class="text-center mb-4">แก้ไขข้อมูลลูกค้า</h2>
+<div class="container" th:object="${customer}">
+    <div class="center-box text-center">
+        <h4 class="mb-3">แก้ไขข้อมูลลูกค้า</h4>
 
-    <form action="#" th:action="@{/edit-customer-info/{id}(id=${customer.getId()})}" method="POST">
+        <form action="#" th:action="@{/edit-customer-info/{id}(id=${customer.getId()})}" method="POST">
 
-        <div class="mb-3">
-            <label for="inputId" class="form-label text-start">รหัสลูกค้า</label>
-            <input id="inputId" type="text" class="form-control" th:value="${customer.getId()}"
-                   th:field="*{id}"
-                   placeholder="ชื่อ" disabled>
-        </div>
+            <div class="mb-3">
+                <label for="inputId" class="form-label w-100 text-start px-3">รหัสลูกค้า</label>
+                <input id="inputId" type="text" class="form-control" th:value="${customer.getId()}"
+                       th:field="*{id}"
+                       placeholder="ชื่อ" disabled>
+            </div>
 
-        <div class="mb-3">
-            <label for="inputFirstName" class="form-label">ชื่อ</label>
-            <input id="inputFirstName" type="text" class="form-control" th:value="${customer.getFirstName()}"
-                   th:field="*{firstName}"
-                   placeholder="ชื่อ">
-            <div class="alert alert-warning mt-1" th:if="${#fields.hasErrors('firstName')}"
-                 th:errors="*{firstName}"></div>
-        </div>
+            <div class="mb-3">
+                <label for="inputFirstName" class="form-label w-100 text-start px-3">ชื่อ</label>
+                <input id="inputFirstName" type="text" class="form-control" th:value="${customer.getFirstName()}"
+                       th:field="*{firstName}"
+                       placeholder="ชื่อ">
+                <div class="alert alert-warning mt-1 w-100 text-start px-3" th:if="${#fields.hasErrors('firstName')}"
+                     th:errors="*{firstName}"></div>
+            </div>
 
-        <div class="mb-3">
-            <label for="inputLastName" class="form-label">นามสกุล</label>
-            <input id="inputLastName" type="text" class="form-control" th:value="${customer.getLastName()}"
-                   th:field="*{lastName}"
-                   placeholder="นามสกุลลูกค้า">
-            <div class="alert alert-warning mt-1" th:if="${#fields.hasErrors('lastName')}"
-                 th:errors="*{lastName}"></div>
-        </div>
+            <div class="mb-3">
+                <label for="inputLastName" class="form-label w-100 text-start px-3">นามสกุล</label>
+                <input id="inputLastName" type="text" class="form-control" th:value="${customer.getLastName()}"
+                       th:field="*{lastName}"
+                       placeholder="นามสกุลลูกค้า">
+                <div class="alert alert-warning mt-1 w-100 text-start px-3" th:if="${#fields.hasErrors('lastName')}"
+                     th:errors="*{lastName}"></div>
+            </div>
 
-        <div class="mb-3">
-            <label for="inputPhoneNumber" class="form-label">เบอร์โทรติดต่อ</label>
-            <input id="inputPhoneNumber" type="text" class="form-control" th:value="${customer.getPhoneNumber()}"
-                   th:field="*{phoneNumber}"
-                   placeholder="เบอร์โทรติดต่อลูกค้า">
-            <div class="alert alert-warning mt-1" th:if="${#fields.hasErrors('phoneNumber')}"
-                 th:errors="*{phoneNumber}"></div>
-        </div>
+            <div class="mb-3">
+                <label for="inputPhoneNumber" class="form-label w-100 text-start px-3">เบอร์โทรติดต่อ</label>
+                <input id="inputPhoneNumber" type="text" class="form-control" th:value="${customer.getPhoneNumber()}"
+                       th:field="*{phoneNumber}"
+                       placeholder="เบอร์โทรติดต่อลูกค้า">
+                <div class="alert alert-warning mt-1 w-100 text-start px-3" th:if="${#fields.hasErrors('phoneNumber')}"
+                     th:errors="*{phoneNumber}"></div>
+            </div>
 
-        <div class="mb-3">
-            <label for="inputAddress" class="form-label">ที่อยู่</label>
-            <input id="inputAddress" type="text" class="form-control" th:value="${customer.getAddress()}"
-                   th:field="*{address}"
-                   placeholder="ที่อยู่ลูกค้า">
-            <div class="alert alert-warning mt-1" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
-        </div>
+            <div class="mb-3">
+                <label for="inputAddress" class="form-label w-100 text-start px-3">ที่อยู่</label>
+                <input id="inputAddress" type="text" class="form-control" th:value="${customer.getAddress()}"
+                       th:field="*{address}"
+                       placeholder="ที่อยู่ลูกค้า">
+                <div class="alert alert-warning mt-1 w-100 text-start px-3" th:if="${#fields.hasErrors('address')}"
+                     th:errors="*{address}"></div>
+            </div>
 
-        <div class="mb-3">
-            <label for="inputEmail" class="form-label">อีเมล</label>
-            <input id="inputEmail" type="text" class="form-control" th:value="${customer.getEmail()}"
-                   th:field="*{email}"
-                   placeholder="อีเมลลูกค้า">
-            <div class="alert alert-warning mt-1" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
-        </div>
+            <div class="mb-3">
+                <label for="inputEmail" class="form-label w-100 text-start px-3">อีเมล</label>
+                <input id="inputEmail" type="text" class="form-control" th:value="${customer.getEmail()}"
+                       th:field="*{email}"
+                       placeholder="อีเมลลูกค้า">
+                <div class="alert alert-warning mt-1 w-100 text-start px-3" th:if="${#fields.hasErrors('email')}"
+                     th:errors="*{email}"></div>
+            </div>
 
-        <div class="d-grid gap-2">
-            <button type="submit" class="btn btn-primary">Save Changes</button>
-            <button type="reset" class="btn btn-secondary">Reset</button>
-        </div>
-    </form>
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
+            </div>
+        </form>
+    </div>
 </div>
 </body>
 </html>
