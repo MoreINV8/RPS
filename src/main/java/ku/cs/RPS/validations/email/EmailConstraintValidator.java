@@ -1,7 +1,8 @@
-package ku.cs.RPS.validations;
+package ku.cs.RPS.validations.email;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import ku.cs.RPS.validations.email.ValidEmail;
 
 import java.util.regex.Pattern;
 

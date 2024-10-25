@@ -1,7 +1,8 @@
-package ku.cs.RPS.validations;
+package ku.cs.RPS.validations.email;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
+import ku.cs.RPS.validations.email.EmailConstraintValidator;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;

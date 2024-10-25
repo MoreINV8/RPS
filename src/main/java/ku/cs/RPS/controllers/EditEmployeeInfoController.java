@@ -25,13 +25,17 @@ public class EditEmployeeInfoController {
     }
 
     @PostMapping("{id}")
-    public String updateEmployeeInfo(@Valid @ModelAttribute Employee adminEditEmp, BindingResult result) {
+    public String updateEmployeeInfo(@Valid @ModelAttribute("adminEditEmp") Employee adminEditEmp, BindingResult result, Model model) {
         System.out.println("UPDATE เด้ออ้าย");
         System.out.println(Integer.toString(2) + adminEditEmp);
         // give a same page with error
-        if (result.hasErrors())
+        if (result.hasErrors()){
+            model.addAttribute("adminEditEmp", adminEditEmp);
             return "edit-employee-info-view";
-
+        }if (dbRepository.isExistEmployeeByEmail(adminEditEmp.getEmployeeEmail())) {
+            result.rejectValue("employeeEmail", "error.emailExist", "อีเมลนี้ใช้งานแล้ว");
+            return "edit-employee-info-view";
+        }
         dbRepository.update(adminEditEmp);
         return "redirect:/adminEditEmployee";
     }

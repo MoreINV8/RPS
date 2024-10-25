@@ -1,8 +1,8 @@
 package ku.cs.RPS.entities;
 
 import jakarta.validation.constraints.Size;
-import ku.cs.RPS.validations.ValidEmail;
-import ku.cs.RPS.validations.ValidPhoneNumber;
+import ku.cs.RPS.validations.email.ValidEmail;
+import ku.cs.RPS.validations.phone_number.ValidPhoneNumber;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

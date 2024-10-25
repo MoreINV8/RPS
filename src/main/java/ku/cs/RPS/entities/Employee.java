@@ -2,8 +2,8 @@ package ku.cs.RPS.entities;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import ku.cs.RPS.validations.ValidEmail;
-import ku.cs.RPS.validations.ValidPhoneNumber;
+import ku.cs.RPS.validations.email.ValidEmail;
+import ku.cs.RPS.validations.phone_number.ValidPhoneNumber;
 import ku.cs.RPS.validations.password.ValidPassword;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -46,8 +46,8 @@ public class Employee {
     @Size(min = 2, message = "ที่อยู่สั้นเกินไป")
     private String employeeAddress;
 
-//    @ValidPassword
-    @Size(min = 1, message =  "เรื่องของมึง")
+    @ValidPassword
+//    @Size(min = 1, message =  "เรื่องของมึง")
     private String employeePassword;
 
     public Employee(String employeeId, String employeeFirstName, String employeeLastName, String employeeSex ,String employeeEmail, String employeePhoneNumber, String employeeDepartment, String employeeAddress, String employeePassword) {
