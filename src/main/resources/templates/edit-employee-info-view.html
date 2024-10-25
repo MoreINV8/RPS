@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RPS</title>
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link th:rel="stylesheet" th:href="@{/css/custom-style.css}">
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div th:insert="~{fragments/nav-bar::nav-bar}"></div>
+
+<div class="container" th:object="${adminEditEmp}">
+    <div class="center-box text-center">
+        <h4 class="mb-3">แก้ไขข้อมูลพนักงาน</h4>
+
+        <form action="#" th:action="@{/edit-employee-info/{id}(id=${adminEditEmp.getEmployeeId()})}" method="POST">
+
+            <div class="mb-3">
+                <label for="inputId" class="form-label w-100 text-start px-3">รหัสพนักงาน</label>
+                <input id="inputId" type="text" class="form-control" th:value="${adminEditEmp.getEmployeeId()}"
+                       th:field="*{employeeId}"
+                       placeholder="รหัสพนักงาน" disabled>
+                <!-- Add a hidden input to submit the employeeId -->
+                <input type="hidden" th:field="*{employeeId}">
+            </div>
+
+            <div class="mb-3">
+                <label for="inputFirstName" class="form-label w-100 text-start px-3">ชื่อ</label>
+                <input id="inputFirstName" type="text" class="form-control" th:value="${adminEditEmp.getEmployeeFirstName()}"
+                       th:field="*{employeeFirstName}"
+                       placeholder="ชื่อ">
+                <div class="alert alert-warning mt-1 w-100 text-start px-3" th:if="${#fields.hasErrors('employeeFirstName')}"
+                     th:errors="*{employeeFirstName}"></div>
+            </div>
+
+
+            <div class="mb-3">
+                <label for="inputLastName" class="form-label w-100 text-start px-3">นามสกุล</label>
+                <input id="inputLastName" type="text" class="form-control" th:value="${adminEditEmp.getEmployeeLastName()}"
+                       th:field="*{employeeLastName}"
+                       placeholder="นามสกุล">
+                <div class="alert alert-warning mt-1 w-100 text-start px-3" th:if="${#fields.hasErrors('employeeLastName')}"
+                     th:errors="*{employeeLastName}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="inputSex" class="form-label w-100 text-start px-3">เพศ</label>
+                <input id="inputSex" type="text" class="form-control" th:value="${adminEditEmp.getEmployeeSex()}"
+                       th:field="*{employeeSex}"
+                       placeholder="เพศ">
+                <div class="alert alert-warning mt-1 w-100 text-start px-3" th:if="${#fields.hasErrors('employeeSex')}"
+                     th:errors="*{employeeSex}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="inputDepartment" class="form-label w-100 text-start px-3">ตำแหน่ง</label>
+                <input id="inputDepartment" type="text" class="form-control" th:value="${adminEditEmp.getEmployeeDepartment()}"
+                       th:field="*{employeeDepartment}"
+                       placeholder="ตำแหน่ง">
+                <div class="alert alert-warning mt-1 w-100 text-start px-3" th:if="${#fields.hasErrors('employeeDepartment')}"
+                     th:errors="*{employeeDepartment}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="inputEmail" class="form-label w-100 text-start px-3">อีเมล</label>
+                <input id="inputEmail" type="text" class="form-control" th:value="${adminEditEmp.getEmployeeEmail()}"
+                       th:field="*{employeeEmail}"
+                       placeholder="อีเมล">
+                <div class="alert alert-warning mt-1 w-100 text-start px-3" th:if="${#fields.hasErrors('employeeEmail')}"
+                     th:errors="*{employeeEmail}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="inputPhoneNumber" class="form-label w-100 text-start px-3">เบอร์โทรติดต่อ</label>
+                <input id="inputPhoneNumber" type="text" class="form-control" th:value="${adminEditEmp.getEmployeePhoneNumber()}"
+                       th:field="*{employeePhoneNumber}"
+                       placeholder="เบอร์โทรติดต่อ">
+                <div class="alert alert-warning mt-1 w-100 text-start px-3" th:if="${#fields.hasErrors('employeePhoneNumber')}"
+                     th:errors="*{employeePhoneNumber}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="inputAddress" class="form-label w-100 text-start px-3">ที่อยู่</label>
+                <input id="inputAddress" type="text" class="form-control" th:value="${adminEditEmp.getEmployeeAddress()}"
+                       th:field="*{employeeAddress}"
+                       placeholder="ที่อยู่">
+                <div class="alert alert-warning mt-1 w-100 text-start px-3" th:if="${#fields.hasErrors('employeeAddress')}"
+                     th:errors="*{employeeAddress}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="inputPassword" class="form-label w-100 text-start px-3">รหัสผ่าน</label>
+                <input id="inputPassword" type="text" class="form-control" th:value="${adminEditEmp.getEmployeePassword()}"
+                       th:field="*{employeePassword}"
+                       placeholder="รหัสผ่าน">
+                <div class="alert alert-warning mt-1 w-100 text-start px-3" th:if="${#fields.hasErrors('employeePassword')}"
+                     th:errors="*{employeePassword}"></div>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

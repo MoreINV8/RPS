@@ -5,13 +5,17 @@ import jakarta.validation.constraints.Size;
 import ku.cs.RPS.validations.ValidEmail;
 import ku.cs.RPS.validations.ValidPhoneNumber;
 import ku.cs.RPS.validations.password.ValidPassword;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 import static ku.cs.RPS.utils.PasswordUtils.*;
 
 @Data
 @NoArgsConstructor
+//@AllArgsConstructor
 public class Employee {
 
     private String employeeId;
@@ -42,10 +46,12 @@ public class Employee {
     @Size(min = 2, message = "ที่อยู่สั้นเกินไป")
     private String employeeAddress;
 
-    @ValidPassword
+//    @ValidPassword
+    @Size(min = 1, message =  "เรื่องของมึง")
     private String employeePassword;
 
-    public Employee(String employeeFirstName, String employeeLastName, String employeeSex ,String employeeEmail, String employeePhoneNumber, String employeeDepartment, String employeeAddress) {
+    public Employee(String employeeId, String employeeFirstName, String employeeLastName, String employeeSex ,String employeeEmail, String employeePhoneNumber, String employeeDepartment, String employeeAddress, String employeePassword) {
+        this.employeeId = employeeId;
         this.employeeFirstName = employeeFirstName;
         this.employeeLastName = employeeLastName;
         this.employeeSex = employeeSex;
@@ -53,6 +59,6 @@ public class Employee {
         this.employeeEmail = employeeEmail;
         this.employeePhoneNumber = employeePhoneNumber;
         this.employeeAddress = employeeAddress;
-        this.employeePassword = generatePassword();  // generated first
+        this.employeePassword = employeePassword;  // generated first
     }
 }

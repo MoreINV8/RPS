@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RPS</title>
+    <!-- Bootstrap and Custom Stylesheets -->
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link th:rel="stylesheet" th:href="@{/css/custom-style.css}">
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<!-- Insert Navbar -->
+<div th:insert="~{fragments/nav-bar::nav-bar}"></div>
+
+<!-- Search bar in the top center -->
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form class="d-flex" th:action="@{/search}" method="GET">
+                <input class="form-control me-2" type="search" name="query" placeholder="Search Employees" aria-label="Search" required>
+                <button class="btn btn-outline-primary" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Employee Information Section -->
+<div class="container mt-5">
+    <h4 class="mb-4">พนักงาน</h4>
+    <div th:each="employee : ${adminEdit}">
+        <a th:href="@{/edit-employee-info/{id}(id=${employee.getEmployeeId()})}" class="text-decoration-none">
+            <ul class="list-group mb-4">
+                <!-- Employee ID -->
+                <li class="list-group-item">
+                    <strong>รหัสพนักงาน:</strong> <span th:text="${employee.getEmployeeId()}"></span>
+                </li>
+                <!-- Employee Name -->
+                <li class="list-group-item">
+                    <strong>ชื่อ นามสกุล:</strong>
+                    <span th:text="${employee.getEmployeeFirstName()}"></span>
+                    <span th:text="${employee.getEmployeeLastName()}"></span>
+                </li>
+                <!-- Employee Department -->
+                <li class="list-group-item">
+                    <strong>ตำแหน่ง:</strong>
+                    <span th:text="${employee.getEmployeeDepartment()}"></span>
+                </li>
+            </ul>
+        </a>
+    </div>
+</div>
+
+<script>
+    // AJAX to fetch employee suggestions
+    $(document).ready(function () {
+        $('#employee-search').on('input', function () {
+            let query = $(this).val();
+            if (query.length > 1) { // Minimum 2 characters before triggering
+                $.ajax({
+                    url: '/search/suggestions',
+                    data: {query: query},
+                    success: function (data) {
+                        let suggestions = $('#suggestions');
+                        suggestions.empty(); // Clear old suggestions
+                        if (data.length > 0) {
+                            data.forEach(function (item) {
+                                suggestions.append(`<li class="list-group-item">${item}</li>`);
+                            });
+                        } else {
+                            suggestions.append('<li class="list-group-item">No suggestions found</li>');
+                        }
+                    }
+                });
+            } else {
+                $('#suggestions').empty(); // Clear suggestions if query is too short
+            }
+        });
+
+        // Click suggestion to autofill search input
+        $('#suggestions').on('click', 'li', function () {
+            $('#employee-search').val($(this).text());
+            $('#suggestions').empty(); // Clear suggestions after selecting one
+        });
+    });
+</script>
+</body>
+</html>
