@@ -9,4 +9,12 @@ VALUES ('e000000001', 'Se', 'Seraphine', 'FEMALE', 'seraphine@gmail.com', '80738
        ('e000000002', 'Py', 'Pyke', 'MALE', 'pyke@gmail.com', '6040489891', 'Support', 'BilgeWater', 'Py4841842'),
        ('e000000003', 'Vie', 'Viego', 'MALE', 'viego@gmail.com', '1703504060', 'Jungle', 'Camavor', 'Vie948796'),
        ('e000000004', 'Aka', 'Akali', 'FEMALE', 'akali@gmail.com', '2170833522', 'Mid', 'Ionia', 'Ak1246537'),
-       ('e000000005', 'Ca', 'Caitlyn', 'FEMALE', 'caitlyn@gmail.com', '1747557570', 'ADC', 'Piltover', 'Ca7744620')
+       ('e000000005', 'Ca', 'Caitlyn', 'FEMALE', 'caitlyn@gmail.com', '1747557570', 'ADC', 'Piltover', 'Ca7744620');
+
+INSERT INTO delivery(id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status,
+                     all_product_count)
+VALUES ('d000000001', 'c000000003', '2024-10-26', '2024-10-26', 'เครื่องใช้ไฟฟ้า', 'Hua Hin', 'TODO', 5);
+
+INSERT INTO product (id, notice_id, delivery_id, item_count, item_detail)
+VALUES ('p000000001', null, 'd000000001', 3, 'แอร์'),
+       ('p000000002', null, 'd000000001', 2, 'เครื่องบิน');

@@ -28,6 +28,8 @@ public class Delivery {
 
     private String sentDetailStatus;
 
+    private int allProductsCount;
+
     public Delivery(String customerId, Date deliverDateTime, String item_type, String destination) {
         this.customerId = customerId;
         this.deliverDateTime = deliverDateTime;

@@ -21,6 +21,7 @@ public class DeliveryMapper implements RowMapper<Delivery> {
         delivery.setItem_type(rs.getString("item_type"));
         delivery.setDestination(rs.getString("destination"));
         delivery.setSentDetailStatus(rs.getString("sent_detail_status"));
+        delivery.setAllProductsCount(rs.getInt("all_product_count"));
 
         return delivery;
     }

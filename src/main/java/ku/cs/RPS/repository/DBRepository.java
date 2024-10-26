@@ -1,10 +1,13 @@
 package ku.cs.RPS.repository;
 
 import ku.cs.RPS.entities.Customer;
+import ku.cs.RPS.entities.Delivery;
 import ku.cs.RPS.entities.Employee;
 import ku.cs.RPS.entities.Product;
 import ku.cs.RPS.mappers.CustomerMapper;
+import ku.cs.RPS.mappers.DeliveryMapper;
 import ku.cs.RPS.mappers.EmployeeMapper;
+import ku.cs.RPS.mappers.ProductMapper;
 import ku.cs.RPS.requests.DeliveryCreateRequest;
 import ku.cs.RPS.utils.UtilityMethod;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +36,13 @@ public class DBRepository {
     }
 
     public Customer findCustomerById(String id) {
-        String query = "SELECT id, first_name, last_name, email, phone_number, address FROM customer WHERE id = ?";
+        String query = "SELECT id, first_name, last_name, email, phone_number, address FROM customer WHERE id = ?;";
 
         return jdbcTemplate.queryForObject(query, new Object[]{id}, new CustomerMapper());
     }
 
     public boolean isExistCustomerById(String id) {
-        String query = "SELECT id, first_name, last_name, email, phone_number, address FROM customer WHERE id = ?";
+        String query = "SELECT id, first_name, last_name, email, phone_number, address FROM customer WHERE id = ?;";
 
         try {
             jdbcTemplate.queryForObject(query, new Object[]{id}, new CustomerMapper());
@@ -50,7 +53,7 @@ public class DBRepository {
     }
 
     public boolean isExistCustomerByEmail(String email) {
-        String query = "SELECT id, first_name, last_name, email, phone_number, address FROM customer WHERE email = ?";
+        String query = "SELECT id, first_name, last_name, email, phone_number, address FROM customer WHERE email = ?;";
 
         try {
             jdbcTemplate.queryForObject(query, new Object[]{email}, new CustomerMapper());
@@ -68,7 +71,7 @@ public class DBRepository {
         String encodedId = UtilityMethod.rjust(Integer.toString(id), 9, '0');
         encodedId = "c" + encodedId;
 
-        String queryInsert = "INSERT INTO customer (id, first_name, last_name, email, phone_number, address) VALUES (?, ?, ?, ?, ?, ?)";
+        String queryInsert = "INSERT INTO customer (id, first_name, last_name, email, phone_number, address) VALUES (?, ?, ?, ?, ?, ?);";
         jdbcTemplate.update(queryInsert,
                 encodedId,
                 customer.getFirstName(),
@@ -82,7 +85,7 @@ public class DBRepository {
     }
 
     public void update(Customer customer) {
-        String query = "UPDATE customer SET first_name = ?, last_name = ?, email = ?, phone_number = ?, address = ? WHERE id = ?";
+        String query = "UPDATE customer SET first_name = ?, last_name = ?, email = ?, phone_number = ?, address = ? WHERE id = ?;";
 
         jdbcTemplate.update(
                 query,
@@ -110,7 +113,7 @@ public class DBRepository {
                 queryInsert,
                 id,
                 request.getCustomerId(),
-                Date.valueOf(LocalDate.now()),
+                null,
                 Date.valueOf(request.getDeliveredTime()),
                 request.getItemType(),
                 request.getDestination(),
@@ -121,13 +124,23 @@ public class DBRepository {
         return id;
     }
 
+    public Delivery findDeliveryById(String id) {
+        String query = "SELECT id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status, all_product_count FROM delivery WHERE id = ?;";
+        return jdbcTemplate.queryForObject(query, new Object[]{id}, new DeliveryMapper());
+    }
+
+    public void updateDeliveryCreatedDateById(String id) {
+        String query = "UPDATE delivery SET created_date = ? WHERE id = ?;";
+        jdbcTemplate.update(query, Date.valueOf(LocalDate.now()), id);
+    }
+
     //    ================================ Product ================================
 
     public String save(Product product) {
 
         String id = createId("product");
 
-        String queryInsert = "INSERT INTO product (id, notice_id, delivery_id, item_count, item_detail) VALUES (?, ?, ?, ?, ?)";
+        String queryInsert = "INSERT INTO product (id, notice_id, delivery_id, item_count, item_detail) VALUES (?, ?, ?, ?, ?);";
         jdbcTemplate.update(
                 queryInsert,
                 id,
@@ -138,6 +151,12 @@ public class DBRepository {
         );
 
         return id;
+    }
+
+    public List<Product> findProductsByDeliveryId(String id) {
+        String query = "SELECT id, notice_id, delivery_id, item_count, item_detail FROM product WHERE delivery_id = ?;";
+
+        return jdbcTemplate.query(query, new Object[]{id}, new ProductMapper());
     }
 
     //    ================================ Employee ================================
@@ -153,7 +172,7 @@ public class DBRepository {
     }
 
     public Employee findEmployeeById(String id) {
-        String query = "SELECT id, first_name, last_name, sex, email, phone_number, role, address, password FROM employee WHERE id = ?";
+        String query = "SELECT id, first_name, last_name, sex, email, phone_number, role, address, password FROM employee WHERE id = ?;";
         Employee employee = jdbcTemplate.queryForObject(query, new Object[]{id}, new EmployeeMapper());
 //        System.out.println(employee.getEmployeeId());
 
@@ -161,7 +180,7 @@ public class DBRepository {
     }
 
     public boolean isExistEmployeeByEmail(String email) {
-        String query = "SELECT id, first_name, last_name, sex, email, phone_number, role, address, password FROM employee WHERE email = ?";
+        String query = "SELECT id, first_name, last_name, sex, email, phone_number, role, address, password FROM employee WHERE email = ?;";
 
         try {
             jdbcTemplate.queryForObject(query, new Object[]{email}, new EmployeeMapper());
@@ -174,7 +193,7 @@ public class DBRepository {
     public String save(Employee employee) {
         String id = createId("employee");
 
-        String queryInsert = "INSERT INTO employee (id, first_name, last_name, sex, email, phone_number, role, address, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String queryInsert = "INSERT INTO employee (id, first_name, last_name, sex, email, phone_number, role, address, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
         jdbcTemplate.update(queryInsert,
                 id,
                 employee.getEmployeeFirstName(),
@@ -203,7 +222,7 @@ public class DBRepository {
 //        System.out.println(employee.getEmployeeAddress());
 //        System.out.println(employee.getEmployeePassword());
         // first_name, last_name, sex, email, phone_number, role, address, password
-        String query = "UPDATE employee SET first_name = ?, last_name = ?, sex = ?, email = ?, phone_number = ?, role = ?, address = ?, password = ? WHERE id = ?";
+        String query = "UPDATE employee SET first_name = ?, last_name = ?, sex = ?, email = ?, phone_number = ?, role = ?, address = ?, password = ? WHERE id = ?;";
 
         jdbcTemplate.update(
                 query,

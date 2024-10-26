@@ -61,12 +61,13 @@ public class CreateDeliveryController {
         }
 
         String deliveryId = dbRepository.save(newDelivery);
+
         for (Product product : newDelivery.getProducts()) {
             product.setDeliveryId(deliveryId);
             dbRepository.save(product);
         }
 
-        return "redirect:/home";
+        return "redirect:/delivery-detail/" + deliveryId;
     }
 
     @PostMapping("/create-item")
