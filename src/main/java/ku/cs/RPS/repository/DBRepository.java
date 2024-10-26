@@ -1,8 +1,10 @@
 package ku.cs.RPS.repository;
 
 import ku.cs.RPS.entities.Customer;
+import ku.cs.RPS.entities.Employee;
 import ku.cs.RPS.entities.Product;
 import ku.cs.RPS.mappers.CustomerMapper;
+import ku.cs.RPS.mappers.EmployeeMapper;
 import ku.cs.RPS.requests.DeliveryCreateRequest;
 import ku.cs.RPS.utils.UtilityMethod;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -138,6 +140,85 @@ public class DBRepository {
         return id;
     }
 
+    //    ================================ Employee ================================
+
+    // For now this is for Employee
+    public List<Employee> findEmployees() {
+        // id, first_name, last_name, sex, email, phone_number, role, address, password
+        String query = "SELECT id, first_name, last_name, sex, email, phone_number, role, address, password FROM employee;";
+
+        List<Employee> employees = jdbcTemplate.query(query, new EmployeeMapper());
+
+        return employees;
+    }
+
+    public Employee findEmployeeById(String id) {
+        String query = "SELECT id, first_name, last_name, sex, email, phone_number, role, address, password FROM employee WHERE id = ?";
+        Employee employee = jdbcTemplate.queryForObject(query, new Object[]{id}, new EmployeeMapper());
+//        System.out.println(employee.getEmployeeId());
+
+        return jdbcTemplate.queryForObject(query, new Object[]{id}, new EmployeeMapper());
+    }
+
+    public boolean isExistEmployeeByEmail(String email) {
+        String query = "SELECT id, first_name, last_name, sex, email, phone_number, role, address, password FROM employee WHERE email = ?";
+
+        try {
+            jdbcTemplate.queryForObject(query, new Object[]{email}, new EmployeeMapper());
+            return true;
+        } catch (DataAccessException e) {
+            return false;
+        }
+    }
+
+    public String save(Employee employee) {
+        String id = createId("employee");
+
+        String queryInsert = "INSERT INTO employee (id, first_name, last_name, sex, email, phone_number, role, address, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(queryInsert,
+                id,
+                employee.getEmployeeFirstName(),
+                employee.getEmployeeLastName(),
+                employee.getEmployeeSex(),
+                employee.getEmployeeEmail(),
+                employee.getEmployeePhoneNumber(),
+                employee.getEmployeeDepartment(),
+                employee.getEmployeeAddress(),
+                employee.getEmployeePassword()
+        );
+
+        return id;
+    }
+
+
+    public void update(Employee employee) {
+//        System.out.println("Hi, update?");
+//        System.out.println(employee.getEmployeeId());
+//        System.out.println(employee.getEmployeeFirstName());
+//        System.out.println(employee.getEmployeeLastName());
+//        System.out.println(employee.getEmployeeSex());
+//        System.out.println(employee.getEmployeeEmail());
+//        System.out.println(employee.getEmployeePhoneNumber());
+//        System.out.println(employee.getEmployeeDepartment());
+//        System.out.println(employee.getEmployeeAddress());
+//        System.out.println(employee.getEmployeePassword());
+        // first_name, last_name, sex, email, phone_number, role, address, password
+        String query = "UPDATE employee SET first_name = ?, last_name = ?, sex = ?, email = ?, phone_number = ?, role = ?, address = ?, password = ? WHERE id = ?";
+
+        jdbcTemplate.update(
+                query,
+                employee.getEmployeeFirstName(),
+                employee.getEmployeeLastName(),
+                employee.getEmployeeSex(),
+                employee.getEmployeeEmail(),
+                employee.getEmployeePhoneNumber(),
+                employee.getEmployeeDepartment(),
+                employee.getEmployeeAddress(),
+                employee.getEmployeePassword(),
+                employee.getEmployeeId()
+        );
+    }
+
     //    ================================ Util ================================
     public String createId(String tableName) {
         String queryCount = "SELECT COUNT(id) FROM " + tableName + ";";
@@ -149,5 +230,6 @@ public class DBRepository {
 
         return encodedId;
     }
-
 }
+
+

@@ -1,8 +1,8 @@
-package ku.cs.RPS.validations.email;
+package ku.cs.RPS.validations.licensePlate;
+
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import ku.cs.RPS.validations.email.EmailConstraintValidator;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -12,12 +12,12 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Documented
-@Constraint(validatedBy = EmailConstraintValidator.class)
-@Target({TYPE, FIELD, ANNOTATION_TYPE})
+@Constraint(validatedBy = LicensePlateConstraintValidator.class)
+@Target( {TYPE, FIELD, ANNOTATION_TYPE} )
 @Retention(RUNTIME)
-public @interface ValidEmail {
+public @interface ValidLicensePlate {
 
-    String message() default "Invalid Email";
+    String message() default "Invalid License Plate";
 
     Class<?>[] groups() default {};
 

@@ -20,7 +20,8 @@
                 <label for="inputId" class="form-label w-100 text-start px-3">รหัสลูกค้า</label>
                 <input id="inputId" type="text" class="form-control" th:value="${customer.getId()}"
                        th:field="*{id}"
-                       placeholder="ชื่อ" disabled>
+                       placeholder="รหัสลูกค้า" disabled>
+                <input type="hidden" th:field="*{id}">
             </div>
 
             <div class="mb-3">

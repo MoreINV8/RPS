@@ -13,16 +13,15 @@ public class DeliveryMapper implements RowMapper<Delivery> {
 
 //        (id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status, all_product_count)
 
-        Delivery d = new Delivery();
-        d.setId(rs.getString("id"));
-        d.setCustomerId("customer_id");
-        d.setCreatedDate(rs.getDate("created_date").toLocalDate().atStartOfDay());
-        d.setDeliveredDate(rs.getDate("delivered_date").toLocalDate().atStartOfDay());
-        d.setItemType(rs.getString("item_type"));
-        d.setDestination(rs.getString("destination"));
-        d.setSentDetailStatus(rs.getString("sent_detail_status"));
-        d.setAllProductCount(rs.getInt("all_product_count"));
+        Delivery delivery = new Delivery();
+        delivery.setDeliveryId(rs.getString("id"));
+        delivery.setCustomerId(rs.getString("customer_id"));
+        delivery.setDeliveryCreatedDate(rs.getDate("created_date"));
+        delivery.setDeliverDateTime(rs.getDate("delivered_date"));
+        delivery.setItem_type(rs.getString("item_type"));
+        delivery.setDestination(rs.getString("destination"));
+        delivery.setSentDetailStatus(rs.getString("sent_detail_status"));
 
-        return d;
+        return delivery;
     }
 }

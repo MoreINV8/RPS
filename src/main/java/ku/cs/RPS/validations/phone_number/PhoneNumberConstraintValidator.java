@@ -2,6 +2,7 @@ package ku.cs.RPS.validations.phone_number;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import ku.cs.RPS.validations.phone_number.ValidPhoneNumber;
 
 import java.util.regex.Pattern;
 

@@ -26,7 +26,9 @@ public class EditCustomerInfoController {
     }
 
     @PostMapping
-    public String editCustomerInfo(@Valid @ModelAttribute Customer customer, BindingResult result) {
+    public String editCustomerInfo(@Valid @ModelAttribute("customer") Customer customer, BindingResult result) {
+
+        System.out.println("Update: " + customer);
 
         // give a same page with error
         if (result.hasErrors())
