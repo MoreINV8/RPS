@@ -11,7 +11,7 @@ public class CustomerMapper implements RowMapper<Customer> {
     @Override
     public Customer mapRow(ResultSet rs, int rowNum) throws SQLException {
 
-//        id, first_name, last_name, email, phone_number, address
+//        (id, first_name, last_name, email, phone_number, address)
 
         Customer c = new Customer();
         c.setId(rs.getString("id"));

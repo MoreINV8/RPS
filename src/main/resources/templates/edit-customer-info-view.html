@@ -10,11 +10,11 @@
 <body>
 <div th:insert="~{fragments/nav-bar::nav-bar}"></div>
 
-<div class="container" th:object="${customer}">
+<div class="container">
     <div class="center-box text-center">
         <h4 class="mb-3">แก้ไขข้อมูลลูกค้า</h4>
 
-        <form action="#" th:action="@{/edit-customer-info/{id}(id=${customer.getId()})}" method="POST">
+        <form action="#" th:action="@{/edit-customer-info}" method="POST" th:object="${customer}">
 
             <div class="mb-3">
                 <label for="inputId" class="form-label w-100 text-start px-3">รหัสลูกค้า</label>

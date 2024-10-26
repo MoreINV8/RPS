@@ -19,6 +19,7 @@ CREATE TABLE delivery
     item_type          VARCHAR(20) NOT NULL,
     destination        VARCHAR(50) NOT NULL,
     sent_detail_status VARCHAR(5)  NOT NULL,
+    all_product_count  INT,
 
     PRIMARY KEY (id),
     FOREIGN KEY (customer_id) REFERENCES customer (id) ON DELETE CASCADE,

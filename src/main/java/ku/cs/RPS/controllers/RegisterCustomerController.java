@@ -27,7 +27,7 @@ public class RegisterCustomerController {
     }
 
     @PostMapping("/register")
-    public String register(@Valid @ModelAttribute("newCustomer") Customer newCustomer, BindingResult result, Model model) {
+    public String register(@Valid @ModelAttribute("newCustomer") Customer newCustomer, BindingResult result) {
 
         if (result.hasErrors()) {
             return "register-customer-view";

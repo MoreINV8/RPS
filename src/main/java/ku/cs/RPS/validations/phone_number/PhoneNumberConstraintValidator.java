@@ -1,4 +1,4 @@
-package ku.cs.RPS.validations;
+package ku.cs.RPS.validations.phone_number;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

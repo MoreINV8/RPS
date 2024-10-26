@@ -25,7 +25,7 @@ public class EditCustomerInfoController {
         return "edit-customer-info-view";
     }
 
-    @PostMapping("{id}")
+    @PostMapping
     public String editCustomerInfo(@Valid @ModelAttribute Customer customer, BindingResult result) {
 
         // give a same page with error
