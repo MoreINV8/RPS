@@ -11,10 +11,6 @@ VALUES ('e000000001', 'Se', 'Seraphine', 'FEMALE', 'seraphine@gmail.com', '80738
        ('e000000004', 'Aka', 'Akali', 'FEMALE', 'akali@gmail.com', '2170833522', 'Mid', 'Ionia', 'Ak1246537'),
        ('e000000005', 'Ca', 'Caitlyn', 'FEMALE', 'caitlyn@gmail.com', '1747557570', 'ADC', 'Piltover', 'Ca7744620');
 
-INSERT INTO notice (id, delivery_id, driver_id, car_registration, start_work_date, complete_status)
-VALUES ('n000000001', 'd000000001', 'e000000001', 'ka-1234', '2024-10-26', 'INCOMPLETE'),
-       ('n000000002', 'd000000001', 'e000000001', 'ka-1234', '2024-10-26', 'INCOMPLETE'),
-       ('n000000003', 'd000000001', 'e000000001', 'ka-1234', '2024-10-26', 'INCOMPLETE');
 
 INSERT INTO delivery (id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status,
                       all_product_count)
@@ -32,8 +28,15 @@ INSERT INTO car (car_registration, driver_id, oil_type, finish_used, car_type)
 VALUES ('กก-1234 กรุงเทพมหานคร', 'e000000003', 'แก๊สโซฮอล์ 95', null, '6 ล้อ'),
        ('กข-4567 กรุงเทพมหานคร', 'e000000004', 'ดีเซล B20', null, 'รถสไลด์ 10 ล้อ');
 
+INSERT INTO notice (id, delivery_id, driver_id, car_registration, start_work_date, complete_status)
+VALUES ('n000000001', 'd000000001', 'e000000003', 'กก-1234 กรุงเทพมหานคร', '2024-10-26', 'INCOMPLETE'),
+       ('n000000002', 'd000000001', 'e000000003', 'กก-1234 กรุงเทพมหานคร', '2024-10-26', 'INCOMPLETE'),
+       ('n000000003', 'd000000001', 'e000000003', 'กก-1234 กรุงเทพมหานคร', '2024-10-26', 'INCOMPLETE');
+
 INSERT INTO counter (table_name, counter)
 VALUES ('customer', 4),
        ('employee', 5),
        ('delivery', 2),
-       ('product', 5);
+       ('product', 5),
+       ('car', 2),
+       ('notice', 3);

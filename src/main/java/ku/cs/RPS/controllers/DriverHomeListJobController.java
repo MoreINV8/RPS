@@ -28,8 +28,9 @@ public class DriverHomeListJobController {
     // Query many notices per one driver
     @GetMapping
     public String driver(Model model, String id) {
-        id = "e000000001";  // Static ID for testing
+        id = "e000000003";  // Static ID for testing
         List<Notice> notices = dbRepository.findJobListByEmployeeId(id);
+        System.out.println(notices);
         model.addAttribute("notices", notices);
         return "driver-home-list-job-view";
     }
