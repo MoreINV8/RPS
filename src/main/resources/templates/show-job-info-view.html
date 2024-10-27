@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RPS</title>
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link th:rel="stylesheet" th:href="@{/css/custom-style.css}">
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div th:insert="~{fragments/nav-bar::nav-bar}"></div>
+
+<div class="container" th:object="${callNotice}">
+    <div class="center-box text-center">
+        <h4 class="mb-3">แสดงรายละเอียดใบแจ้งงาน</h4>
+
+        <form action="#" th:action="@{/each-job-info/{id}(id=${callNotice.getId()})}" method="POST">
+
+            <div class="mb-3">
+                <label for="inputId" class="form-label w-100 text-start px-3">รหัสใบแจ้งงาน</label>
+                <input id="inputId" type="text" class="form-control" th:value="${callNotice.getId()}"
+                       th:field="*{id}"
+                       placeholder="รหัสใบแจ้งงาน" disabled>
+                <!-- Add a hidden input to submit the employeeId -->
+                <input type="hidden" th:field="*{id}">
+            </div>
+
+            <div class="mb-3">
+                <label for="inputDelivery_id" class="form-label w-100 text-start px-3">รหัสใบส่งสินค้า</label>
+                <input id="inputDelivery_id" type="text" class="form-control" th:value="${callNotice.getDelivery_id()}"
+                       th:field="*{delivery_id}"
+                       placeholder="รหัสใบส่งสินค้า" disabled>
+                <input type="hidden" th:field="*{delivery_id}">
+            </div>
+
+            <div class="mb-3">
+                <label for="inputDriver_id" class="form-label w-100 text-start px-3">รหัสคนขับรถ</label>
+                <input id="inputDriver_id" type="text" class="form-control" th:value="${callNotice.getDriver_id()}"
+                       th:field="*{driver_id}"
+                       placeholder="รหัสคนขับรถ" disabled>
+                <input type="hidden" th:field="*{driver_id}">
+            </div>
+
+            <div class="mb-3">
+                <label for="inputDriverFirstName" class="form-label w-100 text-start px-3">ชื่อคนขับรถ</label>
+                <input id="inputDriverFirstName" type="text" class="form-control" th:value="${callNotice.getEmployeeFirstName()}"
+                       th:field="*{employeeFirstName}"
+                       placeholder="ชื่อคนขับรถ" disabled>
+                <input type="hidden" th:field="*{employeeFirstName}">
+            </div>
+
+            <div class="mb-3">
+                <label for="inputDriverLastName" class="form-label w-100 text-start px-3">นามสกุลคนชับรถ</label>
+                <input id="inputDriverLastName" type="text" class="form-control" th:value="${callNotice.getEmployeeLastName()}"
+                       th:field="*{employeeLastName}"
+                       placeholder="นามสกุลคนขับรถ" disabled>
+                <input type="hidden" th:field="*{employeeLastName}">
+            </div>
+
+            <div class="mb-3">
+                <label for="inputCarRegistration" class="form-label w-100 text-start px-3">ทะเบียนรถขนส่ง</label>
+                <input id="inputCarRegistration" type="text" class="form-control" th:value="${callNotice.getCar_registration()}"
+                       th:field="*{car_registration}"
+                       placeholder="ทะเบียนรถขนส่ง" disabled>
+                <input type="hidden" th:field="*{car_registration}">
+            </div>
+
+            <div class="mb-3">
+                <label for="inputStartWorkDate" class="form-label w-100 text-start px-3">วันเริ่มงาน</label>
+                <input id="inputStartWorkDate" type="text" class="form-control" th:value="${callNotice.getStart_work_date()}"
+                       th:field="*{start_work_date}"
+                       placeholder="วันเริ่มงาน" disabled>
+                <input type="hidden" th:field="*{start_work_date}">
+            </div>
+
+            <div class="mb-3">
+                <label for="inputCompleteStatus" class="form-label w-100 text-start px-3">สถานะใบแจ้งงาน</label>
+                <select id="inputCompleteStatus" class="form-select" th:field="*{complete_status}">
+                    <option value="" disabled selected>สถานะใบแจ้งงาน (!!! ถ้าหากคุณกดเสร็จสิ้นแล้วใบแจ้งงานนี้จะหายไป และไม่สามารถกู้คืนได้)</option>
+                    <option value="COMPLETE">เสร็จสิ้นแล้ว</option>
+                    <option value="INCOMPLETE">ยังไม่เสร็จสิ้น</option>
+                </select>
+                <div class="alert alert-warning mt-1 w-100 text-start px-3" th:if="${#fields.hasErrors('complete_status')}"
+                     th:errors="*{complete_status}"></div>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
+
+<!-- id, delivery_id, driver_id, car_registration, start_work_date, complete_status -->

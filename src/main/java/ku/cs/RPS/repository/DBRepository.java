@@ -1,13 +1,7 @@
 package ku.cs.RPS.repository;
 
-import ku.cs.RPS.entities.Customer;
-import ku.cs.RPS.entities.Delivery;
-import ku.cs.RPS.entities.Employee;
-import ku.cs.RPS.entities.Product;
-import ku.cs.RPS.mappers.CustomerMapper;
-import ku.cs.RPS.mappers.DeliveryMapper;
-import ku.cs.RPS.mappers.EmployeeMapper;
-import ku.cs.RPS.mappers.ProductMapper;
+import ku.cs.RPS.entities.*;
+import ku.cs.RPS.mappers.*;
 import ku.cs.RPS.requests.DeliveryCreateRequest;
 import ku.cs.RPS.utils.UtilityMethod;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +12,8 @@ import org.springframework.stereotype.Repository;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Repository
 public class DBRepository {
@@ -248,6 +244,56 @@ public class DBRepository {
         encodedId = tableName.charAt(0) + encodedId;
 
         return encodedId;
+    }
+
+    //    ================================ Driver ================================
+    public List<Notice> findJobList() {
+        String query = "SELECT n.id, n.delivery_id, n.driver_id, n.car_registration, " +
+                "n.start_work_date, n.complete_status " +
+                "FROM notice n " +
+                "JOIN employee e ON n.driver_id = e.id";
+
+        List<Notice> notices = jdbcTemplate.query(query, new NoticeMapper());
+        return notices;
+    }
+    public List<Notice> findJobListByEmployeeId(String id) {
+        String query = "SELECT n.id AS notice_id, n.delivery_id, n.driver_id, n.car_registration, " +
+                "n.start_work_date, n.complete_status, " +
+                "e.first_name AS employee_first_name, e.last_name AS employee_last_name " +
+                "FROM notice n " +
+                "JOIN employee e ON n.driver_id = e.id " +
+                "WHERE n.driver_id = ? AND n.complete_status = 'INCOMPLETE'";
+
+        return jdbcTemplate.query(query, new Object[]{id}, new NoticeMapper());
+    }
+
+    public Notice findNoticeById(String id) {
+        String query = "SELECT n.id AS notice_id, n.delivery_id, n.driver_id, n.car_registration, " +
+                "n.start_work_date, n.complete_status, " +
+                "e.first_name AS employee_first_name, e.last_name AS employee_last_name " +
+                "FROM notice n " +
+                "JOIN employee e ON n.driver_id = e.id " +
+                "WHERE n.id = ?";
+
+        return jdbcTemplate.queryForObject(query, new Object[]{id}, new NoticeMapper());
+    }
+
+
+
+    public void update(Notice callNotice) {
+        // id, delivery_id, driver_id, car_registration, start_work_date, complete_status
+        String query = "UPDATE notice SET id = ?, delivery_id = ?, driver_id = ?, car_registration = ?, start_work_date = ?, complete_status = ? WHERE id = ?;";
+
+        jdbcTemplate.update(
+                query,
+                callNotice.getId(),
+                callNotice.getDelivery_id(),
+                callNotice.getDriver_id(),
+                callNotice.getCar_registration(),
+                callNotice.getStart_work_date(),
+                callNotice.getComplete_status(),
+                callNotice.getId()
+        );
     }
 }
 

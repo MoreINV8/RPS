@@ -21,22 +21,8 @@ public class ShowEmployeeListController {
 
 
     @GetMapping
-    public String customers(Model model) {
+    public String employee(Model model) {
         model.addAttribute("adminEdit", dbRepository.findEmployees());
         return "show-employee-list-view";
     }
-
-//    @GetMapping("/search")
-//    public String searchEmployees(@RequestParam("query") String query, Model model) {
-//        List<Employee> employees = dbRepository.findEmployees();
-//        model.addAttribute("adminEdit", employees);
-//        return "show-employee-list-view"; // return the view with updated employee list
-//    }
-//
-//    // New endpoint for AJAX search suggestions
-//    @GetMapping("/search/suggestions")
-//    @ResponseBody
-//    public List<String> getEmployeeSuggestions(@RequestParam("query") String query) {
-//        return Collections.singletonList(dbRepository.findEmployees().toString());  // return names as JSON for suggestions
-//    }
 }

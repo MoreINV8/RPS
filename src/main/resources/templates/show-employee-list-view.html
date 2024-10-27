@@ -12,19 +12,6 @@
 <body>
 <!-- Insert Navbar -->
 <div th:insert="~{fragments/nav-bar::nav-bar}"></div>
-
-<!-- Search bar in the top center -->
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <form class="d-flex" th:action="@{/search}" method="GET">
-                <input class="form-control me-2" type="search" name="query" placeholder="Search Employees" aria-label="Search" required>
-                <button class="btn btn-outline-primary" type="submit">Search</button>
-            </form>
-        </div>
-    </div>
-</div>
-
 <!-- Employee Information Section -->
 <div class="container mt-5">
     <h4 class="mb-4">พนักงาน</h4>
@@ -50,39 +37,5 @@
         </a>
     </div>
 </div>
-
-<script>
-    // AJAX to fetch employee suggestions
-    $(document).ready(function () {
-        $('#employee-search').on('input', function () {
-            let query = $(this).val();
-            if (query.length > 1) { // Minimum 2 characters before triggering
-                $.ajax({
-                    url: '/search/suggestions',
-                    data: {query: query},
-                    success: function (data) {
-                        let suggestions = $('#suggestions');
-                        suggestions.empty(); // Clear old suggestions
-                        if (data.length > 0) {
-                            data.forEach(function (item) {
-                                suggestions.append(`<li class="list-group-item">${item}</li>`);
-                            });
-                        } else {
-                            suggestions.append('<li class="list-group-item">No suggestions found</li>');
-                        }
-                    }
-                });
-            } else {
-                $('#suggestions').empty(); // Clear suggestions if query is too short
-            }
-        });
-
-        // Click suggestion to autofill search input
-        $('#suggestions').on('click', 'li', function () {
-            $('#employee-search').val($(this).text());
-            $('#suggestions').empty(); // Clear suggestions after selecting one
-        });
-    });
-</script>
 </body>
 </html>
