@@ -112,3 +112,11 @@ CREATE TABLE route_problem
     PRIMARY KEY (latitude, longitude),
     FOREIGN KEY (reporter_id) REFERENCES employee (id) ON DELETE CASCADE
 );
+
+CREATE TABLE counter
+(
+    table_name VARCHAR(20),
+    counter    int,
+
+    PRIMARY KEY (table_name)
+);

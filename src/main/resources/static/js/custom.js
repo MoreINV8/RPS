@@ -1,3 +1,4 @@
+// ================================== custom date picker ==================================
 document.addEventListener("DOMContentLoaded", function () {
     const dateInput = document.getElementsByClassName("dateInput");
     const today = new Date();
@@ -16,6 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+// ================================== activate pop up ==================================
 document.addEventListener('DOMContentLoaded', function () {
     // Get the button element
     const openModalBtn = document.getElementById('openModalBtn');
@@ -27,6 +29,18 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    // Get the button element
+    const openModalBtn = document.getElementById('openWarningModelBtn');
+
+    // Open the modal when the button is clicked
+    openModalBtn.addEventListener('click', function () {
+        const myModal = new bootstrap.Modal(document.getElementById('warningModal'));
+        myModal.show();
+    });
+});
+
+// ================================== delete request ==================================
 function deleteItem() {
     fetch('/create-delivery/delete-item', {
         method: 'post'
@@ -34,6 +48,22 @@ function deleteItem() {
         if (response.ok) {
             console.log("OK");
             document.querySelector('.product-list').innerHTML = ''; // Only reload if the response is OK
+        } else {
+            console.error("INCOMPLETE");
+        }
+    }).catch(error => console.error('Error:', error));
+}
+
+function resetItem() {
+    fetch('/delivery-edit/reset-item', {
+        method: 'post'
+    }).then(response => {
+        if (response.ok) {
+            console.log("OK");
+
+            productList = document.querySelector('.product-list-inserted');
+            if (productList.innerHTML.length != 0)
+                productList.innerHTML = '';
         } else {
             console.error("INCOMPLETE");
         }

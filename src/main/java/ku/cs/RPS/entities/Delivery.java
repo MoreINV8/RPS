@@ -21,7 +21,7 @@ public class Delivery {
     private Date deliverDateTime;
 
     @NotBlank(message = "โปรดใส่ประเภทสินค้า")
-    private String item_type;
+    private String itemType;
 
     @NotBlank(message = "โปรดใส่สถานที่ปลายทาง")
     private String destination;
@@ -30,10 +30,10 @@ public class Delivery {
 
     private int allProductsCount;
 
-    public Delivery(String customerId, Date deliverDateTime, String item_type, String destination) {
+    public Delivery(String customerId, Date deliverDateTime, String itemType, String destination) {
         this.customerId = customerId;
         this.deliverDateTime = deliverDateTime;
-        this.item_type = item_type;
+        this.itemType = itemType;
         this.destination = destination;
         this.sentDetailStatus = "TODO";
         this.deliveryId = null;
