@@ -44,14 +44,21 @@ CREATE TABLE employee
 
 CREATE TABLE car
 (
-    car_registration VARCHAR(10),
+    car_registration VARCHAR(50),
     driver_id        CHAR(10),
-    oil_type         VARCHAR(10) NOT NULL,
-    finish_used      DATE,
-    car_type         VARCHAR(10) NOT NULL,
+    oil_type         VARCHAR(20) NOT NULL,
+    finish_used      DATETIME,
+    car_type         VARCHAR(50) NOT NULL,
 
     PRIMARY KEY (car_registration),
-    FOREIGN KEY (driver_id) REFERENCES employee (id) ON DELETE CASCADE
+    FOREIGN KEY (driver_id) REFERENCES employee (id) ON DELETE CASCADE,
+
+    CHECK (oil_type IN ('แก๊สโซฮอล์ 91', 'แก๊สโซฮอล์ 95', 'แก๊สโซฮอล์ E20', 'แก๊สโซฮอล์ E85',
+                        'ดีเซล B7', 'ดีเซล B10', 'ดีเซล B20', 'ดีเซลพรีเมี่ยม')),
+    CHECK (car_type IN ('6 ล้อ', '6 ล้อสไลด์วางถาด', 'รถสไลด์ 10 ล้อ',
+                        '10 ล้อสะพานท้ายติดตั้งวินซ์', '10 ล้อกระบะคาร์โก้ติดตั้งเครน 5 ตัน',
+                        'โลเบท 8 เพลา', 'โลเบท 5 เพลา', 'โลเบท 6 เพลา', 'โลเบท 4 เพลา',
+                        'โลเบท 3 เพลา', 'ดอลลี่'))
 );
 
 CREATE TABLE notice
@@ -104,4 +111,12 @@ CREATE TABLE route_problem
 
     PRIMARY KEY (latitude, longitude),
     FOREIGN KEY (reporter_id) REFERENCES employee (id) ON DELETE CASCADE
+);
+
+CREATE TABLE counter
+(
+    table_name VARCHAR(20),
+    counter    int,
+
+    PRIMARY KEY (table_name)
 );

@@ -3,6 +3,7 @@ package ku.cs.RPS.repository;
 import ku.cs.RPS.entities.*;
 import ku.cs.RPS.mappers.*;
 import ku.cs.RPS.requests.DeliveryCreateRequest;
+import ku.cs.RPS.requests.DeliveryEditRequest;
 import ku.cs.RPS.utils.UtilityMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -125,9 +126,50 @@ public class DBRepository {
         return jdbcTemplate.queryForObject(query, new Object[]{id}, new DeliveryMapper());
     }
 
+    public List<Delivery> findUncreatedDeliveries() {
+        String query = "SELECT id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status, all_product_count FROM delivery WHERE created_date IS NULL;";
+        return jdbcTemplate.query(query, new DeliveryMapper());
+    }
+
+    public void update(DeliveryEditRequest request) {
+
+        int allNewProductCount = 0;
+        for (Product p : request.getProducts())
+            allNewProductCount += p.getProductCount();
+
+        String query = "UPDATE delivery SET delivered_date = ?, item_type = ?, destination = ?, all_product_count = ? WHERE id = ?;";
+
+        jdbcTemplate.update(
+                query,
+                request.getDeliveredTime(),
+                request.getItemType(),
+                request.getDestination(),
+                allNewProductCount + request.getAllProductCountInitial(),
+                request.getDeliveryId()
+        );
+    }
+
     public void updateDeliveryCreatedDateById(String id) {
         String query = "UPDATE delivery SET created_date = ? WHERE id = ?;";
         jdbcTemplate.update(query, Date.valueOf(LocalDate.now()), id);
+    }
+
+    public void updateDeliveryFKToNullById(String id) {
+        String query = "UPDATE delivery SET customer_id = null WHERE id = ?;";
+
+        jdbcTemplate.update(
+                query,
+                id
+        );
+    }
+
+    public void deleteDeliveryById(String id) {
+        String query = "DELETE FROM delivery WHERE id = ?;";
+
+        jdbcTemplate.update(
+                query,
+                id
+        );
     }
 
     //    ================================ Product ================================
@@ -153,6 +195,24 @@ public class DBRepository {
         String query = "SELECT id, notice_id, delivery_id, item_count, item_detail FROM product WHERE delivery_id = ?;";
 
         return jdbcTemplate.query(query, new Object[]{id}, new ProductMapper());
+    }
+
+    public void updateProductFKToNullById(String id) {
+        String query = "UPDATE product SET delivery_id = null, notice_id = null WHERE id = ?;";
+
+        jdbcTemplate.update(
+                query,
+                id
+        );
+    }
+
+    public void deleteProductById(String id) {
+        String query = "DELETE FROM product WHERE id = ?;";
+
+        jdbcTemplate.update(
+                query,
+                id
+        );
     }
 
     //    ================================ Employee ================================
@@ -235,13 +295,15 @@ public class DBRepository {
     }
 
     //    ================================ Util ================================
-    public String createId(String tableName) {
-        String queryCount = "SELECT COUNT(id) FROM " + tableName + ";";
+    private String createId(String tableName) {
+        String queryCount = "SELECT counter FROM counter WHERE table_name = ?;";
 
-        int id = jdbcTemplate.queryForObject(queryCount, Integer.class) + 1;
+        int id = jdbcTemplate.queryForObject(queryCount, new Object[]{tableName}, Integer.class) + 1;
 
         String encodedId = UtilityMethod.rjust(Integer.toString(id), 9, '0');
         encodedId = tableName.charAt(0) + encodedId;
+
+        updateCounter(tableName, id);
 
         return encodedId;
     }
@@ -294,6 +356,61 @@ public class DBRepository {
                 callNotice.getComplete_status(),
                 callNotice.getId()
         );
+
+    //    ================================ Car ================================
+    public List<Car> findCars() {
+        String query = "SELECT car_registration, driver_id, oil_type, finish_used, car_type FROM car;";
+
+        List<Car> cars = jdbcTemplate.query(query, new CarMapper());
+
+        return cars;
+    }
+
+    public Car findCarByLicensePlate(String licensePlate) {
+        String query = "SELECT car_registration, driver_id, oil_type, finish_used, car_type FROM car WHERE car_registration = ?;";
+
+        return jdbcTemplate.queryForObject(query, new Object[]{licensePlate}, new CarMapper());
+    }
+
+    public boolean isExistCarByLicensePlate(String licensePlate) {
+        String query = "SELECT car_registration, driver_id, oil_type, finish_used, car_type FROM car WHERE car_registration = ?;";
+
+        try {
+            jdbcTemplate.queryForObject(query, new Object[]{licensePlate}, new CarMapper());
+            return true;
+        } catch (DataAccessException e) {
+            return false;
+        }
+    }
+
+    public boolean isExistCarByDriverId(String driverId) {
+        String query = "SELECT car_registration, driver_id, oil_type, finish_used, car_type FROM car WHERE driver_id = ?;";
+
+        try {
+            jdbcTemplate.queryForObject(query, new Object[]{driverId}, new CarMapper());
+            return true;
+        } catch (DataAccessException e) {
+            return false;
+        }
+    }
+
+    public String save(Car car) {
+        String queryInsert = "INSERT INTO car (car_registration, driver_id, oil_type, finish_used, car_type) VALUES (?, ?, ?, ?, ?);";
+        jdbcTemplate.update(queryInsert,
+                car.getCarId(),
+                car.getDriverId(),
+                car.getOilType(),
+                car.getEndOfUseTime(),
+                car.getCarType()
+        );
+
+        return car.getCarId();
+    }
+
+    private void updateCounter(String tableName, int counter) {
+        String query = "UPDATE counter SET counter = ? WHERE table_name = ?;";
+
+        jdbcTemplate.update(query, counter, tableName);
     }
 }
 
