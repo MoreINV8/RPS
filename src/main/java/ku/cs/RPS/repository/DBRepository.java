@@ -1,13 +1,7 @@
 package ku.cs.RPS.repository;
 
-import ku.cs.RPS.entities.Customer;
-import ku.cs.RPS.entities.Delivery;
-import ku.cs.RPS.entities.Employee;
-import ku.cs.RPS.entities.Product;
-import ku.cs.RPS.mappers.CustomerMapper;
-import ku.cs.RPS.mappers.DeliveryMapper;
-import ku.cs.RPS.mappers.EmployeeMapper;
-import ku.cs.RPS.mappers.ProductMapper;
+import ku.cs.RPS.entities.*;
+import ku.cs.RPS.mappers.*;
 import ku.cs.RPS.requests.DeliveryCreateRequest;
 import ku.cs.RPS.utils.UtilityMethod;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -248,6 +242,56 @@ public class DBRepository {
         encodedId = tableName.charAt(0) + encodedId;
 
         return encodedId;
+    }
+
+    //    ================================ Car ================================
+    public List<Car> findCars() {
+        String query = "SELECT car_registration, driver_id, oil_type, finish_used, car_type FROM car;";
+
+        List<Car> cars = jdbcTemplate.query(query, new CarMapper());
+
+        return cars;
+    }
+
+    public Car findCarByLicensePlate(String licensePlate) {
+        String query = "SELECT car_registration, driver_id, oil_type, finish_used, car_type FROM car WHERE car_registration = ?;";
+
+        return jdbcTemplate.queryForObject(query, new Object[]{licensePlate}, new CarMapper());
+    }
+
+    public boolean isExistCarByLicensePlate(String licensePlate) {
+        String query = "SELECT car_registration, driver_id, oil_type, finish_used, car_type FROM car WHERE car_registration = ?;";
+
+        try {
+            jdbcTemplate.queryForObject(query, new Object[]{licensePlate}, new CarMapper());
+            return true;
+        } catch (DataAccessException e) {
+            return false;
+        }
+    }
+
+    public boolean isExistCarByDriverId(String driverId) {
+        String query = "SELECT car_registration, driver_id, oil_type, finish_used, car_type FROM car WHERE driver_id = ?;";
+
+        try {
+            jdbcTemplate.queryForObject(query, new Object[]{driverId}, new CarMapper());
+            return true;
+        } catch (DataAccessException e) {
+            return false;
+        }
+    }
+
+    public String save(Car car) {
+        String queryInsert = "INSERT INTO car (car_registration, driver_id, oil_type, finish_used, car_type) VALUES (?, ?, ?, ?, ?);";
+        jdbcTemplate.update(queryInsert,
+                car.getCarId(),
+                car.getDriverId(),
+                car.getOilType(),
+                car.getEndOfUseTime(),
+                car.getCarType()
+        );
+
+        return car.getCarId();
     }
 }
 

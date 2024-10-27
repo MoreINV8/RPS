@@ -18,3 +18,7 @@ VALUES ('d000000001', 'c000000003', '2024-10-26', '2024-10-26', 'เครื่
 INSERT INTO product (id, notice_id, delivery_id, item_count, item_detail)
 VALUES ('p000000001', null, 'd000000001', 3, 'แอร์'),
        ('p000000002', null, 'd000000001', 2, 'เครื่องบิน');
+
+INSERT INTO car (car_registration, driver_id, oil_type, finish_used, car_type)
+VALUES ('กก-1234 กรุงเทพมหานคร', 'e000000003', 'แก๊สโซฮอล์ 95', null, '6 ล้อ'),
+       ('กข-4567 กรุงเทพมหานคร', 'e000000004', 'ดีเซล B20', null, 'รถสไลด์ 10 ล้อ')

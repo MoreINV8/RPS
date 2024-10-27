@@ -4,8 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import ku.cs.RPS.validations.licensePlate.ValidLicensePlate;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -21,7 +20,7 @@ public class Car {
     @NotBlank(message = "โปรดใส่ประเภทของน้ำมัน")
     private String oilType;
 
-    private Date endOfUseTime;
+    private LocalDateTime endOfUseTime;
 
     @NotBlank(message = "โปรดใส่ชนิดของรถ")
     private String carType;
