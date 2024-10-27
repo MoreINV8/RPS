@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>RPS</title>
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link th:rel="stylesheet" th:href="@{/css/custom-style.css}">
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/custom.js}"></script>
+</head>
+<body>
+<div th:insert="~{fragments/nav-bar::nav-bar}"></div>
+
+<div class="container">
+    <div class="center-box text-center">
+
+        <!--        Delete Button        -->
+        <div class="text-end fw-bold m-2">
+            <button type="submit" class="btn btn-danger" id="openWarningModelBtn">
+                Delete
+            </button>
+        </div>
+
+        <div class="modal fade" id="warningModal" tabindex="-1" role="dialog" aria-labelledby="warningTitle"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="warningTitle">ต้องการลบจริงหรือไม่</h5>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                        <form action="#" th:action="@{/delivery-edit/delete-product}" method="POST" class="m-0 p-0">
+                            <button type="submit" class="btn btn-primary">ตกลง</button>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <h4 class="mb-3">กรอกข้อมูลใบส่งสินค้า</h4>
+
+        <!-- Button trigger Popup -->
+        <div class="d-grid gap-2 mt-1">
+            <button type="button" class="btn btn-primary" id="openModalBtn">
+                กรอกข้อมูลสินค้า
+            </button>
+        </div>
+
+        <!-- Popup -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <form class="p-0 m-0 w-100" action="#" th:action="@{/delivery-edit/insert-product}" method="POST"
+                      th:object="${newProduct}">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">กรอกข้อมูลสินค้า</h5>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="mb-3">
+                                <label for="inputProductDetail"
+                                       class="form-label w-100 text-start px-3">รายละเอียดสินค้า</label>
+                                <input id="inputProductDetail" type="text" class="form-control"
+                                       th:field="*{productDetail}"
+                                       placeholder="จำนวนสินค้า">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="inputProductCount"
+                                       class="form-label w-100 text-start px-3">จำนวนสินค้า</label>
+                                <input id="inputProductCount" type="text" class="form-control"
+                                       th:field="*{productCount}"
+                                       placeholder="จำนวนสินค้า">
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!--        product list        -->
+        <div class="py-3 border-1 m-1 h-m">
+
+            <div class="form-label w-100 text-start px-3">รายการสินค้า</div>
+
+            <div class="product-list pb-3 px-3">
+
+                <!--                Exist Product                -->
+                <div class="pt-3 flex-row d-flex justify-content-between align-self-center"
+                     th:each="product : ${delivery.getInitialProducts()}">
+                    <ul class="list-group flex-grow-1">
+                        <li class="list-group-item">
+                            <span>รายละเอียดสินค้า: <span th:text="${product.getProductDetail()}"></span></span>
+                        </li>
+
+                        <li class="list-group-item">
+                            <span>จำนวนสินค้า: <span th:text="${product.getProductCount()}"></span></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!--                Inserted Product                -->
+                <div class="pt-3 flex-row d-flex justify-content-between align-self-center product-list-inserted"
+                     th:each="product : ${delivery.getProducts()}">
+                    <ul class="list-group flex-grow-1">
+                        <li class="list-group-item">
+                            <span>รายละเอียดสินค้า: <span th:text="${product.getProductDetail()}"></span></span>
+                        </li>
+
+                        <li class="list-group-item">
+                            <span>จำนวนสินค้า: <span th:text="${product.getProductCount()}"></span></span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+
+        <form action="#" th:action="@{/delivery-edit}" method="POST" th:object="${delivery}">
+
+            <div class="alert alert-warning mt-1 w-100 text-start px-3 pb-2"
+                 th:if="${#fields.hasErrors('products')}"
+                 th:errors="*{products}"></div>
+
+            <div class="alert alert-warning mt-1 w-100 text-start px-3"
+                 th:if="${#fields.hasErrors('products') and #fields.errors('products').contains('error.itemError')}"
+                 th:errors="*{products}"></div>
+
+            <div class="mb-3">
+                <label for="inputCustomerId" class="form-label w-100 text-start px-3">รหัสลูกค้า</label>
+                <input id="inputCustomerId" type="text" class="form-control"
+                       th:field="*{customerId}"
+                       placeholder="รหัสลูกค้า" disabled>
+                <input type="hidden" th:field="*{customerId}">
+            </div>
+
+            <div class="mb-3">
+                <label for="inputDestination" class="form-label w-100 text-start px-3">สถานที่ปลายทาง</label>
+                <input id="inputDestination" type="text" class="form-control"
+                       th:field="*{destination}"
+                       placeholder="สถานที่ปลายทาง">
+                <div class="alert alert-warning mt-1 w-100 text-start px-3" th:if="${#fields.hasErrors('destination')}"
+                     th:errors="*{destination}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="inputDeliveredTime" class="form-label w-100 text-start px-3">วันส่งมอบสินค้า</label>
+                <div class="input-group">
+                    <input id="inputDeliveredTime" type="date" name="deliveredTime"
+                           class="form-control w-100 dateInput">
+                </div>
+                <div class="alert alert-warning mt-1 w-100 text-start px-3"
+                     th:if="${#fields.hasErrors('deliveredTime')}"
+                     th:errors="*{deliveredTime}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="inputItemType" class="form-label w-100 text-start px-3">ประเภทสินค้า</label>
+                <input id="inputItemType" type="text" class="form-control"
+                       th:field="*{itemType}"
+                       placeholder="ประเภทสินค้า">
+                <div class="alert alert-warning mt-1 w-100 text-start px-3" th:if="${#fields.hasErrors('itemType')}"
+                     th:errors="*{itemType}"></div>
+            </div>
+
+            <div class="d-grid gap-2 mt-1">
+                <button type="reset" class="btn btn-primary" onclick="resetItem()">Reset</button>
+            </div>
+
+            <div class="d-grid gap-2 mt-1">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+</body>
+</html>

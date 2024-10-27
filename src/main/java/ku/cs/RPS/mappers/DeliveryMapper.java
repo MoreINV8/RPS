@@ -18,7 +18,7 @@ public class DeliveryMapper implements RowMapper<Delivery> {
         delivery.setCustomerId(rs.getString("customer_id"));
         delivery.setDeliveryCreatedDate(rs.getDate("created_date"));
         delivery.setDeliverDateTime(rs.getDate("delivered_date"));
-        delivery.setItem_type(rs.getString("item_type"));
+        delivery.setItemType(rs.getString("item_type"));
         delivery.setDestination(rs.getString("destination"));
         delivery.setSentDetailStatus(rs.getString("sent_detail_status"));
         delivery.setAllProductsCount(rs.getInt("all_product_count"));

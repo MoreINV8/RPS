@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 
 @Controller
 @RequestMapping("/create-delivery")
@@ -31,7 +32,7 @@ public class CreateDeliveryController {
     @PostMapping
     public String createRequestHandler(
             @Valid @ModelAttribute("newDelivery") DeliveryCreateRequest newDelivery,
-            BindingResult result, Model model
+            BindingResult result, Model model, SessionStatus sessionStatus
     ) {
 
         if (result.hasErrors()) {
@@ -66,6 +67,8 @@ public class CreateDeliveryController {
             product.setDeliveryId(deliveryId);
             dbRepository.save(product);
         }
+
+        sessionStatus.setComplete();
 
         return "redirect:/delivery-detail/" + deliveryId;
     }

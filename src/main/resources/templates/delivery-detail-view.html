@@ -13,7 +13,7 @@
 
 
 <div class="container my-4">
-    <h2 class="text-center mb-4">Order Details</h2>
+    <h2 class="text-center mb-4">รายละเอียดใบส่งสินค้า</h2>
 
     <div class="accordion" id="orderAccordion">
 
@@ -34,7 +34,7 @@
 
                     <!-- Order Basic Details -->
                     <p><strong>จุดหมายปลายทาง:</strong> <span th:text="${delivery.destination}"></span></p>
-                    <p><strong>ประเภทของสินค้า:</strong> <span th:text="${delivery.item_type}"></span></p>
+                    <p><strong>ประเภทของสินค้า:</strong> <span th:text="${delivery.getItemType}"></span></p>
                     <p><strong>วันส่งมอบ:</strong> <span th:text="${delivery.deliverDateTime.toString()}"></span></p>
 
                     <!-- Product List -->
