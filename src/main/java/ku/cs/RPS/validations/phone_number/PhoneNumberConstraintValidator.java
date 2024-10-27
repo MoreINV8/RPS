@@ -18,7 +18,7 @@ public class PhoneNumberConstraintValidator implements ConstraintValidator<Valid
             return true;
         }
 
-        context.buildConstraintViolationWithTemplate("เบอร์มือถือต้องเป็นตตัวเลขและมีขนาดเท่ากับ 10 ตตัวอักษร")
+        context.buildConstraintViolationWithTemplate("เบอร์มือถือต้องเป็นตัวเลขและมีขนาดเท่ากับ 10 ตัวอักษร")
                 .addConstraintViolation()
                 .disableDefaultConstraintViolation();
 

@@ -356,6 +356,7 @@ public class DBRepository {
                 callNotice.getComplete_status(),
                 callNotice.getId()
         );
+    }
 
     //    ================================ Car ================================
     public List<Car> findCars() {

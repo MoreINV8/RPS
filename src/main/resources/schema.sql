@@ -66,8 +66,8 @@ CREATE TABLE notice
     id               CHAR(10),
     delivery_id      CHAR(10),
     driver_id        CHAR(10),
-    car_registration VARCHAR(10),
-    start_work_date  DATE       NOT NULL,
+    car_registration VARCHAR(50),
+    start_work_date  DATE        NOT NULL,
     complete_status  VARCHAR(20) NOT NULL,
 
     PRIMARY KEY (id),

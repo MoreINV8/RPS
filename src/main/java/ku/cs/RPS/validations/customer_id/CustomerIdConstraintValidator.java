@@ -17,7 +17,7 @@ public class CustomerIdConstraintValidator implements ConstraintValidator<ValidC
             return true;
         }
 
-        context.buildConstraintViolationWithTemplate("รหัสลูดค้าขึ้นต้นด้วย c ตามด้วยตัวเลขจำนวน 9 ตตัวอักษร")
+        context.buildConstraintViolationWithTemplate("รหัสลูกค้าขึ้นต้นด้วย c ตามด้วยตัวเลขจำนวน 9 ตัวอักษร")
                 .addConstraintViolation()
                 .disableDefaultConstraintViolation();
 
