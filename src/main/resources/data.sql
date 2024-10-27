@@ -11,6 +11,11 @@ VALUES ('e000000001', 'Se', 'Seraphine', 'FEMALE', 'seraphine@gmail.com', '80738
        ('e000000004', 'Aka', 'Akali', 'FEMALE', 'akali@gmail.com', '2170833522', 'Mid', 'Ionia', 'Ak1246537'),
        ('e000000005', 'Ca', 'Caitlyn', 'FEMALE', 'caitlyn@gmail.com', '1747557570', 'ADC', 'Piltover', 'Ca7744620');
 
+INSERT INTO notice (id, delivery_id, driver_id, car_registration, start_work_date, complete_status)
+VALUES ('n000000001', 'd000000001', 'e000000001', 'ka-1234', '2024-10-26', 'INCOMPLETE'),
+       ('n000000002', 'd000000001', 'e000000001', 'ka-1234', '2024-10-26', 'INCOMPLETE'),
+       ('n000000003', 'd000000001', 'e000000001', 'ka-1234', '2024-10-26', 'INCOMPLETE');
+
 INSERT INTO delivery (id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status,
                       all_product_count)
 VALUES ('d000000001', 'c000000003', null, '2024-10-26', 'เครื่องใช้ไฟฟ้า', 'Hua Hin', 'TODO', 5),

@@ -68,7 +68,7 @@ CREATE TABLE notice
     driver_id        CHAR(10),
     car_registration VARCHAR(10),
     start_work_date  DATE       NOT NULL,
-    complete_status  VARCHAR(5) NOT NULL,
+    complete_status  VARCHAR(20) NOT NULL,
 
     PRIMARY KEY (id),
     FOREIGN KEY (delivery_id) REFERENCES delivery (id) ON DELETE CASCADE,

@@ -47,7 +47,6 @@ public class Employee {
     private String employeeAddress;
 
     @ValidPassword
-//    @Size(min = 1, message =  "เรื่องของมึง")
     private String employeePassword;
 
     public Employee(String employeeId, String employeeFirstName, String employeeLastName, String employeeSex ,String employeeEmail, String employeePhoneNumber, String employeeDepartment, String employeeAddress, String employeePassword) {
@@ -59,6 +58,6 @@ public class Employee {
         this.employeeEmail = employeeEmail;
         this.employeePhoneNumber = employeePhoneNumber;
         this.employeeAddress = employeeAddress;
-        this.employeePassword = employeePassword;  // generated first
+        this.employeePassword = employeePassword;
     }
 }
