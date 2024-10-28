@@ -346,11 +346,11 @@ public class DBRepository {
         jdbcTemplate.update(
                 query,
                 callNotice.getId(),
-                callNotice.getDeliveryId(),
+                callNotice.getDelivery_id(),
                 callNotice.getDriverId(),
-                callNotice.getCarRegistration(),
-                callNotice.getStartWorkDate(),
-                callNotice.getCompleteStatus(),
+                callNotice.getCar_registration(),
+                callNotice.getStart_work_date(),
+                callNotice.getComplete_status(),
                 callNotice.getId()
         );
     }

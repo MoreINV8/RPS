@@ -23,11 +23,11 @@ public class Notice {
 
     public Notice(String id, String delivery_id, String driver_id, String car_registration, String start_work_date, String complete_status, String employeeFirstName, String employeeLastName, String deliveryItemType, String deliveryDestination) {
         this.id = id;
-        this.deliveryId = deliveryId;
-        this.driverId = driverId;
-        this.carRegistration = carRegistration;
-        this.startWorkDate = startWorkDate;
-        this.completeStatus = completeStatus;
+        this.delivery_id = delivery_id;
+        this.driver_id = driver_id;
+        this.car_registration = car_registration;
+        this.start_work_date = start_work_date;
+        this.complete_status = complete_status;
         this.employeeFirstName = employeeFirstName;
         this.employeeLastName = employeeLastName;
         this.deliveryItemType = deliveryItemType;
@@ -35,7 +35,7 @@ public class Notice {
     }
 
     public String getDriverId() {
-        return driverId;
+        return driver_id;
     }
 
 }
