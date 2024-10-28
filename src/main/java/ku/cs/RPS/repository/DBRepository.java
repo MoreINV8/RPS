@@ -361,9 +361,11 @@ public class DBRepository {
     public List<Notice> findJobListByEmployeeId(String id) {
         String query = "SELECT n.id AS notice_id, n.delivery_id, n.driver_id, n.car_registration, " +
                 "n.start_work_date, n.complete_status, " +
-                "e.first_name AS employee_first_name, e.last_name AS employee_last_name " +
+                "e.first_name AS employee_first_name, e.last_name AS employee_last_name, " +
+                "d.item_type AS delivery_item_type, d.destination AS delivery_destination " +
                 "FROM notice n " +
                 "JOIN employee e ON n.driver_id = e.id " +
+                "JOIN delivery d ON n.delivery_id = d.id " +
                 "WHERE n.driver_id = ? AND n.complete_status = 'INCOMPLETE'";
 
         return jdbcTemplate.query(query, new Object[]{id}, new NoticeMapper());
@@ -372,9 +374,11 @@ public class DBRepository {
     public Notice findNoticeById(String id) {
         String query = "SELECT n.id AS notice_id, n.delivery_id, n.driver_id, n.car_registration, " +
                 "n.start_work_date, n.complete_status, " +
-                "e.first_name AS employee_first_name, e.last_name AS employee_last_name " +
+                "e.first_name AS employee_first_name, e.last_name AS employee_last_name, " +
+                "d.item_type AS delivery_item_type, d.destination AS delivery_destination " +
                 "FROM notice n " +
                 "JOIN employee e ON n.driver_id = e.id " +
+                "JOIN delivery d ON n.delivery_id = d.id " +
                 "WHERE n.id = ?";
 
         return jdbcTemplate.queryForObject(query, new Object[]{id}, new NoticeMapper());
@@ -387,11 +391,11 @@ public class DBRepository {
         jdbcTemplate.update(
                 query,
                 callNotice.getId(),
-                callNotice.getDeliveryId(),
+                callNotice.getDelivery_id(),
                 callNotice.getDriverId(),
-                callNotice.getCarRegistration(),
-                callNotice.getStartWorkDate(),
-                callNotice.getCompleteStatus(),
+                callNotice.getCar_registration(),
+                callNotice.getStart_work_date(),
+                callNotice.getComplete_status(),
                 callNotice.getId()
         );
     }
