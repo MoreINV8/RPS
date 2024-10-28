@@ -13,8 +13,6 @@ import org.springframework.stereotype.Repository;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Repository
 public class DBRepository {
@@ -131,6 +129,12 @@ public class DBRepository {
         return jdbcTemplate.query(query, new DeliveryMapper());
     }
 
+    public List<Delivery> findUnsentDeliveries() {
+        String query = "SELECT id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status, all_product_count" +
+                " FROM delivery WHERE sent_detail_status = 'TODO' AND all_product_count = 0;";
+        return jdbcTemplate.query(query, new DeliveryMapper());
+    }
+
     public void update(DeliveryEditRequest request) {
 
         int allNewProductCount = 0;
@@ -152,6 +156,11 @@ public class DBRepository {
     public void updateDeliveryCreatedDateById(String id) {
         String query = "UPDATE delivery SET created_date = ? WHERE id = ?;";
         jdbcTemplate.update(query, Date.valueOf(LocalDate.now()), id);
+    }
+
+    public void updateDeliverySentDetailById(String id) {
+        String query = "UPDATE delivery SET sent_detail_status = 'FIN' WHERE id = ?;";
+        jdbcTemplate.update(query, id);
     }
 
     public void updateDeliveryFKToNullById(String id) {
@@ -265,7 +274,6 @@ public class DBRepository {
         return id;
     }
 
-
     public void update(Employee employee) {
 //        System.out.println("Hi, update?");
 //        System.out.println(employee.getEmployeeId());
@@ -294,21 +302,7 @@ public class DBRepository {
         );
     }
 
-    //    ================================ Util ================================
-    private String createId(String tableName) {
-        String queryCount = "SELECT counter FROM counter WHERE table_name = ?;";
-
-        int id = jdbcTemplate.queryForObject(queryCount, new Object[]{tableName}, Integer.class) + 1;
-
-        String encodedId = UtilityMethod.rjust(Integer.toString(id), 9, '0');
-        encodedId = tableName.charAt(0) + encodedId;
-
-        updateCounter(tableName, id);
-
-        return encodedId;
-    }
-
-    //    ================================ Driver ================================
+    //    ================================ Notice ================================
     public List<Notice> findJobList() {
         String query = "SELECT n.id, n.delivery_id, n.driver_id, n.car_registration, " +
                 "n.start_work_date, n.complete_status " +
@@ -345,7 +339,6 @@ public class DBRepository {
         return jdbcTemplate.queryForObject(query, new Object[]{id}, new NoticeMapper());
     }
 
-
     public void update(Notice callNotice) {
         // id, delivery_id, driver_id, car_registration, start_work_date, complete_status
         String query = "UPDATE notice SET id = ?, delivery_id = ?, driver_id = ?, car_registration = ?, start_work_date = ?, complete_status = ? WHERE id = ?;";
@@ -353,11 +346,11 @@ public class DBRepository {
         jdbcTemplate.update(
                 query,
                 callNotice.getId(),
-                callNotice.getDelivery_id(),
-                callNotice.getDriver_id(),
-                callNotice.getCar_registration(),
-                callNotice.getStart_work_date(),
-                callNotice.getComplete_status(),
+                callNotice.getDeliveryId(),
+                callNotice.getDriverId(),
+                callNotice.getCarRegistration(),
+                callNotice.getStartWorkDate(),
+                callNotice.getCompleteStatus(),
                 callNotice.getId()
         );
     }
@@ -410,6 +403,20 @@ public class DBRepository {
         );
 
         return car.getCarId();
+    }
+
+    //    ================================ Util ================================
+    private String createId(String tableName) {
+        String queryCount = "SELECT counter FROM counter WHERE table_name = ?;";
+
+        int id = jdbcTemplate.queryForObject(queryCount, new Object[]{tableName}, Integer.class) + 1;
+
+        String encodedId = UtilityMethod.rjust(Integer.toString(id), 9, '0');
+        encodedId = tableName.charAt(0) + encodedId;
+
+        updateCounter(tableName, id);
+
+        return encodedId;
     }
 
     private void updateCounter(String tableName, int counter) {
