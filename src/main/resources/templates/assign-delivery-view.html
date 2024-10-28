@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RPS - รายการจัดส่ง</title>
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link th:rel="stylesheet" th:href="@{/css/custom-style.css}">
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <style>
+        .delivery-list { display: none; } /* Hide both lists by default */
+        .search-container { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+<div th:insert="~{fragments/nav-bar::nav-bar}"></div>
+
+<div class="container mt-5">
+
+    <!-- Search Bar -->
+    <div class="search-container">
+        <input type="text" id="searchBar" class="form-control" placeholder="ค้นหาโดยรหัสจัดส่งหรือรหัสลูกค้า" oninput="filterDeliveries()">
+    </div>
+
+    <!-- Toggle Button -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0">รายการใบส่งสินค้า</h4>
+        <div>
+            <label class="form-check-label me-2" for="deliveryToggle">ใบส่งสินค้าที่มอบหมายแล้ว / ยังไม่ได้มอบหมาย</label>
+            <input type="checkbox" id="deliveryToggle" class="form-check-input" onchange="toggleDeliveryList()">
+        </div>
+    </div>
+
+    <!-- Assigned Deliveries List (Initially Hidden) -->
+    <div id="assignedDeliveries" class="delivery-list">
+        <h5>ใบส่งสินค้าที่มอบหมายแล้ว</h5>
+        <a th:each="delivery : ${assignedDeliveries}" class="text-decoration-none delivery-item"
+           data-delivery-id="${delivery.getId()}" data-customer-id="${delivery.getCustomerId()}">
+            <ul class="center-box list-group mb-3">
+                <li class="list-group-item">รหัสจัดส่ง : <span th:text="${delivery.getId()}"></span></li>
+                <li class="list-group-item">รหัสลูกค้า : <span th:text="${delivery.getCustomerId()}"></span></li>
+                <li class="list-group-item">สถานะ : <span>มอบหมายแล้ว</span></li>
+                <!-- Additional details as needed -->
+            </ul>
+        </a>
+    </div>
+
+    <!-- Unassigned Deliveries List (Initially Shown) -->
+    <div id="unassignedDeliveries" class="delivery-list" style="display: block;">
+        <h5>ใบส่งสินค้าทียังไม่ได้มอบหมาย</h5>
+        <a th:each="delivery : ${unassignedDeliveries}" class="text-decoration-none delivery-item"
+           data-delivery-id="${delivery.getId()}" data-customer-id="${delivery.getCustomerId()}">
+            <ul class="center-box list-group mb-3">
+                <li class="list-group-item">รหัสจัดส่ง : <span th:text="${delivery.getId()}"></span></li>
+                <li class="list-group-item">รหัสลูกค้า : <span th:text="${delivery.getCustomerId()}"></span></li>
+                <li class="list-group-item">สถานะ : <span>ยังไม่ได้มอบหมาย</span></li>
+                <!-- Additional details as needed -->
+            </ul>
+        </a>
+    </div>
+
+</div>
+
+<script>
+    // Initially show the unassigned deliveries list and keep the toggle unchecked
+    function toggleDeliveryList() {
+        const toggle = document.getElementById('deliveryToggle').checked;
+        document.getElementById('assignedDeliveries').style.display = toggle ? 'block' : 'none';
+        document.getElementById('unassignedDeliveries').style.display = toggle ? 'none' : 'block';
+        filterDeliveries();  // Apply filter whenever the toggle is changed
+    }
+
+    function filterDeliveries() {
+        const searchInput = document.getElementById('searchBar').value.toLowerCase();
+        const toggle = document.getElementById('deliveryToggle').checked;
+        const listToFilter = toggle ? 'assignedDeliveries' : 'unassignedDeliveries';
+        const deliveryItems = document.querySelectorAll(`#${listToFilter} .delivery-item`);
+
+        deliveryItems.forEach(item => {
+            const deliveryId = item.getAttribute('data-delivery-id').toLowerCase();
+            const customerId = item.getAttribute('data-customer-id').toLowerCase();
+            const matchesSearch = !searchInput || deliveryId.includes(searchInput) || customerId.includes(searchInput);
+
+            item.style.display = matchesSearch ? '' : 'none';
+        });
+    }
+</script>
+
+</body>
+</html>
