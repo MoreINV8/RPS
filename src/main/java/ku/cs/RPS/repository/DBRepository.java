@@ -427,7 +427,8 @@ public class DBRepository {
 
     //    ================================ Delivery ================================
     public List<Delivery> getDeliveriesDistinctByNotAssignAmount() {
-        String query = "SELECT id, all_product_count, delivered_date, customer_id, created_date FROM delivery WHERE all_product_count > 0 ORDER BY delivered_date, created_date, all_product_count;";
+        String query = "SELECT id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status, all_product_count " +
+                " FROM delivery WHERE all_product_count > 0 ORDER BY delivered_date, created_date, all_product_count;";
 
         List<Delivery> deliveries = jdbcTemplate.query(query, new DeliveryMapper());
 
@@ -435,7 +436,8 @@ public class DBRepository {
     }
 
     public List<Delivery> getDeliveriesDistinctByAlreadyAssignAmount() {
-        String query = "SELECT id, all_product_count, delivered_date, customer_id, created_date FROM delivery WHERE all_product_count = 0 ORDER BY delivered_date, created_date, all_product_count;";
+        String query = "SELECT id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status, all_product_count " +
+                " FROM delivery WHERE all_product_count = 0 ORDER BY delivered_date, created_date, all_product_count;";
 
         List<Delivery> deliveries = jdbcTemplate.query(query, new DeliveryMapper());
 

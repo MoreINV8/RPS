@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/Deliveries")
+@RequestMapping("/deliveries")
 public class AssignDeliveryController {
 
     @Autowired
@@ -17,8 +17,9 @@ public class AssignDeliveryController {
 
     @GetMapping
     public String deliveries(Model model) {
-        model.addAttribute("deliveries", dbRepository);
+        model.addAttribute("assignedDeliveries", dbRepository.getDeliveriesDistinctByAlreadyAssignAmount());
+        model.addAttribute("unassignedDeliveries", dbRepository.getDeliveriesDistinctByNotAssignAmount());
 
-        return "deliveries";
+        return "assign-delivery-view";
     }
 }

@@ -7,8 +7,38 @@
     <link th:rel="stylesheet" th:href="@{/css/custom-style.css}">
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <style>
-        .delivery-list { display: none; } /* Hide both lists by default */
+        .delivery-list { display: none; }
         .search-container { margin-bottom: 20px; }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background-color: #ccc;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-switch .slider {
+            position: absolute;
+            width: 27px;
+            height: 27px;
+            background-color: #fff;
+            border-radius: 50%;
+            top: 1px;
+            left: 1px;
+            transition: 0.3s;
+        }
+
+        .toggle-switch.active {
+            background-color: #4CAF50; /* Green when active */
+        }
+
+        .toggle-switch.active .slider {
+            left: 31px;
+        }
     </style>
 </head>
 <body>
@@ -18,42 +48,46 @@
 
     <!-- Search Bar -->
     <div class="search-container">
-        <input type="text" id="searchBar" class="form-control" placeholder="ค้นหาโดยรหัสจัดส่งหรือรหัสลูกค้า" oninput="filterDeliveries()">
+        <input type="text" id="searchBar" class="form-control" placeholder="ค้นหาโดยรหัสใบส่งสินค้าหรือรหัสลูกค้า" oninput="filterDeliveries()">
     </div>
 
     <!-- Toggle Button -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="mb-0">รายการใบส่งสินค้า</h4>
-        <div>
-            <label class="form-check-label me-2" for="deliveryToggle">ใบส่งสินค้าที่มอบหมายแล้ว / ยังไม่ได้มอบหมาย</label>
-            <input type="checkbox" id="deliveryToggle" class="form-check-input" onchange="toggleDeliveryList()">
+        <div class="d-flex align-items-center">
+            <label class="me-2 mb-0">มอบหมายงานเสร็จสิ้น</label>
+            <div class="toggle-switch" id="deliveryToggle" onclick="toggleDeliveryList()">
+                <div class="slider"></div>
+            </div>
         </div>
     </div>
 
     <!-- Assigned Deliveries List (Initially Hidden) -->
     <div id="assignedDeliveries" class="delivery-list">
-        <h5>ใบส่งสินค้าที่มอบหมายแล้ว</h5>
+        <h5>ใบส่งสินค้าที่มอบหมายงานเสร็จสิ้นแล้ว</h5>
         <a th:each="delivery : ${assignedDeliveries}" class="text-decoration-none delivery-item"
            data-delivery-id="${delivery.getId()}" data-customer-id="${delivery.getCustomerId()}">
             <ul class="center-box list-group mb-3">
-                <li class="list-group-item">รหัสจัดส่ง : <span th:text="${delivery.getId()}"></span></li>
+                <li class="list-group-item">รหัสใบส่งสินค้า : <span th:text="${delivery.getDeliveryId()}"></span></li>
                 <li class="list-group-item">รหัสลูกค้า : <span th:text="${delivery.getCustomerId()}"></span></li>
-                <li class="list-group-item">สถานะ : <span>มอบหมายแล้ว</span></li>
-                <!-- Additional details as needed -->
+                <li class="list-group-item">วันเวลาสร้างใบส่งสินค้า : <span th:text="${delivery.getDeliveryCreatedDate()}"></span></li>
+                <li class="list-group-item">เวลาส่งมอบสินค้า : <span th:text="${delivery.getDeliverDateTime()}"></span></li>
+                <li class="list-group-item">จำนวนสินค้าที่ยังไม่ได้รับมอบหมาย : <span th:text="${delivery.getAllProductsCount()}"></span></li>
             </ul>
         </a>
     </div>
 
     <!-- Unassigned Deliveries List (Initially Shown) -->
     <div id="unassignedDeliveries" class="delivery-list" style="display: block;">
-        <h5>ใบส่งสินค้าทียังไม่ได้มอบหมาย</h5>
+        <h5>ใบส่งสินค้าที่มอบหมายงานยังไม่เสร็จสิ้น</h5>
         <a th:each="delivery : ${unassignedDeliveries}" class="text-decoration-none delivery-item"
            data-delivery-id="${delivery.getId()}" data-customer-id="${delivery.getCustomerId()}">
             <ul class="center-box list-group mb-3">
-                <li class="list-group-item">รหัสจัดส่ง : <span th:text="${delivery.getId()}"></span></li>
+                <li class="list-group-item">รหัสใบส่งสินค้า : <span th:text="${delivery.getDeliveryId()}"></span></li>
                 <li class="list-group-item">รหัสลูกค้า : <span th:text="${delivery.getCustomerId()}"></span></li>
-                <li class="list-group-item">สถานะ : <span>ยังไม่ได้มอบหมาย</span></li>
-                <!-- Additional details as needed -->
+                <li class="list-group-item">วันเวลาสร้างใบส่งสินค้า : <span th:text="${delivery.getDeliveryCreatedDate()}"></span></li>
+                <li class="list-group-item">เวลาส่งมอบสินค้า : <span th:text="${delivery.getDeliverDateTime()}"></span></li>
+                <li class="list-group-item">จำนวนสินค้าที่ยังไม่ได้รับมอบหมาย : <span th:text="${delivery.getAllProductsCount()}"></span></li>
             </ul>
         </a>
     </div>
@@ -61,17 +95,23 @@
 </div>
 
 <script>
-    // Initially show the unassigned deliveries list and keep the toggle unchecked
+    // Toggle the delivery list view between assigned and unassigned
     function toggleDeliveryList() {
-        const toggle = document.getElementById('deliveryToggle').checked;
-        document.getElementById('assignedDeliveries').style.display = toggle ? 'block' : 'none';
-        document.getElementById('unassignedDeliveries').style.display = toggle ? 'none' : 'block';
-        filterDeliveries();  // Apply filter whenever the toggle is changed
+        const toggle = document.getElementById('deliveryToggle');
+        toggle.classList.toggle("active");
+        const isAssignedView = toggle.classList.contains("active");
+
+        document.getElementById('assignedDeliveries').style.display = isAssignedView ? 'block' : 'none';
+        document.getElementById('unassignedDeliveries').style.display = isAssignedView ? 'none' : 'block';
+
+        // Apply filter whenever the toggle is changed
+        filterDeliveries();
     }
 
+    // Filter deliveries based on the search bar input
     function filterDeliveries() {
         const searchInput = document.getElementById('searchBar').value.toLowerCase();
-        const toggle = document.getElementById('deliveryToggle').checked;
+        const toggle = document.getElementById('deliveryToggle').classList.contains("active");
         const listToFilter = toggle ? 'assignedDeliveries' : 'unassignedDeliveries';
         const deliveryItems = document.querySelectorAll(`#${listToFilter} .delivery-item`);
 
