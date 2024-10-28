@@ -1,9 +1,9 @@
 package ku.cs.RPS.controllers;
 
 import jakarta.validation.Valid;
+import ku.cs.RPS.DTO.DeliveryEditRequest;
 import ku.cs.RPS.entities.Product;
 import ku.cs.RPS.repository.DBRepository;
-import ku.cs.RPS.requests.DeliveryEditRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -118,7 +118,7 @@ public class DeliveryEditController {
         dbRepository.deleteDeliveryById(delivery.getDeliveryId());
 
         for (Product p : delivery.getProducts()) {
-            dbRepository.updateDeliveryFKToNullById(p.getId());
+            dbRepository.updateProductFKToNullById(p.getId());
             dbRepository.deleteProductById(p.getId());
         }
 

@@ -1,4 +1,4 @@
-package ku.cs.RPS.validations.customer_id;
+package ku.cs.RPS.validations.notice_id;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -11,12 +11,12 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Documented
-@Constraint(validatedBy = CustomerIdConstraintValidator.class)
+@Constraint(validatedBy = NoticeIdConstraintValidator.class)
 @Target({TYPE, FIELD, ANNOTATION_TYPE})
 @Retention(RUNTIME)
-public @interface ValidCustomerId {
+public @interface ValidNoticeId {
 
-    String message() default "Invalid Customer Id";
+    String message() default "Invalid Notice Id";
 
     Class<?>[] groups() default {};
 

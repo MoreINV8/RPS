@@ -65,4 +65,6 @@ VALUES ('customer', 4),
        ('product', 6),
        ('car', 2),
        ('notice', 4),
-       ('route_problem', 7);
+       ('route_problem', 7),
+       ('bill', 0);
+
