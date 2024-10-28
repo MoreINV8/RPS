@@ -1,9 +1,9 @@
 package ku.cs.RPS.controllers;
 
 import jakarta.validation.Valid;
+import ku.cs.RPS.DTO.DeliveryCreateRequest;
 import ku.cs.RPS.entities.Product;
 import ku.cs.RPS.repository.DBRepository;
-import ku.cs.RPS.requests.DeliveryCreateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

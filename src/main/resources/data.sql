@@ -46,4 +46,5 @@ VALUES ('customer', 4),
        ('delivery', 3),
        ('product', 6),
        ('car', 2),
-       ('notice', 4);
+       ('notice', 4),
+       ('bill', 0);

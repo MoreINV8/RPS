@@ -1,9 +1,15 @@
 package ku.cs.RPS.repository;
 
+import ku.cs.RPS.DTO.DeliveryCreateRequest;
+import ku.cs.RPS.DTO.DeliveryEditRequest;
 import ku.cs.RPS.entities.*;
+import ku.cs.RPS.entities.join.DeliveryCustomer;
+import ku.cs.RPS.entities.join.DeliveryCustomerNotice;
+import ku.cs.RPS.entities.join.NoticeEmployeeCar;
 import ku.cs.RPS.mappers.*;
-import ku.cs.RPS.requests.DeliveryCreateRequest;
-import ku.cs.RPS.requests.DeliveryEditRequest;
+import ku.cs.RPS.mappers.join.DeliveryCustomerMapper;
+import ku.cs.RPS.mappers.join.DeliveryCustomerNoticeMapper;
+import ku.cs.RPS.mappers.join.NoticeEmployeeCarMapper;
 import ku.cs.RPS.utils.UtilityMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -25,9 +31,7 @@ public class DBRepository {
     public List<Customer> findCustomers() {
         String query = "SELECT id, first_name, last_name, email, phone_number, address FROM customer;";
 
-        List<Customer> customers = jdbcTemplate.query(query, new CustomerMapper());
-
-        return customers;
+        return jdbcTemplate.query(query, new CustomerMapper());
     }
 
     public Customer findCustomerById(String id) {
@@ -61,14 +65,11 @@ public class DBRepository {
     public String save(Customer customer) {
         String queryCount = "SELECT COUNT(id) FROM customer;";
 
-        int id = jdbcTemplate.queryForObject(queryCount, Integer.class) + 1;
-
-        String encodedId = UtilityMethod.rjust(Integer.toString(id), 9, '0');
-        encodedId = "c" + encodedId;
+        String id = createId("customer");
 
         String queryInsert = "INSERT INTO customer (id, first_name, last_name, email, phone_number, address) VALUES (?, ?, ?, ?, ?, ?);";
         jdbcTemplate.update(queryInsert,
-                encodedId,
+                id,
                 customer.getFirstName(),
                 customer.getLastName(),
                 customer.getEmail(),
@@ -76,7 +77,7 @@ public class DBRepository {
                 customer.getAddress()
         );
 
-        return encodedId;
+        return id;
     }
 
     public void update(Customer customer) {
@@ -103,7 +104,9 @@ public class DBRepository {
         for (Product p : request.getProducts())
             allProductCount += p.getProductCount();
 
-        String queryInsert = "INSERT INTO delivery (id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status, all_product_count) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String queryInsert = "INSERT INTO delivery (id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status, all_product_count) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?) ";
+
         jdbcTemplate.update(
                 queryInsert,
                 id,
@@ -125,13 +128,18 @@ public class DBRepository {
     }
 
     public List<Delivery> findUncreatedDeliveries() {
-        String query = "SELECT id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status, all_product_count FROM delivery WHERE created_date IS NULL;";
+        String query = "SELECT id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status, all_product_count " +
+                "FROM delivery WHERE created_date IS NULL " +
+                "ORDER BY delivered_date;";
+
         return jdbcTemplate.query(query, new DeliveryMapper());
     }
 
     public List<Delivery> findUnsentDeliveries() {
         String query = "SELECT id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status, all_product_count" +
-                " FROM delivery WHERE sent_detail_status = 'TODO' AND all_product_count = 0;";
+                " FROM delivery WHERE sent_detail_status = 'TODO' AND all_product_count = 0 " +
+                "ORDER BY delivered_date ,created_date;";
+
         return jdbcTemplate.query(query, new DeliveryMapper());
     }
 
@@ -202,6 +210,12 @@ public class DBRepository {
 
     public List<Product> findProductsByDeliveryId(String id) {
         String query = "SELECT id, notice_id, delivery_id, item_count, item_detail FROM product WHERE delivery_id = ?;";
+
+        return jdbcTemplate.query(query, new Object[]{id}, new ProductMapper());
+    }
+
+    public List<Product> findProductsByNoticeId(String id) {
+        String query = "SELECT id, notice_id, delivery_id, item_count, item_detail FROM product WHERE notice_id = ?;";
 
         return jdbcTemplate.query(query, new Object[]{id}, new ProductMapper());
     }
@@ -303,14 +317,45 @@ public class DBRepository {
     }
 
     //    ================================ Notice ================================
-    public List<Notice> findJobList() {
-        String query = "SELECT n.id, n.delivery_id, n.driver_id, n.car_registration, " +
-                "n.start_work_date, n.complete_status " +
-                "FROM notice n " +
-                "JOIN employee e ON n.driver_id = e.id";
+    public boolean isExistNoticeById(String id) {
+        String query = "SELECT COUNT(id) FROM notice WHERE id = ?;";
 
-        List<Notice> notices = jdbcTemplate.query(query, new NoticeMapper());
-        return notices;
+        int result = jdbcTemplate.queryForObject(query, new Object[]{id}, Integer.class);
+
+        return result != 0;
+    }
+
+    public DeliveryCustomerNotice findDeliveryCustomerNoticeByNoticeId(String id) {
+        String query = "SELECT n.id AS notice_id, n.delivery_id, n.complete_status, " +
+                "d.created_date, d.destination, d.delivered_date, d.all_product_count, " +
+                "c.id AS customer_id, c.first_name AS customer_first_name, c.last_name AS customer_last_name " +
+                "FROM notice n " +
+                "JOIN delivery d ON n.delivery_id = d.id " +
+                "JOIN customer c ON d.customer_id = c.id " +
+                "WHERE n.id = ?;";
+
+        return jdbcTemplate.queryForObject(query, new Object[]{id}, new DeliveryCustomerNoticeMapper());
+    }
+
+    public DeliveryCustomer findDeliveryCustomerByDeliveryId(String id) {
+        String query = "SELECT d.id AS delivery_id, d.destination, d.item_type, d.delivered_date, " +
+                "c.id AS customer_id, c.first_name AS customer_first_name, c.last_name AS customer_last_name " +
+                "FROM delivery d " +
+                "JOIN customer c ON d.customer_id = c.id " +
+                "WHERE d.id = ?;";
+
+        return jdbcTemplate.queryForObject(query, new Object[]{id}, new DeliveryCustomerMapper());
+    }
+
+    public List<NoticeEmployeeCar> findNoticeEmployeeCarByDeliveryId(String id) {
+        String query = "SELECT e.first_name AS employee_first_name, e.last_name AS employee_last_name, e.id AS employee_id, " +
+                "c.car_registration AS car_id, c.oil_type, n.id AS notice_id " +
+                "FROM notice n " +
+                "JOIN car c ON n.car_registration = c.car_registration " +
+                "JOIN employee e ON n.driver_id = e.id " +
+                "WHERE n.delivery_id = ? AND n.complete_status = 'COMPLETE';";
+
+        return jdbcTemplate.query(query, new Object[]{id}, new NoticeEmployeeCarMapper());
     }
 
     public List<Notice> findJobListByEmployeeId(String id) {
@@ -349,6 +394,12 @@ public class DBRepository {
                 callNotice.getCompleteStatus(),
                 callNotice.getId()
         );
+    }
+
+    public void updateNoticeCompleteStatusById(String id) {
+        String query = "UPDATE notice SET complete_status = 'COMPLETE' WHERE id = ?;";
+
+        jdbcTemplate.update(query, id);
     }
 
     //    ================================ Car ================================
@@ -399,6 +450,36 @@ public class DBRepository {
         );
 
         return car.getCarId();
+    }
+
+    //    ================================ Bill ================================
+    public boolean isExistBillById(String id) {
+        String query = "SELECT COUNT(id) FROM bill WHERE delivery_id = ?;";
+
+        int result = jdbcTemplate.queryForObject(query, new Object[]{id}, Integer.class);
+
+        return result != 0;
+    }
+
+    public Bill findBillByDeliveryId(String id) {
+        String query = "SELECT id, delivery_id, created_date FROM bill WHERE delivery_id = ?;";
+
+        return jdbcTemplate.queryForObject(query, new Object[]{id}, new BillMapper());
+    }
+
+    public String save(Bill bill) {
+        String query = "INSERT INTO bill (id, delivery_id, created_date) VALUES (?, ?, ?);";
+
+        String id = createId("bill");
+
+        jdbcTemplate.update(
+                query,
+                id,
+                bill.getDeliveryId(),
+                Date.valueOf(LocalDate.now())
+        );
+
+        return id;
     }
 
     //    ================================ Util ================================
