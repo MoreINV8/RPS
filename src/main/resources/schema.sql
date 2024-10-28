@@ -13,7 +13,7 @@ CREATE TABLE customer
 CREATE TABLE delivery
 (
     id                 CHAR(10),
-    customer_id        CHAR(10),
+    customer_id        CHAR(10)    NOT NULL,
     created_date       DATE,
     delivered_date     DATE        NOT NULL,
     item_type          VARCHAR(20) NOT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE employee
 CREATE TABLE car
 (
     car_registration VARCHAR(50),
-    driver_id        CHAR(10),
+    driver_id        CHAR(10)    NOT NULL,
     oil_type         VARCHAR(20) NOT NULL,
     finish_used      DATETIME,
     car_type         VARCHAR(50) NOT NULL,
@@ -64,9 +64,9 @@ CREATE TABLE car
 CREATE TABLE notice
 (
     id               CHAR(10),
-    delivery_id      CHAR(10),
-    driver_id        CHAR(10),
-    car_registration VARCHAR(50),
+    delivery_id      CHAR(10)    NOT NULL,
+    driver_id        CHAR(10)    NOT NULL,
+    car_registration VARCHAR(50) NOT NULL,
     start_work_date  DATE        NOT NULL,
     complete_status  VARCHAR(20) NOT NULL,
 
@@ -81,7 +81,7 @@ CREATE TABLE product
 (
     id          CHAR(10),
     notice_id   CHAR(10),
-    delivery_id CHAR(10),
+    delivery_id CHAR(10)    NOT NULL,
     item_count  INT         NOT NULL,
     item_detail VARCHAR(50) NOT NULL,
 
@@ -93,8 +93,8 @@ CREATE TABLE product
 CREATE TABLE bill
 (
     id           CHAR(10),
-    delivery_id  CHAR(10),
-    created_date DATE NOT NULL,
+    delivery_id  CHAR(10) NOT NULL,
+    created_date DATE     NOT NULL,
 
     PRIMARY KEY (id),
     FOREIGN KEY (delivery_id) REFERENCES delivery (id) ON DELETE CASCADE
@@ -104,7 +104,7 @@ CREATE TABLE route_problem
 (
     latitude       INT,
     longitude      INT,
-    reporter_id    CHAR(10),
+    reporter_id    CHAR(10) NOT NULL,
     problem        VARCHAR(50),
     problem_detail VARCHAR(100),
     reported_date  DATE,

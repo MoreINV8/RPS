@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Open the modal when the button is clicked
     openModalBtn.addEventListener('click', function () {
+        console.log("click")
         const myModal = new bootstrap.Modal(document.getElementById('myModal'));
         myModal.show();
     });
