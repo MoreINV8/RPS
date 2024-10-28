@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 public class NoticeMapper implements RowMapper<Notice> {
     @Override
     public Notice mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -20,6 +21,8 @@ public class NoticeMapper implements RowMapper<Notice> {
         notice.setComplete_status(rs.getString("complete_status"));
         notice.setEmployeeFirstName(rs.getString("employee_first_name"));  // Set first name
         notice.setEmployeeLastName(rs.getString("employee_last_name"));    // Set last name
+        notice.setDeliveryItemType(rs.getString("delivery_item_type"));
+        notice.setDeliveryDestination(rs.getString("delivery_destination"));
 
         return notice;
     }

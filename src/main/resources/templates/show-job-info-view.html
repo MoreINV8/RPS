@@ -43,7 +43,8 @@
 
             <div class="mb-3">
                 <label for="inputDriverFirstName" class="form-label w-100 text-start px-3">ชื่อคนขับรถ</label>
-                <input id="inputDriverFirstName" type="text" class="form-control" th:value="${callNotice.getEmployeeFirstName()}"
+                <input id="inputDriverFirstName" type="text" class="form-control"
+                       th:value="${callNotice.getEmployeeFirstName()}"
                        th:field="*{employeeFirstName}"
                        placeholder="ชื่อคนขับรถ" disabled>
                 <input type="hidden" th:field="*{employeeFirstName}">
@@ -51,7 +52,8 @@
 
             <div class="mb-3">
                 <label for="inputDriverLastName" class="form-label w-100 text-start px-3">นามสกุลคนชับรถ</label>
-                <input id="inputDriverLastName" type="text" class="form-control" th:value="${callNotice.getEmployeeLastName()}"
+                <input id="inputDriverLastName" type="text" class="form-control"
+                       th:value="${callNotice.getEmployeeLastName()}"
                        th:field="*{employeeLastName}"
                        placeholder="นามสกุลคนขับรถ" disabled>
                 <input type="hidden" th:field="*{employeeLastName}">
@@ -59,7 +61,8 @@
 
             <div class="mb-3">
                 <label for="inputCarRegistration" class="form-label w-100 text-start px-3">ทะเบียนรถขนส่ง</label>
-                <input id="inputCarRegistration" type="text" class="form-control" th:value="${callNotice.getCar_registration()}"
+                <input id="inputCarRegistration" type="text" class="form-control"
+                       th:value="${callNotice.getCar_registration()}"
                        th:field="*{car_registration}"
                        placeholder="ทะเบียนรถขนส่ง" disabled>
                 <input type="hidden" th:field="*{car_registration}">
@@ -67,20 +70,44 @@
 
             <div class="mb-3">
                 <label for="inputStartWorkDate" class="form-label w-100 text-start px-3">วันเริ่มงาน</label>
-                <input id="inputStartWorkDate" type="text" class="form-control" th:value="${callNotice.getStart_work_date()}"
+                <input id="inputStartWorkDate" type="text" class="form-control"
+                       th:value="${callNotice.getStart_work_date()}"
                        th:field="*{start_work_date}"
                        placeholder="วันเริ่มงาน" disabled>
                 <input type="hidden" th:field="*{start_work_date}">
             </div>
 
             <div class="mb-3">
+                <label for="inputDeliveryItemType"
+                       class="form-label w-100 text-start px-3">ประเภทสินค้าที่จัดส่ง</label>
+                <input id="inputDeliveryItemType" type="text" class="form-control"
+                       th:value="${callNotice.getDeliveryItemType()}"
+                       th:field="*{deliveryItemType}"
+                       placeholder="ประเภทสินค้าที่จัดส่ง" disabled>
+                <input type="hidden" th:field="*{deliveryItemType}">
+            </div>
+
+            <div class="mb-3">
+                <label for="inputDeliveryDestination"
+                       class="form-label w-100 text-start px-3">สถานที่ปลายทางการส่งสินค้า</label>
+                <input id="inputDeliveryDestination" type="text" class="form-control"
+                       th:value="${callNotice.getDeliveryDestination()}"
+                       th:field="*{deliveryDestination}"
+                       placeholder="สถานที่ปลายทางการส่งสินค้า" disabled>
+                <input type="hidden" th:field="*{deliveryDestination}">
+            </div>
+
+            <div class="mb-3">
                 <label for="inputCompleteStatus" class="form-label w-100 text-start px-3">สถานะใบแจ้งงาน</label>
                 <select id="inputCompleteStatus" class="form-select" th:field="*{complete_status}">
-                    <option value="" disabled selected>สถานะใบแจ้งงาน (!!! ถ้าหากคุณกดเสร็จสิ้นแล้วใบแจ้งงานนี้จะหายไป และไม่สามารถกู้คืนได้)</option>
+                    <option value="" disabled selected>สถานะใบแจ้งงาน (!!! ถ้าหากคุณกดเสร็จสิ้นแล้วใบแจ้งงานนี้จะหายไป
+                        และไม่สามารถกู้คืนได้)
+                    </option>
                     <option value="COMPLETE">เสร็จสิ้นแล้ว</option>
                     <option value="INCOMPLETE">ยังไม่เสร็จสิ้น</option>
                 </select>
-                <div class="alert alert-warning mt-1 w-100 text-start px-3" th:if="${#fields.hasErrors('complete_status')}"
+                <div class="alert alert-warning mt-1 w-100 text-start px-3"
+                     th:if="${#fields.hasErrors('complete_status')}"
                      th:errors="*{complete_status}"></div>
             </div>
 
@@ -93,5 +120,3 @@
 </div>
 </body>
 </html>
-
-<!-- id, delivery_id, driver_id, car_registration, start_work_date, complete_status -->
