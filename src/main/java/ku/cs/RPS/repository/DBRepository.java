@@ -313,6 +313,7 @@ public class DBRepository {
         return notices;
     }
 
+    // Find List Jobs(Notices) for each Driver
     public List<Notice> findJobListByEmployeeId(String id) {
         String query = "SELECT n.id AS notice_id, n.delivery_id, n.driver_id, n.car_registration, " +
                 "n.start_work_date, n.complete_status, " +
@@ -326,6 +327,7 @@ public class DBRepository {
         return jdbcTemplate.query(query, new Object[]{id}, new NoticeMapper());
     }
 
+    // Show Data Information of each Notice. When you click in
     public Notice findNoticeById(String id) {
         String query = "SELECT n.id AS notice_id, n.delivery_id, n.driver_id, n.car_registration, " +
                 "n.start_work_date, n.complete_status, " +
@@ -404,6 +406,39 @@ public class DBRepository {
 
         return car.getCarId();
     }
+
+    //    ================================ Route Problem ================================
+    // Method to retrieve unique list of provinces (convince) from route_problem
+    public List<String> findAllProvinces() {
+        String query = "SELECT DISTINCT province FROM route_problem;";
+        return jdbcTemplate.queryForList(query, String.class);
+    }
+
+    // Method to retrieve route problems by province
+    public List<RouteProblem> showAllProblemRoute(String province) {
+        String query = "SELECT route_problem_id, province, district, road_name, reporter_id, problem_topic, problem_detail, reported_date FROM route_problem WHERE province = ?;";
+
+        // Pass the province parameter to the query
+        return jdbcTemplate.query(query, new Object[]{province}, new RouteProblemMapper());
+    }
+
+    public String save(RouteProblem routeProblem) {
+        String queryInsert = "INSERT INTO route_problem (route_problem_id, province, district, road_name, reporter_id, problem_topic, problem_detail, reported_date) VALUES (?, ?, ?, ?, ?, ? ,?, ?);";
+        String id = createId("route_problem");
+        jdbcTemplate.update(queryInsert,
+                id,
+                routeProblem.getProvince(),
+                routeProblem.getDistrict(),
+                routeProblem.getRoad_name(),
+                routeProblem.getReporter_id(),
+                routeProblem.getProblem_topic(),
+                routeProblem.getProblem_detail(),
+                routeProblem.getReported_date()
+        );
+
+        return id;
+    }
+
 
     //    ================================ Util ================================
     private String createId(String tableName) {

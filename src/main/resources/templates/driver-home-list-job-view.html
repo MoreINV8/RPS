@@ -14,6 +14,12 @@
 <div class="container mt-5">
     <h4 class="mb-4">ใบแจ้งงานที่มอบหมายให้กับคุณ(ระบบจะแสดงใบแจ้งงานที่คุณยังทำไม่เสร็จเท่านั้น)</h4>
 
+    <!-- New Button to Navigate to Map Page -->
+    <!-- MapController -->
+    <div class="mb-4">
+        <a th:href="@{/go-to-map}" class="btn btn-primary">Go to Map Page</a>
+    </div>
+
     <!-- Notices Assigned to This Employee -->
     <h6>งานที่ได้รับมอบหมาย:</h6>
     <div th:each="notice : ${notices}">
