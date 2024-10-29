@@ -322,6 +322,16 @@ public class DBRepository {
         );
     }
 
+    public void updateEmployeePassword(String id, String newPassword) {
+        String query = "UPDATE employee SET password = ? WHERE id = ?;";
+
+        jdbcTemplate.update(
+                query,
+                newPassword,
+                id
+        );
+    }
+
     //    ================================ Notice ================================
     public boolean isExistNoticeById(String id) {
         String query = "SELECT COUNT(id) FROM notice WHERE id = ?;";
@@ -553,6 +563,7 @@ public class DBRepository {
 
         jdbcTemplate.update(query, counter, tableName);
     }
+
 }
 
 
