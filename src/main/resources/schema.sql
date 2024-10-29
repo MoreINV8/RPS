@@ -34,7 +34,7 @@ CREATE TABLE employee
     sex          VARCHAR(7)         NOT NULL,
     email        VARCHAR(50) UNIQUE NOT NULL,
     phone_number CHAR(10)           NOT NULL,
-    role         VARCHAR(10)        NOT NULL,
+    role         VARCHAR(15)        NOT NULL,
     address      VARCHAR(50)        NOT NULL,
     password     VARCHAR(20)        NOT NULL,
 

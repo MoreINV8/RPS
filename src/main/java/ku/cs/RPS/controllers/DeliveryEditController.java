@@ -1,5 +1,6 @@
 package ku.cs.RPS.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import ku.cs.RPS.DTO.DeliveryEditRequest;
 import ku.cs.RPS.entities.Product;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
 
 @Controller
 @RequestMapping("/delivery-edit")
@@ -37,7 +37,7 @@ public class DeliveryEditController {
     @PostMapping
     public String insertRequestHandler(
             @Valid @ModelAttribute("delivery") DeliveryEditRequest delivery,
-            BindingResult result, Model model, SessionStatus sessionStatus
+            BindingResult result, Model model, HttpSession session
     ) {
 
         if (result.hasErrors()) {
@@ -65,7 +65,7 @@ public class DeliveryEditController {
             dbRepository.save(product);
         }
 
-        sessionStatus.setComplete();
+        session.removeAttribute("delivery");
 
         return "redirect:/delivery-detail/" + delivery.getDeliveryId();
     }
@@ -112,7 +112,7 @@ public class DeliveryEditController {
     @PostMapping("/delete-product")
     public String deleteHandle(
             @ModelAttribute("delivery") DeliveryEditRequest delivery,
-            SessionStatus sessionStatus
+            HttpSession session
     ) {
         dbRepository.updateDeliveryFKToNullById(delivery.getDeliveryId());
         dbRepository.deleteDeliveryById(delivery.getDeliveryId());
@@ -122,7 +122,7 @@ public class DeliveryEditController {
             dbRepository.deleteProductById(p.getId());
         }
 
-        sessionStatus.setComplete();
+        session.removeAttribute("delivery");
 
         return "redirect:/home";
     }

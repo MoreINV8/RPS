@@ -22,7 +22,7 @@ public class HandoffController {
 
     @GetMapping
     public String handoff(HttpSession session, Model model) {
-        session.invalidate();
+        session.removeAttribute("data");
         model.addAttribute("searchBar", new NoticeSearchRequest());
 
         return "handoff-view";
@@ -33,7 +33,7 @@ public class HandoffController {
             @Valid @ModelAttribute("searchBar") NoticeSearchRequest searchBar,
             BindingResult result, Model model, HttpSession session
     ) {
-        session.invalidate();
+        session.removeAttribute("data");
 
         if (result.hasErrors())
             return "handoff-view";
