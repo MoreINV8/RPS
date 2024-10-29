@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -189,6 +190,36 @@ public class DBRepository {
         );
     }
 
+    public List<Delivery> getDeliveriesDistinctByNotAssignAmount() {
+        String query = "SELECT id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status, all_product_count " +
+                " FROM delivery WHERE all_product_count > 0 AND created_date IS NOT NULL ORDER BY delivered_date, created_date, all_product_count;";
+
+        List<Delivery> deliveries = jdbcTemplate.query(query, new DeliveryMapper());
+
+        return deliveries;
+    }
+
+    public List<Delivery> getDeliveriesDistinctByAlreadyAssignAmount() {
+        String query = "SELECT id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status, all_product_count " +
+                " FROM delivery WHERE all_product_count = 0 AND created_date IS NOT NULL ORDER BY delivered_date, created_date, all_product_count;";
+
+        List<Delivery> deliveries = jdbcTemplate.query(query, new DeliveryMapper());
+
+        return deliveries;
+    }
+
+    public Delivery findDeliveryByDeliveryId(String deliveryId) {
+        String query = "SELECT id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status, all_product_count FROM delivery WHERE id = ?;";
+
+        return jdbcTemplate.queryForObject(query, new Object[]{deliveryId}, new DeliveryMapper());
+    }
+
+    public Delivery findDeliveryByCustomerId(String customerId) {
+        String query = "SELECT id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status, all_product_count FROM delivery WHERE customer_id = ?;";
+
+        return jdbcTemplate.queryForObject(query, new Object[]{customerId}, new DeliveryMapper());
+    }
+
     //    ================================ Product ================================
 
     public String save(Product product) {
@@ -209,9 +240,21 @@ public class DBRepository {
     }
 
     public List<Product> findProductsByDeliveryId(String id) {
-        String query = "SELECT id, notice_id, delivery_id, item_count, item_detail FROM product WHERE delivery_id = ?;";
+        String query = "SELECT id, notice_id, delivery_id, item_count, item_detail FROM product WHERE delivery_id IN " +
+                "(SELECT id FROM delivery WHERE delivery_id = ?);";
 
         return jdbcTemplate.query(query, new Object[]{id}, new ProductMapper());
+    }
+
+    public Product findProductByProductId(String id) {
+        String query = "SELECT id, notice_id, delivery_id, item_count, item_detail FROM product WHERE id = ?;";
+
+        return jdbcTemplate.queryForObject(query, new Object[]{id}, new ProductMapper());
+    }
+
+    public void updateRemainingProductCount(String productId, int remainingProductCount) {
+        String query = "UPDATE product SET item_count = ? WHERE id = ?";
+        jdbcTemplate.update(query, remainingProductCount, productId);
     }
 
     public List<Product> findProductsByNoticeId(String id) {
@@ -418,6 +461,23 @@ public class DBRepository {
         );
     }
 
+
+    public String save(Notice notice) {
+        String id = createId("notice");
+
+        String queryInsert = "INSERT INTO notice (id, delivery_id, driver_id, car_registration, start_work_date, complete_status) VALUES (?, ?, ?, ?, ?, ?);";
+        jdbcTemplate.update(queryInsert,
+                id,
+                notice.getDelivery_id(),
+                notice.getDriver_id(),
+                notice.getCar_registration(),
+                notice.getStart_work_date(),
+                "INCOMPLETE"
+        );
+
+        return notice.getId();
+    }
+
     public void updateNoticeCompleteStatusById(String id) {
         String query = "UPDATE notice SET complete_status = 'COMPLETE' WHERE id = ?;";
 
@@ -431,12 +491,6 @@ public class DBRepository {
         List<Car> cars = jdbcTemplate.query(query, new CarMapper());
 
         return cars;
-    }
-
-    public Car findCarByLicensePlate(String licensePlate) {
-        String query = "SELECT car_registration, driver_id, oil_type, finish_used, car_type FROM car WHERE car_registration = ?;";
-
-        return jdbcTemplate.queryForObject(query, new Object[]{licensePlate}, new CarMapper());
     }
 
     public boolean isExistCarByLicensePlate(String licensePlate) {
@@ -459,6 +513,47 @@ public class DBRepository {
         } catch (DataAccessException e) {
             return false;
         }
+    }
+
+    public Car findCarByCarId(String carId) {
+        String query = "SELECT car_registration, driver_id, oil_type, finish_used, car_type FROM car WHERE car_registration = ?;";
+
+        return jdbcTemplate.queryForObject(query, new Object[]{carId}, new CarMapper());
+    }
+
+    public List<Car> findAvailableCars() {
+        String query = "SELECT car_registration, driver_id, oil_type, finish_used, car_type FROM car " +
+                "WHERE finish_used IS NULL";
+
+        List<Car> cars = jdbcTemplate.query(query, new CarMapper());
+
+        return cars;
+    }
+
+    public List<Car> filterCarByEstimatedStartTime(String estimatedStartTime) {
+        String query = "SELECT car_registration, driver_id, oil_type, finish_used, car_type FROM car WHERE finish_used < ?;";
+
+        List<Car> filteredCars = jdbcTemplate.query(query, new Object[]{estimatedStartTime}, new CarMapper());
+
+        return filteredCars;
+    }
+
+    public List<Car> findAssignedCarsByDeliveryId(String deliveryId) {
+        String query = "SELECT car_registration, driver_id, oil_type, finish_used, car_type FROM car WHERE car_registration IN " +
+                " (SELECT car_registration FROM notice WHERE delivery_id = ?);";
+
+        try {
+            List<Car> cars = jdbcTemplate.query(query, new Object[]{deliveryId}, new CarMapper());
+            return cars;
+        } catch (DataAccessException e) {
+            return null;
+        }
+    }
+
+    public void updateFinishUsed(String carId, LocalDateTime finishUsed) {
+        String query = "UPDATE car SET finish_used = ? WHERE car_registration = ?;";
+
+        jdbcTemplate.update(query, finishUsed, carId);
     }
 
     public String save(Car car) {
@@ -565,5 +660,3 @@ public class DBRepository {
     }
 
 }
-
-

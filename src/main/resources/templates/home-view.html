@@ -34,11 +34,12 @@
     </div>
 
     <div sec:authorize="hasAuthority('DRIVER')">
-        <a th:href="@{/driver-home-list-job}">ลงทะเบียนรถขนส่ง</a>
+        <a th:href="@{/driver-home-list-job}">รายการใบแจ้งงานคนขับ</a>
     </div>
 
     <div sec:authorize="hasAuthority('MANAGER')">
         <a th:href="@{/cars}">ลงทะเบียนรถขนส่ง</a>
+        <a th:href="@{/assign-deliveries}">แจกงาน</a>
     </div>
 
 </div>

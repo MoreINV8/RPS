@@ -10,7 +10,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="nav-bar">
     <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/home}">Brand Name</a>
+        <a class="navbar-brand" th:href="@{/home}">RPS</a>
         <ul class="navbar-nav ms-auto" sec:authorize="isAuthenticated()">
             <li class="nav-item">
                 <a class="btn btn-primary" th:href="@{/logout}">Logout</a>
