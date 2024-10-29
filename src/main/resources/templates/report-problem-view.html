@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RPS</title>
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link th:rel="stylesheet" th:href="@{/css/custom-style.css}">
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/custom.js}"></script>
+</head>
+<body>
+<div th:insert="~{fragments/nav-bar::nav-bar}"></div>
+
+<div class="container" th:object="${report}">
+    <div class="center-box text-center">
+        <h4 class="mb-3">แจ้งปัญหาเส้นทาง</h4>
+
+        <form action="#" th:action="@{/report-problem}" method="POST">
+
+
+            <div class="mb-3">
+                <label for="inputDeliveredTime" class="form-label w-100 text-start px-3">วันที่แจ้งปัญหา</label>
+                <div class="input-group">
+                    <input id="inputDeliveredTime" type="date" name="reported_date"
+                           class="form-control w-100 dateInput">
+                </div>
+                <div class="alert alert-warning mt-1 w-100 text-start px-3"
+                     th:if="${#fields.hasErrors('reported_date')}"
+                     th:errors="*{reported_date}"></div>
+            </div>
+
+            <!-- Province Dropdown -->
+            <div class="mb-3">
+                <label for="inputProvince" class="form-label w-100 text-start px-3">จังหวัด</label>
+                <select id="inputProvince" class="form-select" th:field="*{province}">
+                    <option value="" disabled selected>-- เลือกจังหวัด --</option>
+                    <option th:each="province : ${provinces}"
+                            th:value="${province}"
+                            th:text="${province}"
+                            th:selected="${province == report.province}"></option>
+                </select>
+                <div class="alert alert-warning mt-1 w-100 text-start px-3"
+                     th:if="${#fields.hasErrors('province')}"
+                     th:errors="*{province}"></div>
+            </div>
+
+
+            <div class="mb-3">
+                <label for="inputDistrict" class="form-label w-100 text-start px-3">ตำบล/เขต</label>
+                <input id="inputDistrict" type="text" class="form-control"
+                       th:value="${report.getDistrict()}"
+                       th:field="*{district}"
+                       placeholder="ตำบล/เขต">
+                <div class="alert alert-warning mt-1 w-100 text-start px-3"
+                     th:if="${#fields.hasErrors('district')}"
+                     th:errors="*{district}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="inputRoadName" class="form-label w-100 text-start px-3">ชื่อถนนทางหลวง,
+                    ชื่อถนนที่ชาวบ้านรู้จัก หรือ ชื่อซอย</label>
+                <input id="inputRoadName" type="text" class="form-control"
+                       th:value="${report.getRoad_name()}"
+                       th:field="*{road_name}"
+                       placeholder="ชื่อถนนทางหลวง, ชื่อถนนที่ชาวบ้านรู้จัก หรือ ชื่อซอย">
+                <div class="alert alert-warning mt-1 w-100 text-start px-3"
+                     th:if="${#fields.hasErrors('road_name')}"
+                     th:errors="*{road_name}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="inputReporterId" class="form-label w-100 text-start px-3">รหัสของผู้รายงาน เช่น
+                    e000000001</label>
+                <input id="inputReporterId" type="text" class="form-control"
+                       th:value="${report.getReporter_id()}"
+                       th:field="*{reporter_id}"
+                       placeholder="รหัสผู้รายงาน">
+                <div class="alert alert-warning mt-1 w-100 text-start px-3"
+                     th:if="${#fields.hasErrors('reporter_id')}"
+                     th:errors="*{reporter_id}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="inputProblemTopic" class="form-label w-100 text-start px-3">หัวข้อของปัญหา</label>
+                <input id="inputProblemTopic" type="text" class="form-control" th:value="${report.getProblem_topic()}"
+                       th:field="*{problem_topic}"
+                       placeholder="หัวข้อของปัญหา">
+                <div class="alert alert-warning mt-1 w-100 text-start px-3"
+                     th:if="${#fields.hasErrors('problem_topic')}"
+                     th:errors="*{problem_topic}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="inputProblemDetail" class="form-label w-100 text-start px-3">รายละเอียดของปัญหา</label>
+                <input id="inputProblemDetail" type="text" class="form-control"
+                       th:value="${report.getProblem_detail()}"
+                       th:field="*{problem_detail}"
+                       placeholder="รายละเอียดของปัญหา">
+                <div class="alert alert-warning mt-1 w-100 text-start px-3"
+                     th:if="${#fields.hasErrors('problem_detail')}"
+                     th:errors="*{problem_detail}"></div>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

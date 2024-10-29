@@ -102,14 +102,16 @@ CREATE TABLE bill
 
 CREATE TABLE route_problem
 (
-    latitude       INT,
-    longitude      INT,
-    reporter_id    CHAR(10) NOT NULL,
-    problem        VARCHAR(50),
-    problem_detail VARCHAR(100),
-    reported_date  DATE,
+    route_problem_id VARCHAR(10),
+    province         VARCHAR(50),
+    district         VARCHAR(50),
+    road_name        VARCHAR(50),
+    reporter_id      CHAR(10),
+    problem_topic    VARCHAR(100),
+    problem_detail   VARCHAR(250),
+    reported_date    DATE,
 
-    PRIMARY KEY (latitude, longitude),
+    PRIMARY KEY (route_problem_id),
     FOREIGN KEY (reporter_id) REFERENCES employee (id) ON DELETE CASCADE
 );
 
