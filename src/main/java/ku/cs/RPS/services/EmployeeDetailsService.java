@@ -30,6 +30,7 @@ public class EmployeeDetailsService implements UserDetailsService {
 
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(employee.getEmployeeDepartment()));
+        authorities.add(new SimpleGrantedAuthority(employee.getEmployeeId()));
 
         return new org.springframework.security.core.userdetails.User(
                 employee.getEmployeeEmail(), employee.getEmployeePassword(), authorities);
