@@ -182,12 +182,6 @@ public class DBRepository {
         );
     }
 
-    public void updateAllProductsCountById(String id, Integer count) {
-        String query = "UPDATE delivery SET all_product_count = ? WHERE id = ?;";
-
-        jdbcTemplate.update(query, count, id);
-    }
-
     public List<Delivery> getDeliveriesDistinctByNotAssignAmount() {
         String query = "SELECT id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status, all_product_count " +
                 " FROM delivery WHERE all_product_count > 0 AND created_date IS NOT NULL ORDER BY delivered_date, created_date, all_product_count;";
@@ -238,9 +232,21 @@ public class DBRepository {
     }
 
     public List<Product> findProductsByDeliveryId(String id) {
-        String query = "SELECT id, notice_id, delivery_id, item_count, item_detail FROM product WHERE delivery_id = ?;";
+        String query = "SELECT id, notice_id, delivery_id, item_count, item_detail FROM product WHERE delivery_id IN " +
+                "(SELECT id FROM delivery WHERE delivery_id = ?);";
 
         return jdbcTemplate.query(query, new Object[]{id}, new ProductMapper());
+    }
+
+    public Product findProductByProductId(String id) {
+        String query = "SELECT id, notice_id, delivery_id, item_count, item_detail FROM product WHERE id = ?;";
+
+        return jdbcTemplate.queryForObject(query, new Object[]{id}, new ProductMapper());
+    }
+
+    public void updateRemainingProductCount(String productId, int remainingProductCount) {
+        String query = "UPDATE product SET item_count = ? WHERE id = ?";
+        jdbcTemplate.update(query, remainingProductCount, productId);
     }
 
     public void updateProductFKToNullById(String id) {
@@ -393,14 +399,16 @@ public class DBRepository {
     }
 
     public String save(Notice notice) {
+        String id = createId("notice");
+
         String queryInsert = "INSERT INTO notice (id, delivery_id, driver_id, car_registration, start_work_date, complete_status) VALUES (?, ?, ?, ?, ?, ?);";
         jdbcTemplate.update(queryInsert,
-                notice.getId(),
+                id,
                 notice.getDelivery_id(),
-                notice.getDelivery_id(),
+                notice.getDriver_id(),
                 notice.getCar_registration(),
                 notice.getStart_work_date(),
-                notice.getComplete_status()
+                "INCOMPLETE"
         );
 
         return notice.getId();
@@ -437,10 +445,10 @@ public class DBRepository {
         }
     }
 
-    public Car findCarByDriverId(String driverId) {
-        String query = "SELECT car_registration, driver_id, oil_type, finish_used, car_type FROM car WHERE driver_id = ?;";
+    public Car findCarByCarId(String carId) {
+        String query = "SELECT car_registration, driver_id, oil_type, finish_used, car_type FROM car WHERE car_registration = ?;";
 
-        return jdbcTemplate.queryForObject(query, new Object[]{driverId}, new CarMapper());
+        return jdbcTemplate.queryForObject(query, new Object[]{carId}, new CarMapper());
     }
 
     public List<Car> findAvailableCars() {
@@ -472,13 +480,10 @@ public class DBRepository {
         }
     }
 
-    public void updateFinishUsed(Car car) {
+    public void updateFinishUsed(String carId, LocalDateTime finishUsed) {
         String query = "UPDATE car SET finish_used = ? WHERE car_registration = ?;";
 
-        jdbcTemplate.update(query,
-                car.getEndOfUseTime(),
-                car.getCarId()
-        );
+        jdbcTemplate.update(query, finishUsed, carId);
     }
 
     public String save(Car car) {

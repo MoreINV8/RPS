@@ -12,15 +12,22 @@
 <div th:insert="~{fragments/nav-bar::nav-bar}"></div>
 
 <div class="container my-4">
-    <h2 class="text-center mb-4">Assign Products to Delivery</h2>
+    <h2 class="text-center mb-4">จัดสรรงานให้รถขนส่ง <u><span th:text="${car.carId}"></span></u></h2>
 
+    <form action="#" th:action="@{/assign-work/save}" th:object="${noticeRequest}" method="POST">
     <div class="mb-3">
-        <p><strong>Delivery ID:</strong> <span th:text="${delivery.deliveryId}"></span></p>
-        <p><strong>Car Registration:</strong> <span th:text="${car.carId}"></span></p>
-        <p><strong>Destination:</strong> <span th:text="${delivery.destination}"></span></p>
+            <strong><label for="estimatedStartTime">กรอกเวลาเริ่มงานที่ประเมิน :</label></strong>
+            <input id="estimatedStartTime" type="date" name="start_work_date"
+                   th:value="*{start_work_date}" />
     </div>
 
-    <form action="#" th:action="@{/assign-work/save}" method="POST">
+    <div class="mb-3">
+        <p><strong>เวลาส่งมอบสินค้า :</strong> <span th:text="${delivery.deliverDateTime}"></span></p>
+        <p><strong>สถานที่ปลายทาง :</strong> <span th:text="${delivery.destination}"></span></p>
+        <p><strong>รหัสพนักงานขับรถ :</strong> <span th:text="${car.driverId}"></span></p>
+        <p><strong>ชนิดรถ :</strong> <span th:text="${car.carType}"></span></p>
+    </div>
+
         <input type="hidden" name="deliveryId" th:value="${delivery.deliveryId}">
         <input type="hidden" name="carId" th:value="${car.carId}">
 
@@ -28,10 +35,10 @@
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th>Product ID</th>
-                    <th>Product Detail</th>
-                    <th>Available Quantity</th>
-                    <th>Assign Quantity</th>
+                    <th>รหัสสินค้า</th>
+                    <th>รายละเอียดสินค้า</th>
+                    <th>จำนวนสินค้า</th>
+                    <th>จำนวนสินค้าที่จัดสรร</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -43,17 +50,32 @@
                         <input type="number" class="form-control" name="assignedQuantity"
                                th:value="0" min="0" th:max="${product.productCount}">
                         <input type="hidden" name="productId" th:value="${product.id}">
+                        <div th:if="${errorMessage}" class="alert alert-danger">
+                            <p th:text="${errorMessage}"></p>
+                        </div>
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
-
-        <div class="text-end">
+        <div class="d-grid gap-2 mt-1">
             <button type="submit" class="btn btn-primary">บันทึกการจัดสรรงาน</button>
         </div>
     </form>
 </div>
+
+<script>
+    // Set current date and time as the minimum for estimatedTime input
+    const estimatedTimeInput = document.getElementById("estimatedStartTime");
+    const now = new Date();
+    const formattedNow = now.toISOString().slice(0, 16); // Format for datetime-local input (YYYY-MM-DDTHH:MM)
+    // estimatedTimeInput.min = formattedNow;
+
+    // Automatically submit the form when estimatedTime changes
+    estimatedTimeInput.addEventListener("change", function() {
+        document.getElementById("filterForm").submit();
+    });
+</script>
 
 </body>
 </html>
