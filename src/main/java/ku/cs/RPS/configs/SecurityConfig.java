@@ -26,7 +26,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable) // Be cautious with CSRF
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/", "/css/**", "/js/**", "/login").permitAll() // Allow public access to these paths
+                        .requestMatchers("/", "/css/**", "/js/**", "/login", "/error").permitAll() // Allow public access to these paths
                         .anyRequest().authenticated() // Require authentication for all other requests
                 )
                 .formLogin(login -> login
@@ -50,8 +50,6 @@ public class SecurityConfig {
                         .key("c96f5a5fe8ffb7a896735b7f2ef22fe9") // Use a unique key
                         .tokenValiditySeconds(86400) // Token validity for 1 day (in seconds)
                 );
-        ;
-
 
         return http.build();
     }
