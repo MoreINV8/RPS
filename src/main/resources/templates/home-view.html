@@ -12,11 +12,12 @@
 <div th:insert="~{fragments/nav-bar::nav-bar}"></div>
 
 <div>
-    <div sec:authorize="isAuthenticated() and hasRole('ADMIN')">
+    <div sec:authorize="hasAuthority('ADMIN')">
         <a th:href="@{/adminEditEmployee}">แก้ไขข้อมูลพนักงาน</a>
 
     </div>
-    <div sec:authorize="isAuthenticated() and hasRole('HR')">
+    <div sec:authorize="hasAuthority('HR')">
+        <a th:href="@{/employee/register}">ลงทะเบียนพนักงาน</a>
 
     </div>
     <div sec:authorize="hasAuthority('SALE_MANAGER')">
@@ -28,10 +29,10 @@
         <a th:href="@{/handoff}">ส่งมอบสินค้า</a>
 
     </div>
-    <div sec:authorize="isAuthenticated() and hasRole('DRIVER')">
+    <div sec:authorize="hasAuthority('DRIVER')">
 
     </div>
-    <div sec:authorize="isAuthenticated() and hasRole('MANAGER')">
+    <div sec:authorize="hasAuthority('MANAGER')">
         <a th:href="@{/cars}">ลงทะเบียนรถขนส่ง</a>
 
     </div>

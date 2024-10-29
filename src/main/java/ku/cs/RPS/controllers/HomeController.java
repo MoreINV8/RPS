@@ -23,13 +23,13 @@ public class HomeController {
         HttpSession session = request.getSession();
         String keepAttribute = "SPRING_SECURITY_CONTEXT"; // Name of the attribute you want to keep
 
+        System.out.println(session.getAttribute(keepAttribute));
+
 // Get all attribute names
         Enumeration<String> attributeNames = session.getAttributeNames();
 
         while (attributeNames.hasMoreElements()) {
             String attributeName = attributeNames.nextElement();
-
-            System.out.println(attributeName);
 
             // Remove all attributes except the specified one
             if (!attributeName.equals(keepAttribute)) {

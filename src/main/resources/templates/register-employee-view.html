@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RPS</title>
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link th:rel="stylesheet" th:href="@{/css/custom-style.css}">
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div th:insert="~{fragments/nav-bar::nav-bar}"></div>
+
+<div class="container">
+    <div class="center-box text-center">
+        <h4 class="mb-3">ลงทะเบียน</h4>
+
+        <form action="#" th:action="@{/employee/register}" th:object="${newEmployee}" method="POST">
+
+            <div id="success-msg" class="alert alert-success"
+                 th:if="${generatedPassword}">
+                การลงทะเบียนพนักงานสำเร็จ!
+                รหัสผ่านที่สร้างคือ: <strong th:text="${generatedPassword}"></strong>
+            </div>
+
+            <div class="mb-3">
+                <label for="inputFirstName" class="form-label w-100 text-start px-3">ชื่อ</label>
+                <input id="inputFirstName" type="text" class="form-control"
+                       th:field="*{employeeFirstName}"
+                       placeholder="ชื่อ">
+                <!-- Alert error  -->
+                <div class="alert alert-warning mt-1 w-100 text-start px-3"
+                     th:if="${#fields.hasErrors('employeeFirstName')}"
+                     th:errors="*{employeeFirstName}">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="inputLastName" class="form-label w-100 text-start px-3">นามสกุล</label>
+                <input id="inputLastName" type="text" class="form-control"
+                       th:field="*{employeeLastName}"
+                       placeholder="นามสกุล">
+                <!-- Alert error  -->
+                <div class="alert alert-warning mt-1 w-100 text-start px-3"
+                     th:if="${#fields.hasErrors('employeeLastName')}"
+                     th:errors="*{employeeLastName}">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="inputSex" class="form-label w-100 text-start px-3">เพศ</label>
+                <select id="inputSex" class="form-select"
+                        th:field="*{employeeSex}">
+                    <option value="" selected disabled>เพศ</option>
+                    <option value="MALE">ชาย</option>
+                    <option value="FEMALE">หญิง</option>
+                </select>
+                <!-- Alert error  -->
+                <div class="alert alert-warning mt-1 w-100 text-start px-3" th:if="${#fields.hasErrors('employeeSex')}"
+                     th:errors="*{employeeSex}">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="inputEmail" class="form-label w-100 text-start px-3">อีเมล</label>
+                <input id="inputEmail" type="email" class="form-control" th:field="*{employeeEmail}"
+                       placeholder="อีเมล">
+                <!-- Alert error  -->
+                <div class="alert alert-warning mt-1 w-100 text-start px-3"
+                     th:if="${#fields.hasErrors('employeeEmail')}"
+                     th:errors="*{employeeEmail}">
+                </div>
+                <div class="alert alert-warning mt-1 w-100 text-start px-3"
+                     th:if="${#fields.hasErrors('employeeEmail') and #fields.errors('employeeEmail').contains('error.emailExists')}"
+                     th:errors="*{employeeEmail}">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="inputPhoneNumber" class="form-label w-100 text-start px-3">เบอร์โทรติดต่อ</label>
+                <input id="inputPhoneNumber" type="text" class="form-control" th:field="*{employeePhoneNumber}"
+                       placeholder="เบอร์โทรติดต่อ">
+                <!-- Alert error  -->
+                <div class="alert alert-warning mt-1 w-100 text-start px-3"
+                     th:if="${#fields.hasErrors('employeePhoneNumber')}"
+                     th:errors="*{employeePhoneNumber}">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="inputRole" class="form-label w-100 text-start px-3">แผนก</label>
+                <select id="inputRole" class="form-select"
+                        th:field="*{employeeDepartment}">
+                    <option value="" selected disabled>แผนก</option>
+                    <option value="HR">พนักงานฝ่ายบุคคล</option>
+                    <option value="SALE_MANAGER">พนักงานขาย</option>
+                    <option value="DRIVER">พนักงานขับรถ</option>
+                    <option value="MANAGER">ฝ่ายขนส่ง</option>
+                </select>
+                <!-- Alert error  -->
+                <div class="alert alert-warning mt-1 w-100 text-start px-3"
+                     th:if="${#fields.hasErrors('employeeDepartment')}"
+                     th:errors="*{employeeDepartment}">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="inputAddress" class="form-label w-100 text-start px-3">ที่อยู่</label>
+                <input id="inputAddress" type="text" class="form-control" th:field="*{employeeAddress}"
+                       placeholder="ที่อยู่">
+                <!-- Alert error  -->
+                <div class="alert alert-warning mt-1 w-100 text-start px-3"
+                     th:if="${#fields.hasErrors('employeeAddress')}"
+                     th:errors="*{employeeAddress}">
+                </div>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">ยืนยันการลงทะเบียน</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+</body>
+</html>
