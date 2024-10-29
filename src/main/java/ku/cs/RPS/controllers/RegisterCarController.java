@@ -46,6 +46,6 @@ public class RegisterCarController {
 
         dbRepository.save(newCar);
 
-        return "home-view";
+        return "redirect:/cars";
     }
 }
