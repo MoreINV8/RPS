@@ -46,29 +46,31 @@
 
 
             <div class="mb-3">
-                <label for="inputDistrict" class="form-label w-100 text-start px-3">ตำบล</label>
+                <label for="inputDistrict" class="form-label w-100 text-start px-3">ตำบล/เขต</label>
                 <input id="inputDistrict" type="text" class="form-control"
                        th:value="${report.getDistrict()}"
                        th:field="*{district}"
-                       placeholder="ตำบล">
+                       placeholder="ตำบล/เขต">
                 <div class="alert alert-warning mt-1 w-100 text-start px-3"
                      th:if="${#fields.hasErrors('district')}"
                      th:errors="*{district}"></div>
             </div>
 
             <div class="mb-3">
-                <label for="inputRoadName" class="form-label w-100 text-start px-3">ชื่อถนนทางหลวง หรือ ชื่อซอย</label>
+                <label for="inputRoadName" class="form-label w-100 text-start px-3">ชื่อถนนทางหลวง,
+                    ชื่อถนนที่ชาวบ้านรู้จัก หรือ ชื่อซอย</label>
                 <input id="inputRoadName" type="text" class="form-control"
                        th:value="${report.getRoad_name()}"
                        th:field="*{road_name}"
-                       placeholder="ชื่อถนนทางหลวง หรือ ชื่อซอย">
+                       placeholder="ชื่อถนนทางหลวง, ชื่อถนนที่ชาวบ้านรู้จัก หรือ ชื่อซอย">
                 <div class="alert alert-warning mt-1 w-100 text-start px-3"
                      th:if="${#fields.hasErrors('road_name')}"
                      th:errors="*{road_name}"></div>
             </div>
 
             <div class="mb-3">
-                <label for="inputReporterId" class="form-label w-100 text-start px-3">รหัสผู้รายงาน</label>
+                <label for="inputReporterId" class="form-label w-100 text-start px-3">รหัสของผู้รายงาน เช่น
+                    e000000001</label>
                 <input id="inputReporterId" type="text" class="form-control"
                        th:value="${report.getReporter_id()}"
                        th:field="*{reporter_id}"

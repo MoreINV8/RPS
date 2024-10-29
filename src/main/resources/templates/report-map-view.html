@@ -37,7 +37,9 @@
                 <Strong>จังหวัด:</Strong> <span th:text="${problem.province}"></span><br>
                 <strong>อำเภอ:</strong> <span th:text="${problem.district}"></span><br>
                 <strong>ชื่อถนน:</strong> <span th:text="${problem.road_name}"></span><br>
-                <strong>ผู้บอก:</strong> <span th:text="${problem.reporter_id}"></span><br>
+                <strong>รหัสของผู้รายงานปัญหา:</strong> <span th:text="${problem.reporter_id}"></span><br>
+                <strong>ชื่อ - นามสกุล ผู้รายงานปัญหา</strong> <span th:text="${problem.reporterFirstName}"></span>
+                <span th:text="${problem.reporterLastName}"></span><br>
                 <strong>รายละเอียดปัญหา:</strong> <span th:text="${problem.problem_detail}"></span><br>
             </li>
         </ul>
@@ -47,6 +49,7 @@
     <!-- CreateReportProblemController -->
     <div class="text-center mt-4">
         <a th:href="@{/report-problem}" class="btn btn-primary">รายงานปัญหาใหม่</a>
+        <a th:href="@{/driver-home-list-job}" class="btn btn-secondary minimal-button">กลับ</a>
     </div>
 </div>
 
