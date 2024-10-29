@@ -70,3 +70,33 @@ function resetItem() {
         }
     }).catch(error => console.error('Error:', error));
 }
+
+// Toggle the delivery list view between assigned and unassigned
+function toggleDeliveryList() {
+    const toggle = document.getElementById('deliveryToggle');
+    toggle.classList.toggle("active");
+    const isAssignedView = toggle.classList.contains("active");
+
+    document.getElementById('assignedDeliveries').style.display = isAssignedView ? 'block' : 'none';
+    document.getElementById('unassignedDeliveries').style.display = isAssignedView ? 'none' : 'block';
+
+    // Apply filter whenever the toggle is changed
+    filterDeliveries();
+}
+
+// Filter deliveries based on the search bar input
+function filterDeliveries() {
+    const searchInput = document.getElementById('searchBar').value.toLowerCase();
+    const toggle = document.getElementById('deliveryToggle').classList.contains("active");
+    const listToFilter = toggle ? 'assignedDeliveries' : 'unassignedDeliveries';
+    const deliveryItems = document.querySelectorAll(`#${listToFilter} .delivery-item`);
+
+    deliveryItems.forEach(item => {
+        const deliveryId = item.getAttribute('data-delivery-id').toLowerCase();
+        const customerId = item.getAttribute('data-delivery-customer-id').toLowerCase(); // Consistent attribute name
+        const matchesSearch = !searchInput || deliveryId.includes(searchInput) || customerId.includes(searchInput);
+
+        item.style.display = matchesSearch ? '' : 'none';
+    });
+}
+

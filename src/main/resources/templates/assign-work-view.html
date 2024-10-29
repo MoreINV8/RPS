@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RPS</title>
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link th:rel="stylesheet" th:href="@{/css/custom-style.css}">
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/custom.js}"></script>
+</head>
+<body>
+<div th:insert="~{fragments/nav-bar::nav-bar}"></div>
+
+<div class="container my-4">
+    <h2 class="text-center mb-4">Assign Products to Delivery</h2>
+
+    <div class="mb-3">
+        <p><strong>Delivery ID:</strong> <span th:text="${delivery.deliveryId}"></span></p>
+        <p><strong>Car Registration:</strong> <span th:text="${car.carId}"></span></p>
+        <p><strong>Destination:</strong> <span th:text="${delivery.destination}"></span></p>
+    </div>
+
+    <form action="#" th:action="@{/assign-work/save}" method="POST">
+        <input type="hidden" name="deliveryId" th:value="${delivery.deliveryId}">
+        <input type="hidden" name="carId" th:value="${car.carId}">
+
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Product Detail</th>
+                    <th>Available Quantity</th>
+                    <th>Assign Quantity</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="product : ${unassignedProducts}">
+                    <td><span th:text="${product.id}"></span></td>
+                    <td><span th:text="${product.productDetail}"></span></td>
+                    <td><span th:text="${product.productCount}"></span></td>
+                    <td>
+                        <input type="number" class="form-control" name="assignedQuantity"
+                               th:value="0" min="0" th:max="${product.productCount}">
+                        <input type="hidden" name="productId" th:value="${product.id}">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-end">
+            <button type="submit" class="btn btn-primary">บันทึกการจัดสรรงาน</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

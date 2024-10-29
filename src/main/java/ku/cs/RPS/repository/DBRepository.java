@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -179,6 +180,42 @@ public class DBRepository {
                 query,
                 id
         );
+    }
+
+    public void updateAllProductsCountById(String id, Integer count) {
+        String query = "UPDATE delivery SET all_product_count = ? WHERE id = ?;";
+
+        jdbcTemplate.update(query, count, id);
+    }
+
+    public List<Delivery> getDeliveriesDistinctByNotAssignAmount() {
+        String query = "SELECT id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status, all_product_count " +
+                " FROM delivery WHERE all_product_count > 0 AND created_date IS NOT NULL ORDER BY delivered_date, created_date, all_product_count;";
+
+        List<Delivery> deliveries = jdbcTemplate.query(query, new DeliveryMapper());
+
+        return deliveries;
+    }
+
+    public List<Delivery> getDeliveriesDistinctByAlreadyAssignAmount() {
+        String query = "SELECT id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status, all_product_count " +
+                " FROM delivery WHERE all_product_count = 0 AND created_date IS NOT NULL ORDER BY delivered_date, created_date, all_product_count;";
+
+        List<Delivery> deliveries = jdbcTemplate.query(query, new DeliveryMapper());
+
+        return deliveries;
+    }
+
+    public Delivery findDeliveryByDeliveryId(String deliveryId) {
+        String query = "SELECT id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status, all_product_count FROM delivery WHERE id = ?;";
+
+        return jdbcTemplate.queryForObject(query, new Object[]{deliveryId}, new DeliveryMapper());
+    }
+
+    public Delivery findDeliveryByCustomerId(String customerId) {
+        String query = "SELECT id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status, all_product_count FROM delivery WHERE customer_id = ?;";
+
+        return jdbcTemplate.queryForObject(query, new Object[]{customerId}, new DeliveryMapper());
     }
 
     //    ================================ Product ================================
@@ -355,6 +392,20 @@ public class DBRepository {
         );
     }
 
+    public String save(Notice notice) {
+        String queryInsert = "INSERT INTO notice (id, delivery_id, driver_id, car_registration, start_work_date, complete_status) VALUES (?, ?, ?, ?, ?, ?);";
+        jdbcTemplate.update(queryInsert,
+                notice.getId(),
+                notice.getDelivery_id(),
+                notice.getDelivery_id(),
+                notice.getCar_registration(),
+                notice.getStart_work_date(),
+                notice.getComplete_status()
+        );
+
+        return notice.getId();
+    }
+
     //    ================================ Car ================================
     public List<Car> findCars() {
         String query = "SELECT car_registration, driver_id, oil_type, finish_used, car_type FROM car;";
@@ -362,12 +413,6 @@ public class DBRepository {
         List<Car> cars = jdbcTemplate.query(query, new CarMapper());
 
         return cars;
-    }
-
-    public Car findCarByLicensePlate(String licensePlate) {
-        String query = "SELECT car_registration, driver_id, oil_type, finish_used, car_type FROM car WHERE car_registration = ?;";
-
-        return jdbcTemplate.queryForObject(query, new Object[]{licensePlate}, new CarMapper());
     }
 
     public boolean isExistCarByLicensePlate(String licensePlate) {
@@ -390,6 +435,50 @@ public class DBRepository {
         } catch (DataAccessException e) {
             return false;
         }
+    }
+
+    public Car findCarByDriverId(String driverId) {
+        String query = "SELECT car_registration, driver_id, oil_type, finish_used, car_type FROM car WHERE driver_id = ?;";
+
+        return jdbcTemplate.queryForObject(query, new Object[]{driverId}, new CarMapper());
+    }
+
+    public List<Car> findAvailableCars() {
+        String query = "SELECT car_registration, driver_id, oil_type, finish_used, car_type FROM car " +
+                "WHERE finish_used IS NULL";
+
+        List<Car> cars = jdbcTemplate.query(query, new CarMapper());
+
+        return cars;
+    }
+
+    public List<Car> filterCarByEstimatedStartTime(String estimatedStartTime) {
+        String query = "SELECT car_registration, driver_id, oil_type, finish_used, car_type FROM car WHERE finish_used < ?;";
+
+        List<Car> filteredCars = jdbcTemplate.query(query, new Object[]{estimatedStartTime}, new CarMapper());
+
+        return filteredCars;
+    }
+
+    public List<Car> findAssignedCarsByDeliveryId(String deliveryId) {
+        String query = "SELECT car_registration, driver_id, oil_type, finish_used, car_type FROM car WHERE car_registration IN " +
+                " (SELECT car_registration FROM notice WHERE delivery_id = ?);";
+
+        try {
+            List<Car> cars = jdbcTemplate.query(query, new Object[]{deliveryId}, new CarMapper());
+            return cars;
+        } catch (DataAccessException e) {
+            return null;
+        }
+    }
+
+    public void updateFinishUsed(Car car) {
+        String query = "UPDATE car SET finish_used = ? WHERE car_registration = ?;";
+
+        jdbcTemplate.update(query,
+                car.getEndOfUseTime(),
+                car.getCarId()
+        );
     }
 
     public String save(Car car) {
@@ -425,34 +514,4 @@ public class DBRepository {
         jdbcTemplate.update(query, counter, tableName);
     }
 
-    //    ================================ Delivery ================================
-    public List<Delivery> getDeliveriesDistinctByNotAssignAmount() {
-        String query = "SELECT id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status, all_product_count " +
-                " FROM delivery WHERE all_product_count > 0 ORDER BY delivered_date, created_date, all_product_count;";
-
-        List<Delivery> deliveries = jdbcTemplate.query(query, new DeliveryMapper());
-
-        return deliveries;
-    }
-
-    public List<Delivery> getDeliveriesDistinctByAlreadyAssignAmount() {
-        String query = "SELECT id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status, all_product_count " +
-                " FROM delivery WHERE all_product_count = 0 ORDER BY delivered_date, created_date, all_product_count;";
-
-        List<Delivery> deliveries = jdbcTemplate.query(query, new DeliveryMapper());
-
-        return deliveries;
-    }
-
-    public Delivery findDeliveryByDeliveryId(String deliveryId) {
-        String query = "SELECT id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status, all_product_count FROM delivery WHERE id = ?;";
-
-        return jdbcTemplate.queryForObject(query, new Object[]{deliveryId}, new DeliveryMapper());
-    }
-
-    public Delivery findDeliveryByCustomerId(String customerId) {
-        String query = "SELECT id, customer_id, created_date, delivered_date, item_type, destination, sent_detail_status, all_product_count FROM delivery WHERE customer_id = ?;";
-
-        return jdbcTemplate.queryForObject(query, new Object[]{customerId}, new DeliveryMapper());
-    }
 }
