@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RPS</title>
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link th:rel="stylesheet" th:href="@{/css/custom-style.css}">
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+
+<div class="container w-50 p-3">
+    <div class="center-box text-center">
+        <h4 class="mb-3">เข้าสู่ระบบ</h4>
+        <form th:action="@{/login}" method="POST">
+            <div id="error-msg" th:if="${param.error}" class="alert alert-danger">
+                อีเมลหรือรหัสผ่านไม่ถูกต้อง
+            </div>
+            <div id="logout-msg" th:if="${param.logout}" class="alert alert-success">
+                ออกจากระบบเรียบร้อย
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label w-100 text-start px-3">อีเมล</label>
+                <input id="email" type="text" class="form-control"
+                       name="username"
+                       placeholder="อีเมล" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="inputPassword" class="form-label w-100 text-start px-3">รหัสผ่าน</label>
+                <input id="inputPassword" type="text" class="form-control"
+                       name="password"
+                       placeholder="รหัสผ่าน" required>
+            </div>
+            <button id="submit-button" type="submit" class="btn btn-primary">เข้าสู่ระบบ</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

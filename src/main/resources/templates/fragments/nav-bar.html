@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
 >
 <head>
     <meta charset="UTF-8">
@@ -17,7 +18,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href="@{/home}">Home</a>
+                    <a class="nav-link active" aria-current="page" th:href="@{/home}" sec:authorize="isAuthenticated()">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">About</a>
@@ -25,7 +26,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Services</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" sec:autorize="!isAuthenticated()">
                     <a class="nav-link" href="#">Contact</a>
                 </li>
             </ul>

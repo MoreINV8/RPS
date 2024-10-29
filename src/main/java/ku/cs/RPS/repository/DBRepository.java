@@ -258,6 +258,12 @@ public class DBRepository {
         return jdbcTemplate.queryForObject(query, new Object[]{id}, new EmployeeMapper());
     }
 
+    public Employee findEmployeeByEmail(String email) {
+        String query = "SELECT id, first_name, last_name, sex, email, phone_number, role, address, password FROM employee WHERE email = ?;";
+
+        return jdbcTemplate.queryForObject(query, new Object[]{email}, new EmployeeMapper());
+    }
+
     public boolean isExistEmployeeByEmail(String email) {
         String query = "SELECT id, first_name, last_name, sex, email, phone_number, role, address, password FROM employee WHERE email = ?;";
 
