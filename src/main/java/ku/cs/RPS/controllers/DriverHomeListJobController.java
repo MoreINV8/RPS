@@ -2,6 +2,7 @@ package ku.cs.RPS.controllers;
 
 import ku.cs.RPS.entities.Notice;
 import ku.cs.RPS.repository.DBRepository;
+import ku.cs.RPS.utils.UtilityMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,8 +28,13 @@ public class DriverHomeListJobController {
 
     // Query many notices per one driver
     @GetMapping
-    public String driver(Model model, String id) {
-        id = "e000000003";  // Static ID for testing
+    public String driver(Model model) throws IllegalAccessException {
+        String id = UtilityMethod.getEmployeeId();
+
+        if (id == null) {
+            throw new IllegalAccessException();
+        }
+
         List<Notice> notices = dbRepository.findJobListByEmployeeId(id);
         System.out.println(notices);
         model.addAttribute("notices", notices);

@@ -1,15 +1,15 @@
 package ku.cs.RPS.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import ku.cs.RPS.DTO.DeliveryCreateRequest;
 import ku.cs.RPS.entities.Product;
 import ku.cs.RPS.repository.DBRepository;
-import ku.cs.RPS.requests.DeliveryCreateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
 
 @Controller
 @RequestMapping("/create-delivery")
@@ -32,7 +32,7 @@ public class CreateDeliveryController {
     @PostMapping
     public String createRequestHandler(
             @Valid @ModelAttribute("newDelivery") DeliveryCreateRequest newDelivery,
-            BindingResult result, Model model, SessionStatus sessionStatus
+            BindingResult result, Model model, HttpSession session
     ) {
 
         if (result.hasErrors()) {
@@ -68,7 +68,7 @@ public class CreateDeliveryController {
             dbRepository.save(product);
         }
 
-        sessionStatus.setComplete();
+        session.removeAttribute("newDelivery");
 
         return "redirect:/delivery-detail/" + deliveryId;
     }

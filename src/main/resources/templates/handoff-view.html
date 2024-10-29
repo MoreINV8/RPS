@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RPS</title>
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link th:rel="stylesheet" th:href="@{/css/custom-style.css}">
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/custom.js}"></script>
+</head>
+<body>
+<div th:insert="~{fragments/nav-bar::nav-bar}"></div>
+
+<div class="container my-4">
+    <h2 class="text-center mb-4">ค้นหาใบแจ้งงานคนขับ</h2>
+
+    <!-- Search Bar -->
+    <form action="#" th:action="@{/handoff}" method="POST" class="mb-4" th:object="${searchBar}">
+        <div class="d-flex">
+            <label for="searchValue"></label>
+            <input id="searchValue" type="text" class="form-control me-2"
+                   placeholder="Search by Notice ID" th:field="*{searchValue}">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+        <!-- Error Display -->
+        <div class="alert alert-warning mt-1 w-100 text-start px-3" th:if="${#fields.hasErrors('searchValue')}"
+             th:errors="*{searchValue}"></div>
+    </form>
+    <div id="logout-msg" th:if="${completeData != null}" class="alert alert-success">
+        ใบแจ้งงานคนขับนี้ดำเนินการเสร็จสิ้นไปแล้ว
+    </div>
+
+    <div th:if="${data != null}" class="accordion-item">
+
+        <div class="accordion-header">
+            <div class="custom-accordion-header p-3">
+                <span><u>รหัสใบแจ้งงานคนขับ:</u> #<span th:text="${data.noticeId}"></span></span>
+            </div>
+        </div>
+
+        <div id="order1" class="accordion-collapse collapse show" aria-labelledby="orderHeading1"
+             data-bs-parent="#orderAccordion">
+            <div class="accordion-body">
+
+                <!-- Order Basic Details -->
+
+                <p><strong>รหัสใบส่งสินค้า:</strong> #<span th:text="${data.deliveryId}"></span></p>
+                <p><strong>จุดหมายปลายทาง:</strong> <span th:text="${data.destination}"></span></p>
+                <p><strong>ประเภทของสินค้า:</strong> <span th:text="${data.itemType}"></span></p>
+                <p><strong>วันสร้างใบส่งสินค้า:</strong> <span th:text="${data.deliveryCreatedDate.toString()}"></span>
+                </p>
+                <p><strong>วันส่งมอบ:</strong> <span th:text="${data.deliverDateTime.toString()}"></span></p>
+                <br>
+                <p><strong>ลูกค้า:</strong> #<span th:text="${data.customerId}"></span></p>
+                <p><strong>คุณ:</strong> <span th:text="${data.customerFirstName}"></span> <span
+                        th:text="${data.customerLastName}"></span></p>
+
+                <!-- Product List -->
+                <div class="table-responsive">
+                    <table class="table table-bordered mt-3">
+
+                        <thead class="table-light">
+                        <tr>
+                            <th>รหัสสินค้า</th>
+                            <th>รายละเอียดสินค้า</th>
+                            <th>จำนวนสินค้า</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr th:each="product : ${products}">
+                            <td th:text="${product.id}"></td>
+                            <td th:text="${product.productDetail}"></td>
+                            <td th:text="${#numbers.formatDecimal(product.productCount, 1, 'COMMA', 0, 'POINT')}"></td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+
+                    <div class="w-100 d-flex flex-row-reverse">
+                        <button type="button" class="btn btn-primary" id="openModalBtn">
+                            ยืนยัน
+                        </button>
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">ยืนยันการส่งมอบ</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <h6>ตรวจสอบเสร็จสิ้น ข้อมูลถูกต้อง และส่งมอบสินค้าเสร็จเรียบร้อย</h6>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                        ยกเลิก
+                                    </button>
+                                    <form class="m-0 p-0" action="#"
+                                          th:action="@{/handoff/complete}"
+                                          method="POST">
+                                        <button type="submit" class="btn btn-primary">เสร็จสิ้น</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

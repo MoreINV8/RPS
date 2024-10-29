@@ -1,5 +1,11 @@
 package ku.cs.RPS.utils;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.util.List;
+
 public class UtilityMethod {
     public static String rjust(String target, int fill, char fillChar) {
 
@@ -17,5 +23,20 @@ public class UtilityMethod {
         sb.append(target);
 
         return sb.toString();
+    }
+
+    public static String getEmployeeId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null) {
+            // Get the authorities granted to the current user
+            List<? extends GrantedAuthority> authorities = (List<? extends GrantedAuthority>) authentication.getAuthorities();
+
+            // Check if the user has a specific authority
+            return authorities.get(1).toString();
+
+        }
+
+        return null;
     }
 }

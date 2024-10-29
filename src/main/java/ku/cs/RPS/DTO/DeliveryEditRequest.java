@@ -1,4 +1,4 @@
-package ku.cs.RPS.requests;
+package ku.cs.RPS.DTO;
 
 import jakarta.validation.constraints.Size;
 import ku.cs.RPS.entities.Delivery;

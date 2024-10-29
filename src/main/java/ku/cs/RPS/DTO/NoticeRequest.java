@@ -1,4 +1,4 @@
-package ku.cs.RPS.requests;
+package ku.cs.RPS.DTO;
 
 
 import lombok.Data;

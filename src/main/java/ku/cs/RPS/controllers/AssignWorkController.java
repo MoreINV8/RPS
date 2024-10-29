@@ -5,7 +5,7 @@ import ku.cs.RPS.entities.Delivery;
 import ku.cs.RPS.entities.Notice;
 import ku.cs.RPS.entities.Product;
 import ku.cs.RPS.repository.DBRepository;
-import ku.cs.RPS.requests.NoticeRequest;
+import ku.cs.RPS.DTO.NoticeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
