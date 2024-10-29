@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
 <head>
     <meta charset="UTF-8">
     <title>RPS</title>
@@ -11,38 +12,105 @@
 <body>
 <div th:insert="~{fragments/nav-bar::nav-bar}"></div>
 
-<div>
-    <div sec:authorize="!hasAuthority('ADMIN')">
-        <a th:href="@{/edit-password}">แก้ไขรหัสผ่าน</a>
-    </div>
+<div class="container my-4">
+    <div class="btn-container">
+        <div sec:authorize="!hasAuthority('ADMIN')">
+            <div class="home-btn">
+                <img th:src="@{/img/Kawaii-Shark-Wallpaper.jfif}" width="180px" height="180px">
+                <div>
+                    <a th:href="@{/edit-password}" class="btn btn-outline-primary w-100">แก้ไขรหัสผ่าน</a>
+                </div>
+            </div>
+        </div>
 
-    <div sec:authorize="hasAuthority('ADMIN')">
-        <a th:href="@{/adminEditEmployee}">แก้ไขข้อมูลพนักงาน</a>
-    </div>
 
-    <div sec:authorize="hasAuthority('HR')">
-        <a th:href="@{/employee/register}">ลงทะเบียนพนักงาน</a>
-    </div>
+        <div sec:authorize="hasAuthority('ADMIN')">
+            <div class="home-btn">
+                <img th:src="@{/img/Kawaii-Shark-Wallpaper.jfif}" width="180px" height="180px">
+                <div>
+                    <a th:href="@{/adminEditEmployee}" class="btn btn-outline-primary w-100">แก้ไขข้อมูลพนักงาน</a>
+                </div>
+            </div>
+        </div>
 
-    <div sec:authorize="hasAuthority('SALE_MANAGER')">
-        <a th:href="@{/customer/register}">ลงทะเบียนลูกค้า</a>
-        <a th:href="@{/customers}">แก้ไขข้อมูลลูกค้า</a>
-        <a th:href="@{/create-delivery}">กรอกรายละเอียดงาน</a>
-        <a th:href="@{/delivery-list}">แก้ไขรายละเอียดงาน</a>
-        <a th:href="@{/unsent-list}">ส่งรายละเอียดให้ลูกค้า</a>
-        <a th:href="@{/handoff}">ส่งมอบสินค้า</a>
-    </div>
 
-    <div sec:authorize="hasAuthority('DRIVER')">
-        <a th:href="@{/driver-home-list-job}">รายการใบแจ้งงานคนขับ</a>
-    </div>
+        <div sec:authorize="hasAuthority('HR')">
+            <div class="home-btn">
+                <img th:src="@{/img/Kawaii-Shark-Wallpaper.jfif}" width="180px" height="180px">
+                <div>
+                    <a th:href="@{/employee/register}" class="btn btn-outline-primary w-100">ลงทะเบียนพนักงาน</a>
+                </div>
+            </div>
 
-    <div sec:authorize="hasAuthority('MANAGER')">
-        <a th:href="@{/cars}">ลงทะเบียนรถขนส่ง</a>
-        <a th:href="@{/assign-deliveries}">แจกงาน</a>
-    </div>
+        </div>
 
+
+        <div sec:authorize="hasAuthority('SALE_MANAGER')">
+            <div class="home-btn">
+                <img th:src="@{/img/Kawaii-Shark-Wallpaper.jfif}" width="180px" height="180px">
+                <div>
+                    <a th:href="@{/customer/register}" class="btn btn-outline-primary w-100">ลงทะเบียนลูกค้า</a>
+                </div>
+            </div>
+            <div class="home-btn">
+                <img th:src="@{/img/Kawaii-Shark-Wallpaper.jfif}" width="180px" height="180px">
+                <div>
+                    <a th:href="@{/customers}" class="btn btn-outline-primary w-100">แก้ไขข้อมูลลูกค้า</a>
+                </div>
+            </div>
+            <div class="home-btn">
+                <img th:src="@{/img/Kawaii-Shark-Wallpaper.jfif}" width="180px" height="180px">
+                <div>
+                    <a th:href="@{/create-delivery}" class="btn btn-outline-primary w-100">กรอกรายละเอียดงาน</a>
+                </div>
+            </div>
+            <div class="home-btn">
+                <img th:src="@{/img/Kawaii-Shark-Wallpaper.jfif}" width="180px" height="180px">
+                <div>
+                    <a th:href="@{/delivery-list}" class="btn btn-outline-primary w-100">แก้ไขรายละเอียดงาน</a>
+                </div>
+            </div>
+            <div class="home-btn">
+                <img th:src="@{/img/Kawaii-Shark-Wallpaper.jfif}" width="180px" height="180px">
+                <div>
+                    <a th:href="@{/unsent-list}" class="btn btn-outline-primary w-100">ส่งรายละเอียดให้ลูกค้า</a>
+                </div>
+            </div>
+            <div class="home-btn">
+                <img th:src="@{/img/Kawaii-Shark-Wallpaper.jfif}" width="180px" height="180px">
+                <div>
+                    <a th:href="@{/handoff}" class="btn btn-outline-primary w-100">ส่งมอบสินค้า</a>
+                </div>
+            </div>
+        </div>
+
+
+        <div sec:authorize="hasAuthority('DRIVER')">
+            <div class="home-btn">
+                <img th:src="@{/img/Kawaii-Shark-Wallpaper.jfif}" width="180px" height="180px">
+                <div>
+                    <a th:href="@{/driver-home-list-job}" class="btn btn-outline-primary w-100">รายการใบแจ้งงานคนขับ</a>
+                </div>
+            </div>
+        </div>
+
+
+        <div sec:authorize="hasAuthority('MANAGER')">
+            <div class="home-btn">
+                <img th:src="@{/img/Kawaii-Shark-Wallpaper.jfif}" width="180px" height="180px">
+                <div>
+                    <a th:href="@{/cars}" class="btn btn-outline-primary w-100">ลงทะเบียนรถขนส่ง</a>
+                </div>
+            </div>
+            <div class="home-btn">
+                <img th:src="@{/img/Kawaii-Shark-Wallpaper.jfif}" width="180px" height="180px">
+                <div>
+                    <a th:href="@{/assign-deliveries}" class="btn btn-outline-primary w-100">แจกงาน</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
-
 </body>
 </html>

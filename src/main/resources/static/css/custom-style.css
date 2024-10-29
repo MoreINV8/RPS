@@ -36,6 +36,29 @@
 /* Add a shadow effect on hover for each notice item */
 .notice-item:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
-    transform: translateY(-2px);              /* Slight lift effect */
-    transition: all 0.3s ease;                /* Smooth transition */
+    transform: translateY(-2px); /* Slight lift effect */
+    transition: all 0.3s ease; /* Smooth transition */
+}
+
+.btn-container {
+    display: flex;
+    flex-direction: row;
+    flex-flow: row wrap;
+}
+
+.home-btn {
+    border-radius: 16px;
+    margin: 12px;
+    max-width: fit-content;
+    box-shadow: 5px 5px 15px rgba(179, 179, 204, 60);
+    padding: 12px;
+}
+
+.btn-pic {
+    height: 25%;
+    width: 25%;
+    background-image: url("../img/Kawaii-Shark-Wallpaper.jfif");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
