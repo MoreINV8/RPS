@@ -20,6 +20,8 @@ public class RouteProblemMapper implements RowMapper<RouteProblem> {
         routeProblem.setDistrict(rs.getString("district"));
         routeProblem.setRoad_name(rs.getString("road_name"));
         routeProblem.setReporter_id(rs.getString("reporter_id"));
+        routeProblem.setReporterFirstName(rs.getString("reporter_first_name"));
+        routeProblem.setReporterLastName(rs.getString("reporter_last_name"));
         routeProblem.setProblem_topic(rs.getString("problem_topic"));
         routeProblem.setProblem_detail(rs.getString("problem_detail"));
         System.out.println(rs.getDate("reported_date"));

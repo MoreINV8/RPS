@@ -467,11 +467,19 @@ public class DBRepository {
 
     // Method to retrieve route problems by province
     public List<RouteProblem> showAllProblemRoute(String province) {
-        String query = "SELECT route_problem_id, province, district, road_name, reporter_id, problem_topic, problem_detail, reported_date FROM route_problem WHERE province = ?;";
+        String query = """
+                SELECT rp.route_problem_id, rp.province, rp.district, rp.road_name, 
+                       rp.reporter_id, rp.problem_topic, rp.problem_detail, rp.reported_date,
+                       e.first_name AS reporter_first_name, e.last_name AS reporter_last_name
+                FROM route_problem rp
+                JOIN employee e ON rp.reporter_id = e.id
+                WHERE rp.province = ?;
+                """;
 
         // Pass the province parameter to the query
         return jdbcTemplate.query(query, new Object[]{province}, new RouteProblemMapper());
     }
+
 
     public String save(RouteProblem routeProblem) {
         String queryInsert = "INSERT INTO route_problem (route_problem_id, province, district, road_name, reporter_id, problem_topic, problem_detail, reported_date) VALUES (?, ?, ?, ?, ?, ? ,?, ?);";
@@ -489,6 +497,7 @@ public class DBRepository {
 
         return id;
     }
+
     //    ================================ Bill ================================
     public boolean isExistBillById(String id) {
         String query = "SELECT COUNT(id) FROM bill WHERE delivery_id = ?;";
