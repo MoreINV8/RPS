@@ -1,15 +1,16 @@
 package ku.cs.RPS.DTO;
 
 import jakarta.validation.constraints.Min;
+import ku.cs.RPS.validations.password.ValidPassword;
 import lombok.Data;
 
 @Data
 public class EditPasswordRequest {
     private String oldPassword;
 
-    @Min(value = 6, message = "รหัสผ่านสั้นเิกนไป")
+    @ValidPassword
     private String newPassword;
 
-    @Min(value = 6, message = "รหัสผ่านสั้นเิกนไป")
+    @ValidPassword
     private String confirmPassword;
 }

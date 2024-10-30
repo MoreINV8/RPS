@@ -15,7 +15,7 @@
 <div class="container my-4 btn-container">
     <div class="btn-container">
         <div class="home-btn" sec:authorize="!hasAuthority('ADMIN')">
-            <img th:src="@{/img/Kawaii-Shark-Wallpaper.jfif}" width="180px" height="180px">
+            <img th:src="@{/img/Alpaca_Emote.webp}" width="180px" height="180px">
             <div>
                 <a th:href="@{/edit-password}" class="btn btn-outline-primary w-100">แก้ไขรหัสผ่าน</a>
             </div>
@@ -23,7 +23,7 @@
 
 
         <div class="home-btn" sec:authorize="hasAuthority('ADMIN')">
-            <img th:src="@{/img/Kawaii-Shark-Wallpaper.jfif}" width="180px" height="180px">
+            <img th:src="@{/img/FrogToxic.webp}" width="180px" height="180px">
             <div>
                 <a th:href="@{/adminEditEmployee}" class="btn btn-outline-primary w-100">แก้ไขข้อมูลพนักงาน</a>
             </div>
@@ -31,7 +31,7 @@
 
 
         <div class="home-btn" sec:authorize="hasAuthority('HR')">
-            <img th:src="@{/img/Kawaii-Shark-Wallpaper.jfif}" width="180px" height="180px">
+            <img th:src="@{/img/EmployeeRegis.jpg}" width="180px" height="180px">
             <div>
                 <a th:href="@{/employee/register}" class="btn btn-outline-primary w-100">ลงทะเบียนพนักงาน</a>
             </div>
@@ -39,7 +39,7 @@
 
 
         <div class="home-btn" sec:authorize="hasAuthority('SALE_MANAGER')">
-            <img th:src="@{/img/Kawaii-Shark-Wallpaper.jfif}" width="180px" height="180px">
+            <img th:src="@{/img/CustomerRegis-V2.jpg}" width="180px" height="180px">
             <div>
                 <a th:href="@{/customer/register}" class="btn btn-outline-primary w-100">ลงทะเบียนลูกค้า</a>
             </div>
