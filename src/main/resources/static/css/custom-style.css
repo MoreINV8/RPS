@@ -54,6 +54,11 @@
     padding: 12px;
 }
 
+.home-btn > img {
+    margin-bottom: 10px;
+    border-radius: 12px;
+}
+
 .btn-pic {
     height: 25%;
     width: 25%;
