@@ -39,7 +39,7 @@ CREATE TABLE employee
     password     VARCHAR(20)        NOT NULL,
 
     PRIMARY KEY (id),
-    CHECK ( role IN ('ADMIN', 'HR', 'SALE_MANAGER', 'MANAGER', 'DRIVER') )
+    CHECK ( role IN ('ADMIN', 'HR', 'SALE_MANAGER', 'MANAGER', 'DRIVER') ),
     CHECK ( sex IN ('MALE', 'FEMALE') )
 );
 
