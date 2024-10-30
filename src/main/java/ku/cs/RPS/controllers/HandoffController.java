@@ -66,7 +66,7 @@ public class HandoffController {
     public String finishHandoffHandle(@ModelAttribute("data") DeliveryCustomerNotice data, HttpSession session) {
         dbRepository.updateNoticeCompleteStatusById(data.getNoticeId());
 
-        if (!dbRepository.isExistBillById(data.getNoticeId())) {
+        if (!dbRepository.isExistBillByDeliveryId(data.getDeliveryId())) {
             dbRepository.save(new Bill(data));
         }
 

@@ -1,11 +1,11 @@
 CREATE TABLE customer
 (
     id           CHAR(10),
-    first_name   VARCHAR(20)        NOT NULL,
-    last_name    VARCHAR(20)        NOT NULL,
-    email        VARCHAR(50) UNIQUE NOT NULL,
-    phone_number CHAR(10)           NOT NULL,
-    address      VARCHAR(50)        NOT NULL,
+    first_name   VARCHAR(20) NOT NULL,
+    last_name    VARCHAR(20) NOT NULL,
+    email        VARCHAR(50) NOT NULL,
+    phone_number CHAR(10)    NOT NULL,
+    address      VARCHAR(50) NOT NULL,
 
     PRIMARY KEY (id)
 );
@@ -39,6 +39,7 @@ CREATE TABLE employee
     password     VARCHAR(20)        NOT NULL,
 
     PRIMARY KEY (id),
+    CHECK ( role IN ('ADMIN', 'HR', 'SALE_MANAGER', 'MANAGER', 'DRIVER') )
     CHECK ( sex IN ('MALE', 'FEMALE') )
 );
 
@@ -103,13 +104,13 @@ CREATE TABLE bill
 CREATE TABLE route_problem
 (
     route_problem_id VARCHAR(10),
-    province         VARCHAR(50),
-    district         VARCHAR(50),
-    road_name        VARCHAR(50),
-    reporter_id      CHAR(10),
-    problem_topic    VARCHAR(100),
-    problem_detail   VARCHAR(250),
-    reported_date    DATE,
+    province         VARCHAR(50)  NOT NULL,
+    district         VARCHAR(50)  NOT NULL,
+    road_name        VARCHAR(50)  NOT NULL,
+    reporter_id      CHAR(10)     NOT NULL,
+    problem_topic    VARCHAR(100) NOT NULL,
+    problem_detail   VARCHAR(250) NOT NULL,
+    reported_date    DATE         NOT NULL,
 
     PRIMARY KEY (route_problem_id),
     FOREIGN KEY (reporter_id) REFERENCES employee (id) ON DELETE CASCADE

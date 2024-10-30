@@ -14,7 +14,7 @@ public class NoticeEmployeeCarMapper implements RowMapper<NoticeEmployeeCar> {
         d.setEmployeeFirstName(rs.getString("employee_first_name"));
         d.setEmployeeLastName(rs.getString("employee_last_name"));
         d.setCarId(rs.getString("car_id"));
-        d.setOilType(rs.getString("oil_type"));
+        d.setOilType(rs.getString("car_type"));
         d.setNoticeId(rs.getString("notice_id"));
 
         return d;

@@ -33,11 +33,6 @@ public class RegisterCustomerController {
             return "register-customer-view";
         }
 
-        if (dbRepository.isExistCustomerByEmail(newCustomer.getEmail())) {
-            result.rejectValue("email", "error.emailExist", "อีเมลนี้ใช้งานแล้ว");
-            return "register-customer-view";
-        }
-
         dbRepository.save(newCustomer);
 
         return "home-view";

@@ -52,17 +52,6 @@ public class DBRepository {
         }
     }
 
-    public boolean isExistCustomerByEmail(String email) {
-        String query = "SELECT id, first_name, last_name, email, phone_number, address FROM customer WHERE email = ?;";
-
-        try {
-            jdbcTemplate.queryForObject(query, new Object[]{email}, new CustomerMapper());
-            return true;
-        } catch (DataAccessException e) {
-            return false;
-        }
-    }
-
     public String save(Customer customer) {
         String queryCount = "SELECT COUNT(id) FROM customer;";
 
@@ -240,8 +229,7 @@ public class DBRepository {
     }
 
     public List<Product> findProductsByDeliveryId(String id) {
-        String query = "SELECT id, notice_id, delivery_id, item_count, item_detail FROM product WHERE delivery_id IN " +
-                "(SELECT id FROM delivery WHERE delivery_id = ?);";
+        String query = "SELECT id, notice_id, delivery_id, item_count, item_detail FROM product WHERE delivery_id = ?;";
 
         return jdbcTemplate.query(query, new Object[]{id}, new ProductMapper());
     }
@@ -408,7 +396,7 @@ public class DBRepository {
 
     public List<NoticeEmployeeCar> findNoticeEmployeeCarByDeliveryId(String id) {
         String query = "SELECT e.first_name AS employee_first_name, e.last_name AS employee_last_name, e.id AS employee_id, " +
-                "c.car_registration AS car_id, c.oil_type, n.id AS notice_id " +
+                "c.car_registration AS car_id, c.car_type, n.id AS notice_id " +
                 "FROM notice n " +
                 "JOIN car c ON n.car_registration = c.car_registration " +
                 "JOIN employee e ON n.driver_id = e.id " +
@@ -610,7 +598,7 @@ public class DBRepository {
     }
 
     //    ================================ Bill ================================
-    public boolean isExistBillById(String id) {
+    public boolean isExistBillByDeliveryId(String id) {
         String query = "SELECT COUNT(id) FROM bill WHERE delivery_id = ?;";
 
         int result = jdbcTemplate.queryForObject(query, new Object[]{id}, Integer.class);
