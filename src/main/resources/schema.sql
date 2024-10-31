@@ -1,8 +1,8 @@
 CREATE TABLE customer
 (
     id           CHAR(10),
-    first_name   VARCHAR(20) NOT NULL,
-    last_name    VARCHAR(20) NOT NULL,
+    first_name   VARCHAR(50) NOT NULL,
+    last_name    VARCHAR(50) NOT NULL,
     email        VARCHAR(50) NOT NULL,
     phone_number CHAR(10)    NOT NULL,
     address      VARCHAR(50) NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE delivery
     customer_id        CHAR(10)    NOT NULL,
     created_date       DATE,
     delivered_date     DATE        NOT NULL,
-    item_type          VARCHAR(20) NOT NULL,
+    item_type          VARCHAR(50) NOT NULL,
     destination        VARCHAR(50) NOT NULL,
     sent_detail_status VARCHAR(5)  NOT NULL,
     all_product_count  INT,
@@ -29,8 +29,8 @@ CREATE TABLE delivery
 CREATE TABLE employee
 (
     id           CHAR(10),
-    first_name   VARCHAR(20)        NOT NULL,
-    last_name    VARCHAR(20)        NOT NULL,
+    first_name   VARCHAR(50)        NOT NULL,
+    last_name    VARCHAR(50)        NOT NULL,
     sex          VARCHAR(7)         NOT NULL,
     email        VARCHAR(50) UNIQUE NOT NULL,
     phone_number CHAR(10)           NOT NULL,

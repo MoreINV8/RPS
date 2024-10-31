@@ -13,7 +13,7 @@ public class NoticeMapper implements RowMapper<Notice> {
 
         // id, delivery_id, driver_id, car_registration, start_work_date, complete_status
         Notice notice = new Notice();
-        notice.setId(rs.getString("id"));
+        notice.setId(rs.getString("notice_id"));
         notice.setDelivery_id(rs.getString("delivery_id"));
         notice.setDriver_id(rs.getString("driver_id"));
         notice.setCar_registration(rs.getString("car_registration"));

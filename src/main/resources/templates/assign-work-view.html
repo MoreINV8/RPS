@@ -45,7 +45,7 @@
                 <tr th:each="product : ${unassignedProducts}">
                     <td><span th:text="${product.id}"></span></td>
                     <td><span th:text="${product.productDetail}"></span></td>
-                    <td><span th:text="${product.productCount}"></span></td>
+                    <td><span th:text="${delivery.allProductsCount}"></span></td>
                     <td>
                         <input type="number" class="form-control" name="assignedQuantity"
                                th:value="0" min="0" th:max="${product.productCount}">

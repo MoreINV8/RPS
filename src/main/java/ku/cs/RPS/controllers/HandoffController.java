@@ -56,7 +56,7 @@ public class HandoffController {
             model.addAttribute("products", dbRepository.findProductsByNoticeId(noticeId));
 
         } else {
-            result.rejectValue("searchValue", "error.cannotAccess", "ยังไม่สารารถดำเนินการกับรายการดังกล่าวเนื่องจากยังจัดสรรไม่เสร็จสิ้น");
+            result.rejectValue("searchValue", "error.cannotAccess", "ยังไม่สามารถดำเนินการกับรายการดังกล่าวเนื่องจากยังจัดสรรไม่เสร็จสิ้น");
         }
 
         return "handoff-view";

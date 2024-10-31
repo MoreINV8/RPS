@@ -63,10 +63,11 @@ public class AssignWorkController {
             String productId = productIds.get(i);
             int assignedQuantity = assignedQuantities.get(i);
             int productTotal = dbRepository.findProductByProductId(productId).getProductCount(); // Fetch total quantity for each product
-            int remainingQuantity = productTotal - assignedQuantity;
+            int remainingQuantity = dbRepository.findDeliveryById(deliveryId).getAllProductsCount() - assignedQuantity;
 
             // Update or store remaining quantity as needed, for example:
-            dbRepository.updateRemainingProductCount(productId, remainingQuantity);
+//            dbRepository.updateRemainingProductCount(productId, remainingQuantity);
+            dbRepository.updateAllProductCount(deliveryId, remainingQuantity);
         }
 
 

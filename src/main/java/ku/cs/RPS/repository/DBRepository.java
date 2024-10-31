@@ -170,6 +170,11 @@ public class DBRepository {
         );
     }
 
+    public void updateAllProductCount(String deliveryId, int remainingProductCount) {
+        String query = "UPDATE delivery SET all_product_count = ? WHERE id = ?";
+        jdbcTemplate.update(query, remainingProductCount, deliveryId);
+    }
+
     public void deleteDeliveryById(String id) {
         String query = "DELETE FROM delivery WHERE id = ?;";
 
