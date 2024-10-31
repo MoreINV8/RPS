@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Routing Path System</title>
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link th:rel="stylesheet" th:href="@{/css/custom-style.css}">
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/custom.js}"></script>
+</head>
+<body>
+<div th:insert="~{fragments/nav-bar::nav-bar}"></div>
+
+
+<div class="container my-4">
+    <h2 class="text-center mb-4">รายละเอียดใบส่งสินค้า</h2>
+
+    <div class="accordion" id="orderAccordion">
+
+        <!-- Repeat this for each order -->
+        <div class="accordion-item">
+
+            <div class="accordion-header">
+                <div class="custom-accordion-header p-3">
+                    <span><u>รหัสใบส่งสินค้า:</u> #<span th:text="${delivery.deliveryId}"></span>    -    <u>ลูกค้า:</u> คุณ<span
+                            th:text="${customer.firstName}"></span> <span th:text="${customer.lastName}"></span>
+                            </span>
+                </div>
+            </div>
+
+            <div id="order1" class="accordion-collapse collapse show" aria-labelledby="orderHeading1"
+                 data-bs-parent="#orderAccordion">
+                <div class="accordion-body">
+
+                    <!-- Order Basic Details -->
+                    <p><strong>จุดหมายปลายทาง:</strong> <span th:text="${delivery.destination}"></span></p>
+                    <p><strong>ประเภทของสินค้า:</strong> <span th:text="${delivery.getItemType}"></span></p>
+                    <p><strong>วันส่งมอบ:</strong> <span th:text="${delivery.deliverDateTime.toString()}"></span></p>
+
+                    <!-- Product List -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered mt-3">
+
+                            <thead class="table-light">
+                            <tr>
+                                <th>รายละเอียดสินค้า</th>
+                                <th>จำนวนสินค้า</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr th:each="product : ${products}">
+                                <td th:text="${product.productDetail}"></td>
+                                <td th:text="${#numbers.formatDecimal(product.productCount, 1, 'COMMA', 0, 'POINT')}"></td>
+                            </tr>
+                            </tbody>
+
+                        </table>
+
+                        <div class="text-end fw-bold m-2">
+                            Total: <span th:text="${delivery.allProductsCount}"></span>
+                        </div>
+
+                        <!-- Button trigger modal -->
+                        <div class="w-100 d-flex flex-row-reverse">
+                            <button type="button" class="btn btn-primary" id="openModalBtn">
+                                ยืนยัน
+                            </button>
+                        </div>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">ยืนยันความถูกต้อง</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h6>ตรวจสอบเสร็จสิ้น ข้อมูลถูกต้อง และไม่จำเป็นตต้องแก้ไข</h6>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                                onclick="window.location.href='/home'">ยกเลิก
+                                        </button>
+                                        <form class="m-0 p-0" action="#"
+                                              th:action="@{/delivery-detail/{id}(id=${delivery.getDeliveryId()})}"
+                                              method="POST">
+                                            <button type="submit" class="btn btn-primary">ยืนยัน</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

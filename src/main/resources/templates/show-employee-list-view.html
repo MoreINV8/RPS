@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RPS</title>
+    <!-- Bootstrap and Custom Stylesheets -->
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link th:rel="stylesheet" th:href="@{/css/custom-style.css}">
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<!-- Insert Navbar -->
+<div th:insert="~{fragments/nav-bar::nav-bar}"></div>
+<!-- Employee Information Section -->
+<div class="container mt-5">
+    <h4 class="mb-4">พนักงาน</h4>
+    <div th:each="employee : ${adminEdit}">
+        <a th:href="@{/edit-employee-info/{id}(id=${employee.getEmployeeId()})}" class="text-decoration-none">
+            <ul class="list-group mb-4">
+                <!-- Employee ID -->
+                <li class="list-group-item">
+                    <strong>รหัสพนักงาน:</strong> <span th:text="${employee.getEmployeeId()}"></span>
+                </li>
+                <!-- Employee Name -->
+                <li class="list-group-item">
+                    <strong>ชื่อ นามสกุล:</strong>
+                    <span th:text="${employee.getEmployeeFirstName()}"></span>
+                    <span th:text="${employee.getEmployeeLastName()}"></span>
+                </li>
+                <!-- Employee Department -->
+                <li class="list-group-item">
+                    <strong>ตำแหน่ง:</strong>
+                    <span th:text="${employee.getEmployeeDepartment()}"></span>
+                </li>
+            </ul>
+        </a>
+    </div>
+</div>
+</body>
+</html>

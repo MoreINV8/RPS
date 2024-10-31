@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>RPS</title>
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link th:rel="stylesheet" th:href="@{/css/custom-style.css}">
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div th:insert="~{fragments/nav-bar::nav-bar}"></div>
+
+<div class="container my-4 btn-container">
+    <div class="btn-container">
+        <div class="home-btn" sec:authorize="!hasAuthority('ADMIN')">
+            <img th:src="@{/img/Alpaca_Emote.webp}" width="180px" height="180px">
+            <div>
+                <a th:href="@{/edit-password}" class="btn btn-outline-primary w-100">แก้ไขรหัสผ่าน</a>
+            </div>
+        </div>
+
+
+        <div class="home-btn" sec:authorize="hasAuthority('ADMIN')">
+            <img th:src="@{/img/FrogToxic.webp}" width="180px" height="180px">
+            <div>
+                <a th:href="@{/adminEditEmployee}" class="btn btn-outline-primary w-100">แก้ไขข้อมูลพนักงาน</a>
+            </div>
+        </div>
+
+
+        <div class="home-btn" sec:authorize="hasAuthority('HR')">
+            <img th:src="@{/img/EmployeeRegis.jpg}" width="180px" height="180px">
+            <div>
+                <a th:href="@{/employee/register}" class="btn btn-outline-primary w-100">ลงทะเบียนพนักงาน</a>
+            </div>
+        </div>
+
+
+        <div class="home-btn" sec:authorize="hasAuthority('SALE_MANAGER')">
+            <img th:src="@{/img/CustomerRegis-V2.jpg}" width="180px" height="180px">
+            <div>
+                <a th:href="@{/customer/register}" class="btn btn-outline-primary w-100">ลงทะเบียนลูกค้า</a>
+            </div>
+        </div>
+        <div class="home-btn" sec:authorize="hasAuthority('SALE_MANAGER')">
+            <img th:src="@{/img/editCustomerDetail.jpg}" width="180px" height="180px">
+            <div>
+                <a th:href="@{/customers}" class="btn btn-outline-primary w-100">แก้ไขข้อมูลลูกค้า</a>
+            </div>
+        </div>
+        <div class="home-btn" sec:authorize="hasAuthority('SALE_MANAGER')">
+            <img th:src="@{/img/deliveryDetail.png}" width="180px" height="180px">
+            <div>
+                <a th:href="@{/create-delivery}" class="btn btn-outline-primary w-100">กรอกรายละเอียดงาน</a>
+            </div>
+        </div>
+        <div class="home-btn" sec:authorize="hasAuthority('SALE_MANAGER')">
+            <img th:src="@{/img/editDeliveryDetail.jpg}" width="180px" height="180px">
+            <div>
+                <a th:href="@{/delivery-list}" class="btn btn-outline-primary w-100">แก้ไขรายละเอียดงาน</a>
+            </div>
+        </div>
+        <div class="home-btn" sec:authorize="hasAuthority('SALE_MANAGER')">
+            <img th:src="@{/img/sendDetail.jpg}" width="180px" height="180px">
+            <div>
+                <a th:href="@{/unsent-list}" class="btn btn-outline-primary w-100">ส่งรายละเอียดให้ลูกค้า</a>
+            </div>
+        </div>
+        <div class="home-btn" sec:authorize="hasAuthority('SALE_MANAGER')">
+            <img th:src="@{/img/deliver.jpg}" width="180px" height="180px">
+            <div>
+                <a th:href="@{/handoff}" class="btn btn-outline-primary w-100">ส่งมอบสินค้า</a>
+            </div>
+        </div>
+
+
+        <div class="home-btn" sec:authorize="hasAuthority('DRIVER')">
+            <img th:src="@{/img/driver.jpg}" width="180px" height="180px">
+            <div>
+                <a th:href="@{/driver-home-list-job}" class="btn btn-outline-primary w-100">รายการใบแจ้งงานคนขับ</a>
+            </div>
+        </div>
+
+
+        <div class="home-btn" sec:authorize="hasAuthority('MANAGER')">
+            <img th:src="@{/img/hit-down.jpg}" width="180px" height="180px">
+            <div>
+                <a th:href="@{/cars}" class="btn btn-outline-primary w-100">ลงทะเบียนรถขนส่ง</a>
+            </div>
+        </div>
+        <div class="home-btn" sec:authorize="hasAuthority('MANAGER')">
+            <img th:src="@{/img/chooser.jpg}" width="180px" height="180px">
+            <div>
+                <a th:href="@{/assign-deliveries}" class="btn btn-outline-primary w-100">แจกงาน</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

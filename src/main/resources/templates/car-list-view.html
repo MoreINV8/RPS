@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RPS</title>
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link th:rel="stylesheet" th:href="@{/css/custom-style.css}">
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div th:insert="~{fragments/nav-bar::nav-bar}"></div>
+
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0">รถขนส่ง</h4>
+        <a th:href="@{/car/register}" class="btn btn-primary">ลงทะเบียนรถขนส่ง</a>
+    </div>
+
+    <a th:each="car : ${cars}"
+       class="text-decoration-none">
+        <ul class="center-box list-group">
+            <li class="list-group-item">ทะเบียนรถขนส่ง : <span th:text="${car.getCarId()}"></span></li>
+            <li class="list-group-item">รหัสพนักงานขับรถ : <span th:text="${car.getDriverId()}"></span></li>
+            <li class="list-group-item">ประเภทน้ำมัน : <span th:text="${car.getOilType()}"></span></li>
+            <li class="list-group-item">สถานะสิ้นสุดการใช้งาน : <span th:text="${car.getEndOfUseTime()}"></span></li>
+            <li class="list-group-item">ชนิดรถขนส่ง : <span th:text="${car.getCarType()}"></span></li>
+        </ul>
+    </a>
+</div>
+</body>
+</html>

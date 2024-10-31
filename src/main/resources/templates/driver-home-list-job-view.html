@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RPS</title>
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link th:rel="stylesheet" th:href="@{/css/custom-style.css}">
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div th:insert="~{fragments/nav-bar::nav-bar}"></div>
+<h1 class="text-center">I DRIVE</h1>
+
+<div class="container mt-5">
+    <h4 class="mb-4">ใบแจ้งงานที่มอบหมายให้กับคุณ ***ระบบจะแสดงใบแจ้งงานที่คุณยังทำไม่เสร็จเท่านั้น ***</h4>
+
+    <!-- New Button to Navigate to Map Page -->
+    <!-- MapController -->
+    <div class="mb-4">
+        <a th:href="@{/go-to-map}" class="btn btn-primary">Go to Map Page</a>
+    </div>
+
+    <!-- Notices Assigned to This Employee -->
+    <h6>งานที่ได้รับมอบหมาย:</h6>
+    <div th:each="notice : ${notices}">
+        <a th:href="@{/each-job-info/{id}(id=${notice.getId()})}" class="text-decoration-none">
+            <ul class="list-group mb-4 notice-item">
+                <!-- Notice ID -->
+                <li class="list-group-item">
+                    <strong>รหัสใบแจ้งงาน:</strong> <span th:text="${notice.getId()}"></span>
+                </li>
+                <!-- Delivery ID -->
+                <li class="list-group-item">
+                    <strong>รหัสการส่งของ:</strong> <span th:text="${notice.getDelivery_id()}"></span>
+                </li>
+                <!-- Employee Name -->
+                <li class="list-group-item">
+                    <strong>ชื่อ นามสกุล:</strong>
+                    <span th:text="${notice.getEmployeeFirstName()}"></span>
+                    <span th:text="${notice.getEmployeeLastName()}"></span>
+                </li>
+                <!-- Start Work Date -->
+                <li class="list-group-item">
+                    <strong>วันที่เริ่มงาน:</strong> <span th:text="${notice.getStart_work_date()}"></span>
+                </li>
+            </ul>
+        </a>
+    </div>
+</div>
+</body>
+</html>

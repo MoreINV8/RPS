@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RPS</title>
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link th:rel="stylesheet" th:href="@{/css/custom-style.css}">
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/custom.js}"></script>
+</head>
+<body>
+<div th:insert="~{fragments/nav-bar::nav-bar}"></div>
+
+<div class="container my-4">
+    <h2 class="text-center mb-4">รายละเอียดใบส่งสินค้า</h2>
+
+    <div class="accordion" id="deliveryAccordion">
+
+        <div class="accordion-item">
+
+            <div class="accordion-header">
+                <div class="custom-accordion-header p-3">
+                    <span><u>รหัสใบส่งสินค้า :</u> #<span th:text="${delivery.deliveryId}"></span>
+                        -    <u>ลูกค้า :</u> #<span th:text="${delivery.customerId}"></span>
+                         คุณ<span th:text="${customer.firstName}"></span> <span th:text="${customer.lastName}"></span>
+                    </span>
+                </div>
+            </div>
+
+            <div id="delivery1" class="accordion-collapse collapse show" aria-labelledby="deliveryHeading1"
+                 data-bs-parent="#deliveryAccordion">
+                <div class="accordion-body">
+
+                    <!-- Delivery Details -->
+                    <p><strong>วันเวลาสร้างใบส่งสินค้า :</strong> <span th:text="${delivery.deliveryCreatedDate.toString()}"></span></p>
+                    <p><strong>เวลาส่งมอบสินค้า :</strong> <span th:text="${delivery.deliverDateTime.toString()}"></span></p>
+                    <p><strong>ประเภทสินค้า :</strong> <span th:text="${delivery.itemType}"></span></p>
+                    <p><strong>สถานที่ปลายทาง :</strong> <span th:text="${delivery.destination}"></span></p>
+                    <p><strong>สถานะการส่งรายละเอียดงาน :</strong> <span th:text="${delivery.sentDetailStatus}"></span></p>
+                    <p><strong>จำนวนสินค้าที่ยังไม่ได้รับมอบหมาย :</strong> <span th:text="${delivery.allProductsCount}"></span></p>
+
+
+                    <!-- Assigned Car List -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered mt-3">
+
+                            <thead class="table-light">
+                            <tr>
+                                <th>ทะเบียนรถ</th>
+                                <th>รหัสพนักงาน</th>
+                                <th>ชนิดรถขนส่ง</th>
+                                <th>สถานะสิ้นสุดการใช้งาน</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr th:each="car : ${cars}">
+                                <td th:text="${car.carId}"></td>
+                                <td th:text="${car.driverId}"></td>
+                                <td th:text="${car.carType}"></td>
+                                <td th:text="${car.endOfUseTime}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <form class="w-100 d-flex flex-row-reverse" action="#"
+                              th:action="@{/assign-cars/{id}(id=${delivery.getDeliveryId()})}">
+                            <button type="submit" class="btn btn-primary"
+                                    th:attr="disabled=${delivery.allProductsCount <= 0}">
+                                แจกงาน
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

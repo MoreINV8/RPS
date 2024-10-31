@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RPS</title>
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link th:rel="stylesheet" th:href="@{/css/custom-style.css}">
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div th:insert="~{fragments/nav-bar::nav-bar}"></div>
+
+<div class="container mt-5">
+    <h4 class="mb-4">รายการรายละเอียดใบส่งสินค้า</h4>
+
+    <a th:each="delivery : ${deliveries}" th:href="@{/delivery-edit/{id}(id=${delivery.getDeliveryId()})}"
+       class="text-decoration-none">
+        <ul class="center-box list-group">
+            <li class="list-group-item">
+                <span>รหัสใบส่งสินค้า: <span th:text="${delivery.getDeliveryId()}"></span></span>
+            </li>
+
+            <li class="list-group-item">
+                <span>วันส่งมอบ: <span th:text="${delivery.getDeliverDateTime().toString()}"></span></span>
+            </li>
+
+            <li class="list-group-item">
+                <span>ประเภทของสินค้า: <span th:text="${delivery.getItemType()}"></span></span>
+            </li>
+
+            <li class="list-group-item">
+                <span>จุดหมายปลายทาง: <span th:text="${delivery.getDestination()}"></span></span>
+            </li>
+
+            <li class="list-group-item">
+                <span>สินค้ารวม: <span
+                        th:text="${#numbers.formatDecimal(delivery.getAllProductsCount(), 1, 'COMMA', 0, 'POINT')}"></span></span>
+            </li>
+        </ul>
+    </a>
+
+</div>
+
+</body>
+</html>

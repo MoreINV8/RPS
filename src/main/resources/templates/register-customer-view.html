@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RPS</title>
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link th:rel="stylesheet" th:href="@{/css/custom-style.css}">
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div th:insert="~{fragments/nav-bar::nav-bar}"></div>
+
+<div class="container">
+    <div class="center-box text-center">
+        <h4 class="mb-3">กรอกข้อมูลลูกค้า</h4>
+        <form action="#" th:action="@{/customer/register}" method="POST" th:object="${newCustomer}">
+
+            <div class="mb-3">
+                <label for="inputFirstName" class="form-label w-100 text-start px-3">ชื่อ</label>
+                <input id="inputFirstName" type="text" class="form-control"
+                       th:field="*{firstName}"
+                       placeholder="ชื่อ">
+                <div class="alert alert-warning mt-1 w-100 text-start px-3" th:if="${#fields.hasErrors('firstName')}"
+                     th:errors="*{firstName}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="inputLastName" class="form-label w-100 text-start px-3">นามสกุล</label>
+                <input id="inputLastName" type="text" class="form-control"
+                       th:field="*{lastName}"
+                       placeholder="นามสกุลลูกค้า">
+                <div class="alert alert-warning mt-1 w-100 text-start px-3" th:if="${#fields.hasErrors('lastName')}"
+                     th:errors="*{lastName}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="inputPhoneNumber" class="form-label w-100 text-start px-3">เบอร์โทรติดต่อ</label>
+                <input id="inputPhoneNumber" type="text" class="form-control"
+                       th:field="*{phoneNumber}"
+                       placeholder="เบอร์โทรติดต่อลูกค้า">
+                <div class="alert alert-warning mt-1 w-100 text-start px-3" th:if="${#fields.hasErrors('phoneNumber')}"
+                     th:errors="*{phoneNumber}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="inputAddress" class="form-label w-100 text-start px-3">ที่อยู่</label>
+                <input id="inputAddress" type="text" class="form-control"
+                       th:field="*{address}"
+                       placeholder="ที่อยู่ลูกค้า">
+                <div class="alert alert-warning mt-1 w-100 text-start px-3" th:if="${#fields.hasErrors('address')}"
+                     th:errors="*{address}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="inputEmail" class="form-label w-100 text-start px-3">อีเมล</label>
+                <input id="inputEmail" type="text" class="form-control"
+                       th:field="*{email}"
+                       placeholder="อีเมลลูกค้า">
+                <div class="alert alert-warning mt-1 w-100 text-start px-3" th:if="${#fields.hasErrors('email')}"
+                     th:errors="*{email}"></div>
+                <div class="alert alert-warning mt-1 w-100 text-start px-3"
+                     th:if="${#fields.hasErrors('email') and #fields.errors('email').contains('error.emailExists')}"
+                     th:errors="*{email}"></div>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

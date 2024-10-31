@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RPS</title>
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link th:rel="stylesheet" th:href="@{/css/custom-style.css}">
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/custom.js}"></script>
+</head>
+<body>
+<div th:insert="~{fragments/nav-bar::nav-bar}"></div>
+
+<div class="container my-4">
+    <h2 class="text-center mb-4">รายการรถขนส่งที่พร้อมรับงาน ใบส่งสินค้า #<u><span th:text="${delivery.deliveryId}"></span></u></h2>
+
+    <!-- Datetime Input for Filtering -->
+    <div class="mb-3">
+        <form th:action="@{/assign-cars/{deliveryId}(deliveryId=${delivery.deliveryId})}"
+              method="get" id="filterForm">
+            <strong><label for="estimatedStartTime">กรอกเวลาเริ่มงานที่ประเมิน :</label></strong>
+            <input id="estimatedStartTime" type="datetime-local" name="estimatedStartTime"
+                   th:value="${estimatedStartTime}" />
+        </form>
+    </div>
+    <!-- Available Cars Table -->
+    <div class="table-responsive">
+        <table class="table table-bordered mt-3">
+            <thead class="table-light">
+            <tr>
+                <th>ทะเบียนรถ</th>
+                <th>รหัสพนักงาน</th>
+                <th>ชนิดรถขนส่ง</th>
+                <th>สถานะสิ้นสุดการใช้งาน</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="car : ${availableCars}">
+                <td th:text="${car.carId}"></td>
+                <td th:text="${car.driverId}"></td>
+                <td th:text="${car.carType}"></td>
+                <td th:text="${car.endOfUseTime}"></td>
+                <td class="d-flex justify-content-center">
+                    <a th:href="@{/assign-work/{deliveryId}/{carId}(deliveryId=${delivery.deliveryId}, carId=${car.carId})}"
+                       class="btn btn-primary">
+                        เลือก
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Set current date and time as the minimum for estimatedTime input
+    const estimatedTimeInput = document.getElementById("estimatedStartTime");
+    const now = new Date();
+    const formattedNow = now.toISOString().slice(0, 16); // Format for datetime-local input (YYYY-MM-DDTHH:MM)
+    // estimatedTimeInput.min = formattedNow;
+
+    // Automatically submit the form when estimatedTime changes
+    estimatedTimeInput.addEventListener("change", function() {
+        document.getElementById("filterForm").submit();
+    });
+</script>
+
+</body>
+</html>

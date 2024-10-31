@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RPS</title>
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link th:rel="stylesheet" th:href="@{/css/custom-style.css}">
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div th:insert="~{fragments/nav-bar::nav-bar}"></div>
+
+<div class="container vh-100 d-flex flex-column justify-content-center align-items-center">
+    <div class="text-center">
+        <h1 class="display-4 text-danger">Oops!</h1>
+        <p class="lead text-muted">Something went wrong.</p>
+        <p class="mb-4">
+            We’re sorry, but it looks like there’s been an error. Please try refreshing the page or
+            <a href="/">return to the homepage</a>.
+        </p>
+        <button class="btn btn-primary" onclick="window.location.reload();">Refresh</button>
+        <a th:href="@{/home}" class="btn btn-secondary ms-2">Home</a>
+    </div>
+</div>
+
+</body>
+</html>

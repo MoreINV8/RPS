@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RPS</title>
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link th:rel="stylesheet" th:href="@{/css/custom-style.css}">
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/custom.js}"></script>
+</head>
+<body>
+<div th:insert="~{fragments/nav-bar::nav-bar}"></div>
+
+<div class="container my-4">
+    <h2 class="text-center mb-4">ใบเสร็จ</h2>
+    <div class="accordion-item">
+
+        <div class="accordion-header">
+            <div class="custom-accordion-header p-3">
+                <span><u>รหัสใบเสร็จ:</u> #<span th:text="${billResponse.bill.billId}"></span></span>
+            </div>
+        </div>
+
+        <div id="order1" class="accordion-collapse collapse show" aria-labelledby="orderHeading1"
+             data-bs-parent="#orderAccordion">
+            <div class="accordion-body">
+
+                <p><strong>รหัสใบส่งสินค้า:</strong> #<span th:text="${billResponse.bill.deliveryId}"></span></p>
+                <p><strong>จุดหมายปลายทาง:</strong> <span th:text="${billResponse.dc.destination}"></span></p>
+                <p><strong>ประเภทของสินค้า:</strong> <span th:text="${billResponse.dc.itemType}"></span></p>
+                <p><strong>วันส่งมอบ:</strong> <span th:text="${billResponse.dc.deliveredTime.toString()}"></span></p>
+                <br>
+                <p><strong>ลูกค้า:</strong> #<span th:text="${billResponse.dc.customerId}"></span></p>
+                <p><strong>คุณ:</strong> <span th:text="${billResponse.dc.customerFirstName}"></span> <span
+                        th:text="${billResponse.dc.customerLastName}"></span></p>
+
+
+                <div class="table-responsive">
+                    <table class="table table-bordered mt-3">
+
+                        <thead class="table-light">
+                        <tr>
+                            <th>รหัสใบแจ้งงานคนขับ</th>
+                            <th>รถ</th>
+                            <th>พนักงาน</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr th:each="nec : ${billResponse.necs}">
+                            <td th:text="${nec.noticeId}"></td>
+                            <td>ทะเบียน: <span th:text="${nec.carId}"></span> - ประเภท: <span
+                                    th:text="${nec.oilType}"></span></td>
+                            <td>รหัส: <span th:text="${nec.employeeId}"></span> - ชื่อ: <span
+                                    th:text="${nec.employeeFirstName}"></span> <span
+                                    th:text="${nec.employeeLastName}"></span></td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+
+                    <div class="w-100 d-flex flex-row-reverse">
+                        <button type="button" class="btn btn-primary" onclick="window.location.href='/home'"
+                                id="openModalBtn">
+                            ยืนยัน
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
